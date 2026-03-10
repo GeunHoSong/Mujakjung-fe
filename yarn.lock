@@ -1265,6 +1265,11 @@ hermes-parser@^0.25.1:
   dependencies:
     hermes-estree "0.25.1"
 
+hydro-js@^1.5.22:
+  version "1.8.14"
+  resolved "https://registry.yarnpkg.com/hydro-js/-/hydro-js-1.8.14.tgz#573ff0c2c93b797bb4b994c79ff2e3df0193ebad"
+  integrity sha512-x0EgacH8wY5vz4AbDLlSfGH8106+Z9/YkCXRgCvFqvRPziSL9iCb1swzykxEvKLK5p/1xwbVJvXMCmn61JFBpg==
+
 ignore@^5.2.0:
   version "5.3.2"
   resolved "https://registry.yarnpkg.com/ignore/-/ignore-5.3.2.tgz#3cd40e729f3643fd87cb04e50bf0eb722bc596f5"
@@ -1470,6 +1475,11 @@ path-key@^3.1.0:
   resolved "https://registry.yarnpkg.com/path-key/-/path-key-3.1.1.tgz#581f6ade658cbba65a0d3380de7753295054f375"
   integrity sha512-ojmeN0qd+y0jszEtoY48r0Peq5dwMEkIlCOu6Q5f41lfkswXuKtYrhgoTpLnyIcHm24Uhqx+5Tqm2InSwLhE6Q==
 
+path-to-regexp@6.3.0:
+  version "6.3.0"
+  resolved "https://registry.yarnpkg.com/path-to-regexp/-/path-to-regexp-6.3.0.tgz#2b6a26a337737a8e1416f9272ed0766b1c0389f4"
+  integrity sha512-Yhpw4T9C6hPpgPeA28us07OJeqZ5EzQTkbfwuhsUg0c237RomFoETJgmp2sa3F/41gfLE6G5cqcYwznmeEeOlQ==
+
 picocolors@^1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/picocolors/-/picocolors-1.1.1.tgz#3d321af3eab939b083c8f929a1d12cda81c26b6b"
@@ -1579,6 +1589,14 @@ rollup@^4.43.0:
     "@rollup/rollup-win32-x64-gnu" "4.59.0"
     "@rollup/rollup-win32-x64-msvc" "4.59.0"
     fsevents "~2.3.2"
+
+router-dom@^3.0.3:
+  version "3.0.3"
+  resolved "https://registry.yarnpkg.com/router-dom/-/router-dom-3.0.3.tgz#21a82c725726e6ff2f8bdd8e99b9270f2e5d64ba"
+  integrity sha512-1xCnUy53CNrgJopNhOwzN6i34gRNIjhADAtPJvbISwOe/7zaQQ9tvcA/HuNbLk4PAHQcXgcyf0H3XZi84mYBAQ==
+  dependencies:
+    hydro-js "^1.5.22"
+    path-to-regexp "6.3.0"
 
 scheduler@^0.27.0:
   version "0.27.0"
