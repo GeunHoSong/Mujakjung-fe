@@ -1,5 +1,6 @@
 // 리액트 에서 상태 state 을 사용 하기 위해 userstate  import 
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function Join(){
     // 입력값 관리 (state)
@@ -21,6 +22,8 @@ function Join(){
     const [address, setAddress] = useState("");
     // 상세 주소 입력 창 
     const [detailAddress , setDetailAddress] = useState("");
+    // 페이지 이동 함수 
+    const navigate = useNavigate();
 
     // 약관 동의 
     const [agree, setAgree]=useState(false);
@@ -65,6 +68,8 @@ function Join(){
         }
         // 성공시 알 림
          alert("회원 가입 성공");
+         // 회원 가입 성공후 로그인 페이지로 이동 
+         navigate("/login");
     };
     return (
         <div>
@@ -78,6 +83,14 @@ function Join(){
             <input type="password" value={confirmPassword} onChange={(e)=> setConfirmPassword(e.target.value)} placeholder="비밀 번호"/><br/><br/>
               {/**이름 입력 값  */}
             <input value={name} onChange={(e) => setName(e.target.value)} placeholder="이름" /> <br/><br/>
+            {/**이름 입력 값  */}
+            <input value={phone} onChange={(e)=> setPhoen(e.target.value)} placeholder="전화 번호를 입력을 하세요" /><br/><br/>
+            {/**성별 */}
+            <select value={gender} onChange={(e)=> setGender(e.target.value)}>
+                <option value="">전체</option>
+                <option value="M">남자</option>
+                <option value="F">여자</option>
+            </select><br/><br/>
             {/**우편 번호 */}
             <input value={zipcode} onChange={(e) => setZipcode(e.target.value)} placeholder="우편 번호" /><br/><br/>
             {/**기본 주소  */}

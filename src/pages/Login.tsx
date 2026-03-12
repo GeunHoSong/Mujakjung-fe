@@ -25,6 +25,7 @@ function Login() {
       }
 
       const data = await response.json();
+      localStorage.setItem("token", data.token); // 로그인 유지
       console.log(data);
       alert("로그인 성공");
       // 메인 페이지로 이동 
