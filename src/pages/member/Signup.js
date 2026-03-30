@@ -18,8 +18,9 @@ const Sipnup= ()=> {
         setIsPostcodeOpen(data.isPostcodeOpen);
     };
     return (
-        <>
-        </>
+        <div className="signup-container">
+            h2``
+        </div>
     )
 }
 export default Sipnup;

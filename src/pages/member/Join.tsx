@@ -1,6 +1,7 @@
 // 리액트 에서 상태 state 을 사용 하기 위해 userstate  import 
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import DaumPostcode from 'react-daum-postcode'; 
 
 function Join(){
     // 입력값 관리 (state)
@@ -24,9 +25,17 @@ function Join(){
     const [detailAddress , setDetailAddress] = useState("");
     // 페이지 이동 함수 
     const navigate = useNavigate();
+    // 우편 번호 창 열림 상태 (추가)
+    const [isPostcodeOpen, setIsPostcodeOpen] = useState(false);
 
     // 약관 동의 
     const [agree, setAgree]=useState(false);
+
+    const handleComplete = (data: any) =>{
+        setZipcode(data.zonecode);
+        setAddress(data.address);
+        setIsPostcodeOpen(data.isPostcodeOpen);
+    };
 
     // 회원 가입 필수 
     const join = async ()=>{
@@ -92,9 +101,23 @@ function Join(){
                 <option value="F">여자</option>
             </select><br/><br/>
             {/**우편 번호 */}
-            <input value={zipcode} onChange={(e) => setZipcode(e.target.value)} placeholder="우편 번호" /><br/><br/>
-            {/**기본 주소  */}
-            <input value={address} onChange={(e)=> setAddress(e.target.value)} placeholder="기본 주소 " /><br/><br/>
+<div>
+    <input value={zipcode} readOnly placeholder="우편 번호" />
+    <button type="button" onClick={() => setIsPostcodeOpen(!isPostcodeOpen)}>
+        주소 검색
+    </button>
+</div><br/>
+
+{/** 주소 검색창 (열렸을 때만 보임) */}
+{isPostcodeOpen && (
+    <div style={{ border: '1px solid #ccc', margin: '10px 0' }}>
+        <DaumPostcode onComplete={handleComplete} />
+    </div>
+)}
+
+{/**기본 주소 */}
+<input value={address} readOnly placeholder="기본 주소" style={{ width: '300px' }} /><br/><br/>
+
             {/**상세 주소*/}
             <input value={detailAddress} onChange={(e=>setDetailAddress(e.target.value))} placeholder="상세 주소" /><br/><br/>
             {/**약관 동의*/}
