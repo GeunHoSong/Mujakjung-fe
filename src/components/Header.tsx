@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState , useEffect} from "react";
 import { useNavigate, Link } from "react-router-dom";
 import logo from "../assets/Mujakjung.jpg";
 
@@ -20,6 +20,19 @@ function Header() {
   const search = () => {
     navigate(`/search?keyword=${keyword}&type=${type}`);
   };
+  const [isLoggedIn , setLoggedIn] = useState(false);
+  useEffect(()=>{
+    // 백엔드 에서 보낸 ?Login=sucess 신호가 있는 지 확인 
+    const params=  new URLSearchParams(window.location.search);
+    if(params.get('login') === 'success'){
+      // 추가 로그인 성공햇는지 증거를 남기자 
+      localStorage.setItem("token", "ture");
+       // 주소창을 깔끔하게 "/"로 돌려놓기
+      navigate("/", {replace: true});
+      // 화면을 새로 고침 하면 token 챙긴걸 반영 하게 됨 
+      window.location.reload();
+    }
+  }, [navigate])
 
   // 로그아웃 함수
   const logout = () => {
