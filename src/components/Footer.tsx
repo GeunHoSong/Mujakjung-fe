@@ -37,7 +37,7 @@ function Footer (){
           }
         });
       }
-    }).open;
+    }).open();
   }
   return (
     <footer style={{padding: "20px", borderTop: "1px solid #eee", textAlign:"center" , backgroundColor: "white"}}>
