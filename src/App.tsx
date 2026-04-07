@@ -26,7 +26,7 @@ function App() {
       </Routes>
 
       {/* 2. 여기에 Footer 추가! */}
-      <Footer/>
+   
 
     </BrowserRouter>
   );
