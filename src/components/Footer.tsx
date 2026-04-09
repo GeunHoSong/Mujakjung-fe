@@ -38,7 +38,7 @@ function Footer() {
   // 6. 지도가 로드되었을 때만 실제 화면(JSX)을 그려줍니다.
   return isLoaded ? (
     <footer style={{ padding: '20px', backgroundColor: '#f8f9fa', borderTop: '1px solid #ddd' }}>
-      <h3 style={{ marginBottom: '15px' }}>📍 찾아오시는 길</h3>
+      <h3 style={{ marginBottom: '15px' }}>찾아오시는 길</h3>
       
       {/* 실제 지도가 그려지는 메인 컴포넌트 */}
       <GoogleMap mapContainerStyle={containerStyle} center={officePos} zoom={13}>

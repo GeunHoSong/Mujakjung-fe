@@ -1,4 +1,4 @@
-import React,{useState , useEffect, Profiler} from "react";
+import React,{useState , useEffect} from "react";
 import axios from "axios";
 // 함수형 컴포 넌트 선언 
 function Mypage(){
@@ -25,10 +25,20 @@ function Mypage(){
             ...userProflie, [name]: value
         });
     };
+    // 추가 저장 기능 
+    const handleSave = () => {
+        axios.post('http://localhost:808/api/member/mypage/update', userProflie).then(()=> alert("정보가 성공 적으로 수정이 되었습니다!") ).catch(err => alert("저장 실패"));
+    }
     // 화면에 그려주는 부분 (return이 없으면 컴포넌트 에러 발생)
     return (
-        <div style={{padding:'20px'}}>
-            <h1>마이페이지</h1>
+        <div style={{padding:'20px', maxWidth: '400px', margin: '0 auto'}}>
+            <h1 style={{borderBottom: '2px solid #333', paddingBottom:'10px'}}>마이페이지</h1>
+
+             {/* 1. 프로필 이미지 섹션 */}
+             <div style={{textAlign: 'center', margin:'20px 0'}}>
+                <img src="{userProfile.profile}" alt="profile" style={{width: '120px' , height: '120px', borderRadius: '50%', objectFit: 'cover' , border: '1px solid  #ddd'}} />
+
+             </div>
             <div style={{marginBottom:'10px'}}>
                 <label>닉네임:</label>
                 <input name="nickname" value={userProflie.nickname} 
@@ -38,7 +48,24 @@ function Mypage(){
                 <label>자기소개:</label>
                 <input name="bio" value={userProflie.bio} onChange={handleChange}/>
             </div>
+            <button onClick={handleSave} style={{width: '100px', padding:'12px' , background: '#4A90E2', color: 'white', border: 'none',cursor: 'pointer', fontWeight:'bold'}}>
+                정보 수정 하기 
+            </button>
+            <hr  style={{margin: '30px 0', border: '0.5px solid #eee' }}/>
+            <div style={{display: 'geid', gridTemplateColumns:'1fr 1fr', gap:'10px'}}>
+                <button style={meunButtonStyle}>장바 구니</button>
+                <button style={meunButtonStyle}>주무내역</button>
+                <button style={meunButtonStyle}>찜한 상품</button>
+                <button style={meunButtonStyle}>설정</button>
+            </div>
         </div>
     )
+}
+const meunButtonStyle ={
+    padding: '15px',
+    backgroundColor: '#f8f9fa',
+    borderRedius: '8px',
+    cursor: 'poninter',
+    fontSize: '14px'
 }
 export default Mypage;
