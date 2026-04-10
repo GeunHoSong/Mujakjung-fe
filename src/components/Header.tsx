@@ -38,7 +38,10 @@ function Header() {
   const logout = () => {
     localStorage.removeItem("token");
     alert("로그아웃 되었습니다.");
-    navigate("/login");
+    navigate("/main");
+    // 상태 초기화 후 이동 
+    setLoggedIn(false);
+    navigate("/", {replace: true});
   };
 
   return (
@@ -72,6 +75,9 @@ function Header() {
       {/* 로그인 상태에 따라 버튼 다르게 보여주기 */}
       {token ? (
         <>
+        <button onClick={()=> navigate("/admin")} style={{backgroundColor: '#FFD700', fontSize: 'bold'}}>
+          관리자 페이지
+        </button>
           {/* 로그인 상태 */}
           <button onClick={()=> navigate("mypage")}>마이페이지</button>
           <button onClick={logout}>로그아웃</button>
