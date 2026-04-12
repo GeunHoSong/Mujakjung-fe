@@ -85,7 +85,7 @@ function AdminMain() {
 
       <div style={styles.formGroup}>
         {/* 여행지 분류 드롭다운 */}
-        <label style={styles.label}>📍 여행지 분류</label>
+        <label style={styles.label}>여행지 분류</label>
         <select 
           style={styles.select} 
           value={category} 
