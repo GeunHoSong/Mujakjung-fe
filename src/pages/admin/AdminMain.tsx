@@ -108,11 +108,42 @@ function AdminMain() {
               </div>
             </div>
           )}
-          {activeTab === "number" && (
-            <div>
-              <h2>고객 계정 관리</h2>
+          {activeTab === "members" && (
+            <div style={{ backgroundColor: "white", padding: "30px", borderRadius: "10px", boxShadow: "0 4px 6px rgba(0,0,0,0.1)" }}>
+              <h2 style={{marginBottom: "20px"}}>고객 계정 관리</h2>
               <hr />
-              <p>고객 목록 불러 오는 중 ......</p>
+              {/* 회원 목록 테이블 */}
+              <table style={{width: "100%", borderCollapse: "collapse", marginTop: "20px", }}>
+                <thead>
+                  <tr style={{backgroundColor: "#f8f9fa", textAlign: "left", borderBottom: "2px solid #ddd"}}>
+                    <th style={{padding: "12px"}}>회원 번호</th>
+                    <th style={{padding: "12px"}}>이름</th>
+                    <th style={{padding: "12px"}}>이메일</th>
+                    <th style={{padding: "12px"}}>권한</th>
+                    <th style={{padding: "12px"}}>가입일</th>
+                    <th style={{padding: "12px"}}>관리</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {/* 나중에 members.map()으로 돌릴 자리! 지금은 예시 데이터 */}
+                  <tr style={{borderBottom: "10px solid #eee" }}>
+                    <td style={{padding: "12px"}}>1</td>
+                    <td style={{padding: "12px"}}>홍길동</td>
+                    <td style={{padding: "12px"}}>hong@test.com</td>
+                    <td style={{padding: "12px"}}>
+                      <span style={{color: "blue", fontWeight: "bold"}}>USER</span>
+                    </td>
+                    <td style={{padding: "12px"}}>2026-04-13</td>
+                    <td style={{padding: "12px"}}>
+                      <button style={{padding: "5px 10px", backgroundColor: "#ff4d4d", color: "white", border: "none", borderRadius: "4px" , cursor: "pointer"}}>
+                        삭제
+                      </button>
+                    </td>
+
+
+                  </tr>
+                </tbody>
+              </table>
             </div>
           )}
 
