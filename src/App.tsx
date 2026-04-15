@@ -23,6 +23,7 @@ function App() {
         <Route path="/search" element={<Search/>}/>
         <Route path="/admin" element={<AdminMain />} />
         <Route path="/mypage" element={<Mypage/>} />
+        <Route path="/travel/:id" element={<TravelDetail/>}/>
       </Routes>
 
       {/* 2. 여기에 Footer 추가! */}
