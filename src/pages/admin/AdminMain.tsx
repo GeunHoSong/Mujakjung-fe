@@ -56,7 +56,7 @@ function AdminMain() {
       .then((res) => {
         const newId = res.data.id; // 서버에서 새로 생성된 여행지 PK(ID)
         console.log("등록 성공!", res.data);
-        alert(`${title} 등록 완료! (161번째 커밋 🚀)`);
+        alert(`${title} 등록 완료! (n번째 커밋 🚀)`);
         
         // 성공 시 방금 만든 상세 페이지로 사용자 이동
         navigate(`/travel/${newId}`);

@@ -10,9 +10,6 @@ function Main() {
 
     <div>
 
-      {/* 상단 영역 */}
-      <Header />
-
       {/* 메인 콘텐츠 */}
 
       <main>
@@ -22,9 +19,6 @@ function Main() {
         <p>여행지를 검색해보세요.</p>
 
       </main>
-
-      {/* 하단 영역 */}
-      <Footer />
 
     </div>
 

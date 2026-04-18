@@ -7,15 +7,16 @@ import TravelDetail from "./pages/travel/TravelDetail";
 import AdminMain from "./pages/admin/AdminMain";
 import Mypage from "./pages/member/MyPage";
 
-// 1. Footer 임포트 추가! (경로가 src/components/Footer.tsx 라면)
 import Footer from "./components/Footer";
+import Header from "./components/Header";
 
 function App() {
   return (
     <BrowserRouter>
-      {/* Routes 바깥에 Footer를 두면 
-          메인, 로그인, 회원가입 어디를 가든 지도가 항상 밑에 따라다녀! 
-      */}
+      {/* 1. Header를 Routes 바깥 최상단에 배치하세요! 
+          그래야 모든 페이지에서 헤더가 고정되어 나타납니다. */}
+      <Header />
+
       <Routes>
         <Route path="/" element={<Main />} />
         <Route path="/join" element={<Join />} />
@@ -26,9 +27,8 @@ function App() {
         <Route path="/travel/:id" element={<TravelDetail/>}/>
       </Routes>
 
-      {/* 2. 여기에 Footer 추가! */}
-   
-
+      {/* 2. Footer도 Routes 바깥 하단에 두어 항상 보이게 합니다. */}
+      <Footer/>
     </BrowserRouter>
   );
 }
