@@ -130,41 +130,6 @@ function AdminMain() {
             </div>
           </div>
         )}
-
-        {/* 2. 고객 관리 탭 화면 */}
-        {activeTab === "members" && (
-          <div style={{ backgroundColor: "white", padding: "30px", borderRadius: "10px", boxShadow: "0 4px 6px rgba(0,0,0,0.1)" }}>
-            <h2 style={{ marginBottom: "20px" }}>고객 계정 관리</h2>
-            <hr />
-            <table style={{ width: "100%", borderCollapse: "collapse", marginTop: "20px" }}>
-              <thead>
-                <tr style={{ backgroundColor: "#f8f9fa", textAlign: "left", borderBottom: "2px solid #ddd" }}>
-                  <th style={{ padding: "12px" }}>회원 번호</th>
-                  <th style={{ padding: "12px" }}>이름</th>
-                  <th style={{ padding: "12px" }}>이메일</th>
-                  <th style={{ padding: "12px" }}>권한</th>
-                  <th style={{ padding: "12px" }}>가입일</th>
-                  <th style={{ padding: "12px" }}>관리</th>
-                </tr>
-              </thead>
-              <tbody>
-                {/* 데이터 로드 후 .map()으로 반복 렌더링될 영역 */}
-                <tr style={{ borderBottom: "1px solid #eee" }}>
-                  <td style={{ padding: "12px" }}>1</td>
-                  <td style={{ padding: "12px" }}>홍길동</td>
-                  <td style={{ padding: "12px" }}>hong@test.com</td>
-                  <td style={{ padding: "12px" }}><span style={{ color: "blue", fontWeight: "bold" }}>USER</span></td>
-                  <td style={{ padding: "12px" }}>2026-04-13</td>
-                  <td style={{ padding: "12px" }}>
-                    <button style={{ padding: "5px 10px", backgroundColor: "#ff4d4d", color: "white", border: "none", borderRadius: "4px", cursor: "pointer" }}>
-                      삭제
-                    </button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        )}
       </div>
     </div>
   );
