@@ -25,9 +25,12 @@ function Login() {
       }
 
       const data = await response.json();
-      localStorage.setItem("role", data.role); // 권한 저장
-      localStorage.setItem("token", data.token); // 로그인 유지
-      localStorage.setItem("userName", data.name || '회원');
+      // localStorage.setItem("role", data.role); // 권한 저장
+      // localStorage.setItem("token", data.token); // 로그인 유지
+      // localStorage.setItem("userName", data.name || '회원');
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("userName", data.name || '송근호');
+      alert("로그인 성공");
       console.log(data);
       alert("로그인 성공");
       // 메인 페이지로 이동 

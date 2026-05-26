@@ -48,7 +48,7 @@ function AdminMain() {
 
     // 3. Axios를 이용한 백엔드 API 통신
   // 👈 [체크] 주소가 백엔드 컨트롤러와 100% 일치하는지 확인!
-      axios.post("http://localhost:8080/api/admin/register", travelData, {
+      axios.post("http://localhost:8081/api/admin/register", travelData, {
         headers: {
             Authorization: `Bearer ${token}`
         }
