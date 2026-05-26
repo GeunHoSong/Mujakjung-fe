@@ -1,3 +1,4 @@
+// ⭕ src/App.tsx 는 이 코드가 들어가야 해!
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import Main from "./pages/travel/Main";
@@ -11,18 +12,14 @@ import Mypage from "./pages/member/MyPage";
 import Footer from "./components/Footer";
 import Header from "./components/Header";
 
+// ⭕ src/App.tsx 의 return 부분 수정하기
 function App() {
   return (
     <BrowserRouter>
       <Header />
 
-      {/* 헤더 높이만큼 아래로 밀기 */}
-      <div
-        style={{
-          paddingTop: "70px",
-          minHeight: "100vh",
-        }}
-      >
+      {/* 💡 감싸는 박스의 복잡한 스타일을 걷어내고, 순수하게 상단 헤더 높이(70px)만큼만 패딩을 줍니다. */}
+      <div style={{ paddingTop: "70px" }}>
         <Routes>
           <Route path="/" element={<Main />} />
           <Route path="/join" element={<Join />} />
@@ -38,5 +35,4 @@ function App() {
     </BrowserRouter>
   );
 }
-
 export default App;

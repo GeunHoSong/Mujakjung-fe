@@ -1,10 +1,4 @@
-import React from "react";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Pagination, Autoplay } from "swiper/modules";
-
-import "swiper/css";
-import "swiper/css/navigation";
-import "swiper/css/pagination";
+import React, { useState, useEffect } from "react";
 
 const slideStyle: React.CSSProperties = {
   width: "100%",
@@ -12,65 +6,144 @@ const slideStyle: React.CSSProperties = {
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
-  position: "relative", // 글씨를 이미지 위에 띄우기 위함
+  flexShrink: 0,
+  transition: "all 0.5s ease-in-out",
 };
 
 const textStyle: React.CSSProperties = {
   color: "white",
   fontSize: "2.5rem",
   fontWeight: "bold",
-  zIndex: 2, // 배경 이미지보다 위에 보이게 설정
+  userSelect: "none",
 };
 
 const MainBanner: React.FC = () => {
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  const slides = [
+    { text: "무작정, 바다로 떠나고 싶을 때", color: "#4CAF50" },
+    { text: "초록빛 숲에서의 완벽한 휴식", color: "#388E3C" },
+  ];
+
+  // 4초마다 자동으로 슬라이드가 넘어가도록 설정
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % slides.length);
+    }, 4000);
+    return () => clearInterval(timer);
+  }, [slides.length]);
+
+  const nextSlide = () => {
+    setCurrentSlide((prev) => (prev + 1) % slides.length);
+  };
+
+  const prevSlide = () => {
+    setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
+  };
+
   return (
     <div
       style={{
         width: "100%",
         height: "450px",
-        marginTop: "70px", // 💡 고정된 헤더(70px)에 가려지지 않도록 마진 추가!
+        position: "relative",
+        overflow: "hidden",
       }}
     >
-      <Swiper
-        modules={[Navigation, Pagination, Autoplay]}
-        navigation
-        pagination={{ clickable: true }}
-        autoplay={{
-          delay: 4000,
-          disableOnInteraction: false,
+      {/* 슬라이더 컨테이너 */}
+      <div
+        style={{
+          display: "flex",
+          width: "100%",
+          height: "100%",
+          transform: `translateX(-${currentSlide * 100}%)`,
+          transition: "transform 0.5s ease-in-out",
         }}
-        style={{ width: "100%", height: "100%" }}
       >
-        {/* 첫 번째 슬라이드 */}
-        <SwiperSlide>
+        {slides.map((slide, index) => (
           <div
+            key={index}
             style={{
               ...slideStyle,
-              backgroundColor: "#4CAF50",
+              backgroundColor: slide.color,
             }}
           >
-            {/* 💡 나중에 백엔드에서 이미지 URL 받아오면 여기에 넣어주면 돼! */}
-            {/* <img src="이미지주소" alt="바다" style={{ position: "absolute", width: "100%", height: "100%", objectFit: "cover" }} /> */}
-            <h1 style={textStyle}>
-              무작정, 바다로 떠나고 싶을 때
-            </h1>
+            <h1 style={textStyle}>{slide.text}</h1>
           </div>
-        </SwiperSlide>
+        ))}
+      </div>
 
-        {/* 두 번째 슬라이드 */}
-        <SwiperSlide>
+      {/* 왼쪽 화살표 버튼 */}
+      <button
+        onClick={prevSlide}
+        style={{
+          position: "absolute",
+          top: "50%",
+          left: "20px",
+          transform: "translateY(-50%)",
+          background: "rgba(0, 0, 0, 0.3)",
+          color: "white",
+          border: "none",
+          borderRadius: "50%",
+          width: "50px",
+          height: "50px",
+          fontSize: "1.5rem",
+          cursor: "pointer",
+          zIndex: 10,
+        }}
+      >
+        &#10094;
+      </button>
+
+      {/* 오른쪽 화살표 버튼 */}
+      <button
+        onClick={nextSlide}
+        style={{
+          position: "absolute",
+          top: "50%",
+          right: "20px",
+          transform: "translateY(-50%)",
+          background: "rgba(0, 0, 0, 0.3)",
+          color: "white",
+          border: "none",
+          borderRadius: "50%",
+          width: "50px",
+          height: "50px",
+          fontSize: "1.5rem",
+          cursor: "pointer",
+          zIndex: 10,
+        }}
+      >
+        &#10095;
+      </button>
+
+      {/* 하단 인디케이터 (점) */}
+      <div
+        style={{
+          position: "absolute",
+          bottom: "15px",
+          left: "50%",
+          transform: "translateX(-50%)",
+          display: "flex",
+          gap: "10px",
+          zIndex: 10,
+        }}
+      >
+        {slides.map((_, index) => (
           <div
+            key={index}
+            onClick={() => setCurrentSlide(index)}
             style={{
-              ...slideStyle,
-              backgroundColor: "#388E3C",
+              width: "12px",
+              height: "12px",
+              borderRadius: "50%",
+              backgroundColor: currentSlide === index ? "white" : "rgba(255, 255, 255, 0.5)",
+              cursor: "pointer",
+              transition: "background-color 0.3s",
             }}
-          >
-            <h1 style={textStyle}>
-              초록빛 숲에서의 완벽한 휴식
-            </h1>
-          </div>
-        </SwiperSlide>
-      </Swiper>
+          />
+        ))}
+      </div>
     </div>
   );
 };
