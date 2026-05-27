@@ -46,7 +46,7 @@ yarn install
 
 코드 스니펫
 VITE_KAKAO_REST_API_KEY=c20fa1e751278dc7d481f42f175401b2
-VITE_KAKAO_REDIRECT_URI=http://localhost:8080/auth/kakao/callback
+VITE_KAKAO_REDIRECT_URI=http://localhost:8081/auth/kakao/callback
 3️⃣ 개발 서버 실행
 Bash
 npm run dev

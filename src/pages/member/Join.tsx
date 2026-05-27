@@ -68,7 +68,7 @@ function Join() {
 
         try {
             // 서버에 POST 요청 (FormData 전송 시 헤더의 Content-Type은 자동으로 설정됨)
-            const response = await fetch("http://localhost:8080/api/member/join", {
+            const response = await fetch("http://localhost:8081/api/member/join", {
                 method: "POST",
                 body: formData,
             });

@@ -30,7 +30,7 @@ function Search() {
     // 로컬 스토리지에서 신분증(토큰) 꺼내기
     const token = localStorage.getItem("token");
 
-    fetch("http://localhost:8080/api/travels", {
+    fetch("http://localhost:8081/api/travels", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

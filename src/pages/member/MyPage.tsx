@@ -14,7 +14,7 @@ function Mypage() {
 
     // --- 2. 초기 데이터 가져오기 ---
     useEffect(() => {
-        axios.get('http://localhost:8080/api/member/mypage')
+        axios.get('http://localhost:8081/api/member/mypage')
             .then(res => setUserProfile(res.data))
             .catch(err => console.error("데이터 로딩 실패!", err));
     }, []);
@@ -29,7 +29,7 @@ function Mypage() {
 
     // 정보 수정 저장
     const handleSave = () => {
-        axios.post('http://localhost:8080/api/member/mypage/update', userProflie)
+        axios.post('http://localhost:8081/api/member/mypage/update', userProflie)
             .then(() => alert("정보 수정 완료!"))
             .catch(err => alert("저장 실패"));
     }
@@ -43,7 +43,7 @@ function Mypage() {
         formData.append('profileImage', file); 
 
         try {
-            const res = await axios.post('http://localhost:8080/api/member/mypage/upload', formData, {
+            const res = await axios.post('http://localhost:8081/api/member/mypage/upload', formData, {
                 headers: { 'Content-Type': 'multipart/form-data' }
             });
             // 서버가 준 새로운 이미지 경로로 업데이트
@@ -64,7 +64,7 @@ function Mypage() {
                 <img 
                     // 로직: 이미지가 있으면 서버 주소 + 파일명, 없으면 기본 이미지
                     src={userProflie.profileImg 
-                        ? `http://localhost:8080/api/member/display?fileName=${userProflie.profileImg}`
+                        ? `http://localhost:8081/api/member/display?fileName=${userProflie.profileImg}`
                         : "https://via.placeholder.com/120"} 
                     alt="profile" 
                     onClick={() => fileInputRef.current?.click()} 
