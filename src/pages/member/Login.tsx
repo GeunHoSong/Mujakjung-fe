@@ -5,72 +5,111 @@ import kakaoBtn from "../../assets/kakaologin.jpg";
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
   const navigate = useNavigate();
 
-  // 1. 카카오 로그인 설정
-  const REST_API_KEY = "c20fa1e751278dc7d481f42f175401b2";
-  const REDIRECT_URI = "http://localhost:8080/auth/kakao/callback";
-  const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
-
-  const handleKakaoLogin = () => {
-    window.location.href = KAKAO_AUTH_URL;
-  };
-
-  // 2. 카카오 로그인 후 토큰 처리 (페이지 진입 시 URL 확인)
+  // 카카오 로그인 성공 후 토큰 처리
+// 카카오 로그인 성공 후 토큰 처리
   useEffect(() => {
+    // 1. URLSearchParams를 함수 내부에서 즉시 생성
     const params = new URLSearchParams(window.location.search);
     const token = params.get("token");
 
     if (token) {
+      console.log("토큰 감지됨:", token);
+      
+      // 2. 토큰을 localStorage에 즉시 저장
       localStorage.setItem("token", token);
-      alert("카카오 로그인 성공! ✨");
-      navigate("/");
-      window.location.reload();
-    }
-  }, [navigate]);
+      
+      // 3. 서버에서 정보가 필요하다면 여기서 호출 (선택 사항)
+      // fetchUserInfo(token); 
 
-  // 3. 일반 로그인 로직
+      // 4. 아주 짧은 지연 후 메인으로 이동 (URL 정리)
+      setTimeout(() => {
+        window.location.href = "/";
+      }, 100);
+    }
+  }, []); // [] 빈 배열로 설정해야 컴포넌트 마운트 시 딱 한 번만 실행됨
+
+  // 일반 로그인
   const login = async () => {
     try {
-      const response = await fetch("http://localhost:8080/api/member/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
+      const response = await fetch(
+        "http://localhost:8080/api/member/login",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email,
+            password,
+          }),
+        }
+      );
 
       if (!response.ok) {
-        alert("로그인 실패");
-        return;
+        throw new Error("로그인 실패");
       }
 
       const data = await response.json();
+
+      console.log("로그인 응답:", data);
+
+      // 저장
       localStorage.setItem("token", data.token);
-      alert("로그인 성공");
+
+      if (data.name) {
+        localStorage.setItem("userName", data.name);
+      }
+
+      if (data.role) {
+        localStorage.setItem("role", data.role);
+      }
+
+      alert("로그인 성공!");
+
       navigate("/");
-      window.location.reload();
     } catch (error) {
       console.error(error);
-      alert("서버 연결 실패");
+      alert("로그인 중 오류가 발생했습니다.");
     }
+  };
+
+  // 카카오 로그인 이동
+  const kakaoLogin = () => {
+    window.location.href = "http://localhost:8080/auth/kakao";
   };
 
   return (
     <div>
       <h2>로그인</h2>
-      <input value={email} onChange={(e) => setEmail(e.target.value)} placeholder="이메일" />
-      <br /><br />
-      <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="비밀번호" />
-      <br /><br />
+
+      <input
+        type="email"
+        placeholder="이메일"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+      />
+
+      <input
+        type="password"
+        placeholder="비밀번호"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+      />
+
       <button onClick={login}>로그인</button>
 
-      <div>
-        <br />
-        <button type="button" onClick={handleKakaoLogin}>
-          <img src={kakaoBtn} alt="카카오 로그인" style={{ width: "200px" }} />
-        </button>
-        <br /><br />
-        <button onClick={() => navigate("/join")}>회원 가입</button>
-      </div>
+      <hr />
+
+      <button type="button" onClick={kakaoLogin}>
+        <img
+          src={kakaoBtn}
+          alt="카카오 로그인"
+          style={{ width: "200px", cursor: "pointer" }}
+        />
+      </button>
     </div>
   );
 }
