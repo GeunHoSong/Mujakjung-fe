@@ -64,6 +64,7 @@ function AdminMainMember(){
           <tbody>
             {members.map((member)=> (
               <tr key={member.id}>
+                <td>{member.id}</td>
                 <td>{member.name}</td>
                 <td>{member.email}</td>
                 <td>{member.role}</td>
