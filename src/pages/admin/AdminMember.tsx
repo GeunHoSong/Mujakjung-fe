@@ -29,6 +29,7 @@ function AdminMainMember(){
     {id: 1, name:"홍길동", email: "hong@test.com", role:"USER", regDate: "2026-04-26"},
     {id: 2, name:"하수정", email: "ha@test.com", role:"USER", regDate: "2026-04-26"},
    ]);
+   setLoading(false);
     }, []);
     //이벤트  핸들러 회원 삭제 
     const handlerDelete = async(id: number) =>{
