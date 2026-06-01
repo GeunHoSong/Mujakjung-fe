@@ -18,7 +18,7 @@ function AdminMainMember(){
     // 백엔드 api 연동 영역 주설 처리 예측 
     useEffect(()=>{
         /* const token = localStorage.getItem("token");
-      axios.get("http://localhost:8081/api/admin/members", {
+      axios.get("http://localhost:8080/api/admin/members", {
         headers: { Authorization: `Bearer ${token}` }
       })
       .then(res => setMembers(res.data))
@@ -33,10 +33,10 @@ function AdminMainMember(){
     }, []);
     //이벤트  핸들러 회원 삭제 
     const handlerDelete = async(id: number) =>{
-      if(window.confirm("정말 삭제 하시 겠습니까")) return;
+      if(!window.confirm("정말 삭제 하시 겠습니까")) return;
       try{
         const token = localStorage.getItem("token");
-        await axios.delete(`http://localhost:8080/api/admin/member/${id}`, {
+        await axios.delete(`http://localhost:8080/api/members/${id}`, {
           headers: {Authorization: `Bearer ${token}`}
         });
         // 삭제후  목록 새로 고침 

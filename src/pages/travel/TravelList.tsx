@@ -18,7 +18,7 @@ function TravelList() {
   // 2. 컴포넌트가 마운트될 때(처음 열릴 때) 백엔드 API 호출
   useEffect(() => {
     axios
-      .get("http://localhost:8081/api/admin/travel/list")
+      .get("http://localhost:8080/api/admin/travel/list")
       .then((res) => {
         setList(res.data); // 성공하면 리스트 상태 업데이트
       })

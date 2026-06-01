@@ -8,6 +8,7 @@ import Search from "./pages/travel/Search";
 import TravelDetail from "./pages/travel/TravelDetail";
 import AdminMain from "./pages/admin/AdminMain";
 import Mypage from "./pages/member/MyPage";
+import AdminMainMember from "./pages/admin/AdminMember";
 
 import Footer from "./components/Footer";
 import Header from "./components/Header";
@@ -28,6 +29,7 @@ function App() {
           <Route path="/admin" element={<AdminMain />} />
           <Route path="/mypage" element={<Mypage />} />
           <Route path="/travel/:id" element={<TravelDetail />} />
+          <Route path="/admin/members" element={<AdminMainMember/>} />
         </Routes>
 
         <Footer />

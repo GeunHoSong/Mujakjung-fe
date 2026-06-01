@@ -3,15 +3,17 @@ import TravelCard from "../../components/TravelCard";
 import { useState, useEffect, useMemo } from "react";
 
 /**
- * 1. 백엔드 데이터 타입 정의
+ * 1. 백엔드 실제 데이터 필드명에 맞춰 수정
  */
 interface TravelData {
   id: number;
-  name: string;   // 백엔드 필드명: name
-  image: string;
+  title: string;      // 백엔드: title
+  category: string;   // 백엔드: category (type 대신 사용)
+  image_path: string; // 백엔드: image_path (image 대신 사용)
+  location: string;   // 백엔드: location
   price: string;
-  type: string;
 }
+
 
 function Search() {
   const [params] = useSearchParams();
@@ -30,7 +32,7 @@ function Search() {
     // 로컬 스토리지에서 신분증(토큰) 꺼내기
     const token = localStorage.getItem("token");
 
-    fetch("http://localhost:8081/api/travels", {
+    fetch("http://localhost:8080/api/travels", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -49,6 +51,7 @@ function Search() {
         return response.json();
       })
       .then((data) => {
+        console.log("백엔드 데이터 구조 확인 ", data)
         if (Array.isArray(data)) {
           setPlaces(data);
           setErrorMsg(""); 
@@ -69,9 +72,9 @@ function Search() {
 
     return places.filter((place) => {
       const matchKeyword = keyword 
-        ? (place.name || "").toLowerCase().includes(keyword.toLowerCase()) 
+        ? (place.title || "").toLowerCase().includes(keyword.toLowerCase()) 
         : true;
-      const matchType = type ? place.type === type : true;
+      const matchType = type ? place.category === type : true;
       return matchKeyword && matchType;
     });
   }, [places, keyword, type]);
@@ -96,10 +99,10 @@ function Search() {
               key={place.id}
               travel={{
                 id: place.id,
-                title: place.name,
-                image: place.image || "/test.jpg",
-                price: place.price || "가격 미정",
-                location: place.name,
+                title: place.title,
+                image: place.image_path || "/test.jpg",
+                location: place.location,
+                price: "가격 미정",
               }}
             />
           ))

@@ -18,7 +18,9 @@ function AdminMain() {
 
   // 2. 이벤트 핸들러: 여행지 등록
   const handleRegister = () => {
+
     const token = localStorage.getItem("token");
+    console.log("토큰" +  token);
     const travelData = {
       category, title, location, content, price,
       imageName: imageFile ? imageFile.name : "없음",
@@ -57,6 +59,11 @@ function AdminMain() {
           style={{ padding: "15px", cursor: "pointer", borderRadius: "5px", backgroundColor: activeTab === "members" ? "#3e8e41" : "transparent" }}
         >
           고객 관리 등록
+        </div>
+        <div style={{marginBottom: "20px"}}>
+          <button onClick={()=> setActiveTab('list')}>상품 리스트</button>
+          <button onClick={()=> setActiveTab('update')}>상품 수정</button>
+
         </div>
       </div>
 
@@ -98,9 +105,27 @@ function AdminMain() {
             <AdminMainMember />
           </div>
         )}
-      </div>
+        {/* 탭 3: 상품 리스트 화면 */}
+        {activeTab === "list" && (
+          <div>
+            <h2>상품 리스트</h2>
+            {/* 나중에 <AdminList /> 들어올 자리 */}
+            <p>여기에 상품 목록을 보여줄 예정입니다.</p>
+          </div>
+        )} {/* <--- 여기서 리스트 탭이 확실히 끝나야 해! */}
+
+        {/* 탭 4: 상품 수정 화면 */}
+        {activeTab === "update" && (
+          <div>
+            <h2>상품 수정</h2>
+            {/* 나중에 <AdminUpdate /> 들어올 자리 */}
+            <p>여기에 수정할 상품 목록을 보여줄 예정입니다.</p>
+          </div>
+        )}
+      </div> {/* <--- 이 닫는 태그가 콘텐츠 영역 전체를 감싸는 <div>의 끝이야 */}
     </div>
   );
 }
+
 
 export default AdminMain;
