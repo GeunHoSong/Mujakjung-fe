@@ -2,6 +2,8 @@ import axios from "axios";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AdminMainMember from "./AdminMember"; // 경로 확인 필수!
+import AdminList from "./AdminList";
+import AdminUpdate from "./AdminUpdate";
 
 function AdminMain() {
   const navigate = useNavigate();
@@ -110,6 +112,7 @@ function AdminMain() {
           <div>
             <h2>상품 리스트</h2>
             {/* 나중에 <AdminList /> 들어올 자리 */}
+            <AdminList/>
             <p>여기에 상품 목록을 보여줄 예정입니다.</p>
           </div>
         )} {/* <--- 여기서 리스트 탭이 확실히 끝나야 해! */}
@@ -119,7 +122,8 @@ function AdminMain() {
           <div>
             <h2>상품 수정</h2>
             {/* 나중에 <AdminUpdate /> 들어올 자리 */}
-            <p>여기에 수정할 상품 목록을 보여줄 예정입니다.</p>
+            <AdminUpdate/>
+            <p>수정 화면</p>
           </div>
         )}
       </div> {/* <--- 이 닫는 태그가 콘텐츠 영역 전체를 감싸는 <div>의 끝이야 */}
