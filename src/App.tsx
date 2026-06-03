@@ -14,6 +14,7 @@ import Footer from "./components/Footer";
 import Header from "./components/Header";
 import AdminList from "./pages/admin/AdminList";
 import AdminUpdate from "./pages/admin/AdminUpdate";
+import BoardList from "./pages/board/BoardList";
 
 // ⭕ src/App.tsx 의 return 부분 수정하기
 function App() {
@@ -34,6 +35,7 @@ function App() {
           <Route path="/admin/members" element={<AdminMainMember/>} />
           <Route path="/admin/list" element={<AdminList/>} />
           <Route path="/admin/update/:id" element={<AdminUpdate />} />
+          <Route path="/board/list" element={<BoardList />} />
         </Routes>
 
         <Footer />

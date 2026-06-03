@@ -24,62 +24,25 @@ function Header() {
   };
 
   return (
-    <header
-      style={{
-        position: "fixed",
-        top: 0,
-        left: 0,
-
-        width: "100%",
-        height: "70px",
-
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-
-        padding: "0 20px",
-
-        borderBottom: "1px solid #ccc",
-
-        backgroundColor: "white",
-
-        zIndex: 10000,
-
-        boxSizing: "border-box",
-
-        overflow: "hidden",
-      }}
-    >
+    <header style={{ position: "fixed",top: 0,left: 0,width: "100%",height: "70px",display: "flex",justifyContent: "space-between",alignItems: "center",padding: "0 20px",
+      borderBottom: "1px solid #ccc",  backgroundColor: "white",zIndex: 10000,boxSizing: "border-box",overflow: "hidden",}}>
       {/* 왼쪽 영역 */}
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: "20px",
-        }}
-      >
+      <div style={{ display: "flex",alignItems: "center",gap: "20px",}}>
         {/* 로고 */}
         <Link to="/">
-          <img
-            src={logo}
-            alt="로고"
-            width="60"
-            style={{
-              borderRadius: "50%",
-            }}
-          />
+        <img src={logo} alt="로고" width="60" style={{borderRadius: "50%",}}/>
         </Link>
 
         {/* 제목 */}
-        <h1
-          style={{
-            margin: 0,
-            fontSize: "1.5rem",
-            whiteSpace: "nowrap",
-          }}
-        >
+        <h1 style={{margin: 0,fontSize: "1.5rem",whiteSpace: "nowrap",}}>
           AI 여행 사이트
         </h1>
+        {/* 👈 여기서부터 추가한 메뉴 */}
+        <div style={{display:"flex", gap:"15px", marginLeft: "10px"}}>
+          <Link to="/notice/list" style={{textDecoration: "none", color: "#333", fontWeight: "bold"}}>공지 사항</Link>
+          <Link to="/board/list" style={{textDecoration: "none", color: "#333", fontWeight: "bold"}}>게시판</Link>
+        </div>
+
 
         {/* 검색 */}
         <div
