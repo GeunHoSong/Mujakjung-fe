@@ -1,31 +1,46 @@
 import axios from "axios";
-import React, { useState} from "react";
+import React, { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 
+function AdminUpdate() {
+  const { id } = useParams(); // URL에서 ID를 가져옴
+  const navigate = useNavigate();
+  const [formData, setFormData] = useState({
+    title: "",
+    content: "",
+    location: "",
+    price: 0
+  });
 
-function AdminUpdate ({travel, onComplete}: any){
-    const [formData , setFomData] = useState(travel);
-
-    const handleUpdate=()=> {
-        // 백엔드 @PostMapping("/{id}") 와 연결 
-        axios.get("http://8080/api/admin/${travel/id}", formData).then(()=> {
-            alert("수정 완료");
-            onComplete();// 수정 후 다시 리스트로 돌아가개 됨 
-        })
-        .catch((err)=> alert("수정 실패" +err));
+  // 데이터 불러오기
+  useEffect(() => {
+    if (id) {
+      axios.get(`http://localhost:8080/api/travel/${id}`)
+        .then(res => setFormData(res.data))
+        .catch(err => console.error("데이터 로드 실패:", err));
     }
+  }, [id]);
 
-    return (
-        <div style={{display:"flex", flexDirection:"column", gap:"10px", width: "300px", }}>
-            <h3>상품 수정: {travel.title}</h3>
-            <input value={formData.title} onChange={(e)=> setFomData({...formData, title: e.target.value})} placeholder="제목" />
-            <textarea value={formData.context} onChange={(e)=> setFomData({...formData , context: e.target.value})} placeholder="내용"></textarea>
-            <input value={formData.location} onChange={(e)=> setFomData({...formData, location: e.target.value})} placeholder="위치" />
-            <input type="number" value={formData.price} onChange={(e)=> setFomData({...formData, print: Number(e.target.value)})} placeholder="가격" />
-            <button onClick={handleUpdate}>수정 하기 </button>
+  // 수정 요청 보내기
+  const handleUpdate = () => {
+    axios.post(`http://localhost:8080/api/travel/${id}`, formData)
+      .then(() => {
+        alert("수정 완료!");
+        navigate("/admin/list"); // 수정 후 리스트로 이동
+      })
+      .catch(err => alert("수정 실패: " + err.message));
+  };
 
-
-        </div>
-    )
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: "10px", width: "300px" }}>
+      <h3>상품 수정</h3>
+      <input value={formData.title} onChange={(e) => setFormData({ ...formData, title: e.target.value })} placeholder="제목" />
+      <textarea value={formData.content} onChange={(e) => setFormData({ ...formData, content: e.target.value })} placeholder="내용"></textarea>
+      <input value={formData.location} onChange={(e) => setFormData({ ...formData, location: e.target.value })} placeholder="위치" />
+      <input type="number" value={formData.price} onChange={(e) => setFormData({ ...formData, price: Number(e.target.value) })} placeholder="가격" />
+      <button onClick={handleUpdate}>수정 하기</button>
+    </div>
+  );
 }
 
 export default AdminUpdate;
