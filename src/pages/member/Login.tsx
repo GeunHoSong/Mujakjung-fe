@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import kakaoBtn from "../../assets/kakaologin.jpg";
+import NaverBtn from "../../assets/Naverlogin.png";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -80,6 +81,10 @@ function Login() {
   const kakaoLogin = () => {
     window.location.href = "http://localhost:8080/auth/kakao";
   };
+  // 네이버 로그인 
+  const naverLogin = ()=> {
+    window.location.href="http://localhost:8080/auth/naver";
+  }
 
   return (
     <div>
@@ -102,14 +107,17 @@ function Login() {
       <button onClick={login}>로그인</button>
 
       <hr />
-
+      {/*카카오 로그인 */}
       <button type="button" onClick={kakaoLogin}>
-        <img
-          src={kakaoBtn}
-          alt="카카오 로그인"
-          style={{ width: "200px", cursor: "pointer" }}
-        />
+        <img src={kakaoBtn}alt="카카오 로그인"style={{ width: "200px", cursor: "pointer" }}/>
       </button>
+       {/*카카오 로그인 */}
+       <div style={{marginTop: "'10px'"}}>
+        <button type="button" onClick={naverLogin} style={{border:'none', background: "none"}}>
+          <img src={NaverBtn} alt="네이버 로그인" style={{width: "200px", cursor: "pointer"}} />
+        </button>
+
+       </div>
     </div>
   );
 }
