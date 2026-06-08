@@ -15,6 +15,8 @@ import Header from "./components/Header";
 import AdminList from "./pages/admin/AdminList";
 import AdminUpdate from "./pages/admin/AdminUpdate";
 import BoardList from "./pages/board/BoardList";
+import NaverCallback from "./pages/member/NaverCallback";
+import KakaoCallback from "./pages/member/KakaoCallback";
 
 // ⭕ src/App.tsx 의 return 부분 수정하기
 function App() {
@@ -36,6 +38,9 @@ function App() {
           <Route path="/admin/list" element={<AdminList/>} />
           <Route path="/admin/update/:id" element={<AdminUpdate />} />
           <Route path="/board/list" element={<BoardList />} />
+          <Route path="/login/oauth2/code/naver" element={<NaverCallback/>}/>
+        <Route path="/login/oauth2/code/kakao" element={<KakaoCallback />} />
+
         </Routes>
 
         <Footer />
