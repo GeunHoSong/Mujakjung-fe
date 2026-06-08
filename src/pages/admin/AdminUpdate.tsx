@@ -23,14 +23,30 @@ function AdminUpdate() {
 
   // 수정 요청 보내기
   const handleUpdate = () => {
-    axios.post(`http://localhost:8080/api/travel/${id}`, formData)
+    // 1. 로컬스토리지에서 토큰 가져오기
+    const token = localStorage.getItem("token"); 
+
+    // 2. ID가 없는지 먼저 체크
+    if (!id) {
+        alert("상품 ID가 없습니다!");
+        return;
+    }
+
+    // 3. 헤더에 토큰 실어서 요청
+    axios.post(`http://localhost:8080/api/admin/${id}`, formData, {
+      headers: {
+        Authorization: `Bearer ${token}` // 👈 핵심! 이 헤더가 있어야 권한 통과함
+      }
+    })
       .then(() => {
         alert("수정 완료!");
-        navigate("/admin/list"); // 수정 후 리스트로 이동
+        navigate("/admin/list");
       })
-      .catch(err => alert("수정 실패: " + err.message));
+      .catch(err => {
+        console.error("상세 에러:", err);
+        alert("수정 실패: " + err.message);
+      });
   };
-
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "10px", width: "300px" }}>
       <h3>상품 수정</h3>

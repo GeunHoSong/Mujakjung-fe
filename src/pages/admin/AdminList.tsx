@@ -1,21 +1,24 @@
 import axios from "axios";
 import React, {useEffect, useState} from "react";
+import { useNavigate } from "react-router-dom";
 
 
 interface TravelData {
     id: number;
     title: string;
+    context: string;
     location: string;
     price: string;
 }
 
 function AdminList(){
     const  [places, setPlaces] = useState<TravelData[]>([]);
+    const navigate= useNavigate();
 
 
     // 서버에 데이터 불러 오기
     const fetchPlaces =()=> {
-        axios.get("http://locahost:8080/api/travels").then((res)=> setPlaces(res.data)).catch((err)=> console.error("데이터 로딩 실패", err));
+        axios.get("http://localhost:8080/api/travels").then((res)=> setPlaces(res.data)).catch((err)=> console.error("데이터 로딩 실패", err));
     }
 
 
@@ -40,6 +43,7 @@ function AdminList(){
                 <tr style={{borderBottom: "12px solid #ddd"}}>
                     <th>번호</th>
                     <th>제목</th>
+                    <th>내용</th>
                     <th>위치</th>
                     <th>가격</th>
                     <th>관리</th>
@@ -50,15 +54,16 @@ function AdminList(){
                     <tr key={place.id} style={{borderBottom: "1px solid #ddd"}}>
                         <td>{place.id}</td>
                         <td>{place.title}</td>
+                        <td>{place.context}</td>
                         <td>{place.location}</td>
                         <td>{place.price}</td>
                         <td>
+                            <button onClick={() => navigate(`/admin/update/${place.id}`)}>수정</button>
                             <button onClick={()=> handleDelete(place.id)}>삭제</button>
-                        </td>
+                        </td>z
                     </tr>
                 ))}
             </tbody>
-
         </div>
     )
 
