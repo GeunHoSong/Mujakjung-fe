@@ -24,10 +24,7 @@ function AdminMainMember(){
       .then(res => setMembers(res.data))
       .catch(err => console.error(err));
    // 회면 확인 시 임시 데이터 (내일 api 연결 하면 이부분 지울 꺼야 )
-   setMembers([
-    {id: 1, name:"홍길동", email: "hong@test.com", role:"USER", regDate: "2026-04-26"},
-    {id: 2, name:"하수정", email: "ha@test.com", role:"USER", regDate: "2026-04-26"},
-   ]);
+
    setLoading(false);
     }, []);
     //이벤트  핸들러 회원 삭제 
