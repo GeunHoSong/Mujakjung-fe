@@ -18,6 +18,7 @@ import BoardList from "./pages/board/BoardList";
 import NaverCallback from "./pages/member/NaverCallback";
 import KakaoCallback from "./pages/member/KakaoCallback";
 import BoardSave from "./pages/board/BoardSave";
+import Chat from "./pages/chat/Chat";
 
 // ⭕ src/App.tsx 의 return 부분 수정하기
 function App() {
@@ -41,7 +42,8 @@ function App() {
           <Route path="/board/list" element={<BoardList />} />
           <Route path="/login/oauth2/code/naver" element={<NaverCallback/>}/>
           <Route path="/login/oauth2/code/kakao" element={<KakaoCallback />} />
-          <Route path="board/save" element={<BoardSave/>}/>
+          <Route path="/board/save" element={<BoardSave/>}/>
+          <Route path="/chat" element={<Chat/>}/>
 
         </Routes>
 

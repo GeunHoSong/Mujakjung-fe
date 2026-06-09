@@ -38,7 +38,8 @@ function Header() {
           AI 여행 사이트
         </h1>
         {/* 👈 여기서부터 추가한 메뉴 */}
-        <div style={{display:"flex", gap:"15px", marginLeft: "10px"}}>
+        <div style={{display:"flex", gap:"10px", marginLeft: "10px", whiteSpace: "nowrap"}}>
+          <Link to="/chat" style={{textDecoration: "none", color: "#333", fontWeight: "bold"}}>AI 여행 상담 </Link>
           <Link to="/notice/list" style={{textDecoration: "none", color: "#333", fontWeight: "bold"}}>공지 사항</Link>
           <Link to="/board/list" style={{textDecoration: "none", color: "#333", fontWeight: "bold"}}>게시판</Link>
         </div>
