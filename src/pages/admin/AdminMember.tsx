@@ -17,13 +17,12 @@ function AdminMainMember(){
     const [loading , setLoading] = useState<boolean>(true);
     // 백엔드 api 연동 영역 주설 처리 예측 
     useEffect(()=>{
-        /* const token = localStorage.getItem("token");
+        const token = localStorage.getItem("token");
       axios.get("http://localhost:8080/api/admin/members", {
         headers: { Authorization: `Bearer ${token}` }
       })
       .then(res => setMembers(res.data))
       .catch(err => console.error(err));
-    */
    // 회면 확인 시 임시 데이터 (내일 api 연결 하면 이부분 지울 꺼야 )
    setMembers([
     {id: 1, name:"홍길동", email: "hong@test.com", role:"USER", regDate: "2026-04-26"},

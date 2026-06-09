@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import AdminMainMember from "./AdminMember"; // 경로 확인 필수!
 import AdminList from "./AdminList";
 import AdminUpdate from "./AdminUpdate";
+import NoticeSave from "../notice/NoticeSave";
 
 function AdminMain() {
   const navigate = useNavigate();
@@ -61,6 +62,10 @@ function AdminMain() {
           style={{ padding: "15px", cursor: "pointer", borderRadius: "5px", backgroundColor: activeTab === "members" ? "#3e8e41" : "transparent" }}
         >
           고객 관리 등록
+        </div>
+        <div onClick={() => setActiveTab("notice")} style={{ padding: "15px", cursor: "pointer", borderRadius: "5px", backgroundColor: activeTab === "notice" ? "#3e8e41" : "transparent" }}
+        >
+          공지 사항 
         </div>
         <div style={{marginBottom: "20px"}}>
           <button onClick={()=> setActiveTab('list')}>상품 리스트</button>
@@ -126,6 +131,12 @@ function AdminMain() {
             <p>수정 화면</p>
           </div>
         )}
+         {/* 탭 4: 상품 수정 화면 */}
+         {activeTab === "notice" && (
+          <div>
+            <NoticeSave/>
+          </div>
+         )}
       </div> {/* <--- 이 닫는 태그가 콘텐츠 영역 전체를 감싸는 <div>의 끝이야 */}
     </div>
   );
