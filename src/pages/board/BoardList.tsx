@@ -24,6 +24,22 @@ function BoardList() {
         }
     };
 
+    const deleteBoard = async (id: number) => {
+        if (!window.confirm("정말 삭제하시겠습니까?")) {
+        return;
+        }
+
+        try {
+            await axios.delete(`http://localhost:8080/api/board/delete/${id}`);
+            alert("삭제되었습니다.");
+
+            // 삭제 후 목록 다시 불러오기
+            fetchBoardList();
+        } catch (err) {
+            console.log("삭제 실패", err);
+        }
+};
+
     return (
         <div style={{ marginTop: "100px", padding: "20px", maxWidth: "800px", margin: "100px auto" }}>
             <h2>자유 게시판</h2>
@@ -41,6 +57,7 @@ function BoardList() {
             <table style={{ width: "100%", borderCollapse: "collapse", textAlign: "center" }}>
                 <thead>
                     <tr style={{ borderBottom: "2px solid #333" }}>
+                        <th style={{padding:"10px"}}>관리</th>
                         <th style={{ padding: "10px" }}>번호</th>
                         <th style={{ padding: "10px" }}>제목</th>
                         <th style={{ padding: "10px" }}>작성자</th>
@@ -60,6 +77,12 @@ function BoardList() {
                                     {board.title}
                                 </td>
                                 <td style={{ padding: "10px" }}>{board.author}</td>
+                                <td style={{padding: "10px"}}>
+                                    <button onClick={()=>navigate(`/board/update/${board.id}`)}>수정</button>
+                                </td>
+                                <td style={{padding:"10px"}}>
+                                     <button onClick={()=> deleteBoard(board.id )}>삭제</button>
+                                </td>
                             </tr>
                         ))
                     ) : (

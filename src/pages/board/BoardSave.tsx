@@ -26,7 +26,7 @@ function BoardSave() {
 
         try {
             // 쉼표(,)가 빠져있던 것 추가
-            await axios.post('/api/board', formData, {
+            await axios.post('/api/board/save', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 }
