@@ -19,6 +19,10 @@ import NaverCallback from "./pages/member/NaverCallback";
 import KakaoCallback from "./pages/member/KakaoCallback";
 import BoardSave from "./pages/board/BoardSave";
 import Chat from "./pages/chat/Chat";
+import NoticeSave from "./pages/notice/NoticeSave";
+import BoardDatail from "./pages/board/BoardDetail"; // 여기서 불러오는 이름은 BoardDatail
+import BoardUpdate from "./pages/board/BoardUpdate";
+
 
 // ⭕ src/App.tsx 의 return 부분 수정하기
 function App() {
@@ -44,7 +48,9 @@ function App() {
           <Route path="/login/oauth2/code/kakao" element={<KakaoCallback />} />
           <Route path="/board/save" element={<BoardSave/>}/>
           <Route path="/chat" element={<Chat/>}/>
-
+          <Route path="/notice/save" element={<NoticeSave/>}/>
+          <Route path="/board/:id" element={<BoardDatail/>}/>
+          <Route path="/board/update/:id" element={<BoardUpdate/>}/>
         </Routes>
 
         <Footer />
