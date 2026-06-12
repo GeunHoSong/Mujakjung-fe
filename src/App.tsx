@@ -20,11 +20,12 @@ import KakaoCallback from "./pages/member/KakaoCallback";
 import BoardSave from "./pages/board/BoardSave";
 import Chat from "./pages/chat/Chat";
 import NoticeSave from "./pages/notice/NoticeSave";
-import BoardDatail from "./pages/board/BoardDetail"; // 여기서 불러오는 이름은 BoardDatail
+import BoardDetail from "./pages/board/BoardDetail"; 
 import BoardUpdate from "./pages/board/BoardUpdate";
+import NoticeList from "./pages/notice/NoticeList";
+import NoticeUpdate from "./pages/notice/NoticeUpdate";
+import NoticeDetail from "./pages/notice/NoticeDetail";
 
-
-// ⭕ src/App.tsx 의 return 부분 수정하기
 function App() {
   return (
     <BrowserRouter>
@@ -49,8 +50,11 @@ function App() {
           <Route path="/board/save" element={<BoardSave/>}/>
           <Route path="/chat" element={<Chat/>}/>
           <Route path="/notice/save" element={<NoticeSave/>}/>
-          <Route path="/board/:id" element={<BoardDatail/>}/>
+          <Route path="/board/:id" element={<BoardDetail/>}/>
           <Route path="/board/update/:id" element={<BoardUpdate/>}/>
+          <Route path="/notice/list" element={<NoticeList />} />
+          <Route path="/notice/:id" element={<NoticeDetail/>}/>
+          <Route path="/notice/update/:id" element={<NoticeUpdate/>}/>
         </Routes>
 
         <Footer />
