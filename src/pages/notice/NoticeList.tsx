@@ -1,30 +1,36 @@
-import React,  {useState , useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import apiClient from "../../axiosConfig";
+
 interface Notice {
     id: number;
     title: string;
-    writer:string;
+    writer: string;
     regDate: string;
 }
 
 function NoticeList() {
-    const [notice , setNotice] = useState<Notice[]>([]);
-    const naviagte = useNavigate();
+    const [notice, setNotice] = useState<Notice[]>([]);
+    const navigate = useNavigate(); // 오타 수정: naviagte -> navigate
 
-    useEffect (()=> {
+    useEffect(() => {
         fetchNotice();
-    },  [])
+    }, []);
 
     const fetchNotice = async () => {
-        try{
+        try {
             const res = await apiClient.get(`/api/notice/list`);
             setNotice(res.data);
-        }catch ( error ){
-            console.error("공지사항 등록 실패", error);
+        } catch (error: any) {
+            if (error.response?.status === 401) {
+                alert("세션이 만료되었습니다. 다시 로그인해주세요.");
+                navigate("/login");
+            } else {
+                console.error("공지사항 불러오기 실패", error);
+            }
         }
-    
-    }
+    }; // 💡 여기서 닫아줘야 해!
+
     return (
         <div>
             <h2>목록 화면 입니다</h2>
@@ -38,18 +44,18 @@ function NoticeList() {
                     </tr>
                 </thead>
                 <tbody>
-                    {notice.map((notice)=> (
-                        <tr key={notice.id} style={{borderBottom: "1px solid #ddd", cursor: "pointer"}} onClick={()=> naviagte(`/notice/${notice.id}`)}>
-                            <td style={{padding: "10px", textAlign: "center"}}>{notice.id}</td>
-                            <td style={{padding: "10px", textAlign: "center"}}>{notice.title}</td>
-                            <td style={{padding: "10px", textAlign: "center"}}>{notice.regDate}</td>
+                    {notice.map((item) => ( // 매개변수 이름 겹침 방지: notice -> item
+                        <tr key={item.id} style={{ borderBottom: "1px solid #ddd", cursor: "pointer" }} onClick={() => navigate(`/notice/${item.id}`)}>
+                            <td style={{ padding: "10px", textAlign: "center" }}>{item.id}</td>
+                            <td style={{ padding: "10px", textAlign: "center" }}>{item.title}</td>
+                            <td style={{ padding: "10px", textAlign: "center" }}>{item.regDate}</td>
                         </tr>
                     ))}
                 </tbody>
             </table>
-            <button onClick={()=> naviagte("/notice/save")}>공지 작성</button>
+            <button onClick={() => navigate("/notice/save")}>공지 작성</button>
         </div>
-    )
+    );
 }
 
 export default NoticeList;
