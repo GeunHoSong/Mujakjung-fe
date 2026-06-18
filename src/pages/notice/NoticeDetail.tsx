@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 interface Notice {
     title: string;
     content:string;
@@ -8,6 +8,7 @@ interface Notice {
 function NoticeDetail() {
     const { id } = useParams();
     const [notice, setNotice] = useState<Notice | null>(null);
+    const naviagte = useNavigate();
 
 useEffect(() => {
     // 1. 저장된 토큰 가져오기
@@ -28,7 +29,31 @@ useEffect(() => {
         .then((data) => setNotice(data))
         .catch((err) => console.error("데이터 호출 실패:", err));
 }, [id]);
+const handleDelete = async () => {
+    // 1. 사용자에게 한번 더 확인 받기
+    if (!window.confirm("정말 삭제 하시겠습니까?")) return;
 
+    const token = localStorage.getItem("token");
+
+    try {
+        // 2. 백엔드 삭제 API 호출 (id가 포함된 경로!)
+        const res = await fetch(`/api/notice/delete/${id}`, {
+            method: "DELETE",
+            headers: { 
+                "Authorization": `Bearer ${token}` // 띄어쓰기 및 철자 확인!
+            }
+        });
+
+        if (res.ok) {
+            alert("삭제 완료");
+            naviagte("/notice/list"); // 경로 앞에 /가 있어야 정확히 이동해!
+        } else {
+            alert("삭제 실패");
+        }
+    } catch (err) {
+        console.error("삭제 요청 에러:", err);
+    }
+};
     // 로딩 처리 (useEffect 밖으로 뺌)
     if (!notice) return <div>로딩중 .....</div>;
 
@@ -36,6 +61,12 @@ useEffect(() => {
         <div>
             <h2>{notice.title}</h2>
             <p>{notice.content}</p>
+            
+        {/* 수정 버튼: 클릭하면 NoticeUpdate 페이지로 이동 */}
+        <button onClick={()=> naviagte(`/notice/update/${id}`)}>수정</button>
+        <button onClick={handleDelete} style={{color: "red"}}>삭제</button>
+        <button onClick={()=> naviagte("/notice/list")}>목록</button>
+
         </div>
     );
 }
