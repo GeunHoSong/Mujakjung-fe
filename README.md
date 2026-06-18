@@ -62,5 +62,12 @@ src
  ├─ services        # API 통신 로직 (Axios 인스턴스 등)
  ├─ types           # TypeScript 타입 정의
  └─ App.tsx         # 메인 라우팅 설정
- <img width="1280" height="764" alt="image" src="https://github.com/user-attachments/assets/6c2ba573-f882-4a84-8971-05140d5f7c34" />
+
+
+
+
+
+
+<img width="1280" height="764" alt="image" src="https://github.com/user-attachments/assets/63212116-ba06-4bc7-b4d2-efd65924fff6" />
+
 
