@@ -112,7 +112,7 @@ function Login() {
         <img src={kakaoBtn}alt="카카오 로그인"style={{ width: "200px", cursor: "pointer" }}/>
       </button>
        {/*카카오 로그인 */}
-       <div style={{marginTop: "'10px'"}}>
+       <div style={{marginTop: "10px"}}>
         <button type="button" onClick={naverLogin} style={{border:'none', background: "none"}}>
           <img src={NaverBtn} alt="네이버 로그인" style={{width: "200px", cursor: "pointer"}} />
         </button>

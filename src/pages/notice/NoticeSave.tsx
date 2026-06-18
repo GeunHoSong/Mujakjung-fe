@@ -25,7 +25,7 @@ function NoticeSave (){
         setContent("");   
     } catch (error) {
         console.error("등록 오류 입니다", error);
-        alert("등록 오류 가 발생을 하였습니다");
+        alert("등록 오류가 발생을 하였습니다");
     }
 }
 

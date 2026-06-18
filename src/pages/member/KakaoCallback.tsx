@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 // 화살표 함수 대신 function 키워드를 사용했습니다.
-function kakaoCallback(){
+function KakaoCallback(){
     const [searchParams]= useSearchParams();
     const navigate = useNavigate();
 
@@ -24,4 +24,4 @@ function kakaoCallback(){
     )
 }
 
-export default kakaoCallback
+export default KakaoCallback

@@ -31,7 +31,7 @@ function App() {
     <BrowserRouter>
       <Header />
 
-      {/* 💡 감싸는 박스의 복잡한 스타일을 걷어내고, 순수하게 상단 헤더 높이(70px)만큼만 패딩을 줍니다. */}
+      {/*감싸는 박스의 복잡한 스타일을 걷어내고, 순수하게 상단 헤더 높이(70px)만큼만 패딩을 줍니다. */}
       <div style={{ paddingTop: "70px" }}>
         <Routes>
           <Route path="/" element={<Main />} />

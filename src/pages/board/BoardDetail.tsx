@@ -30,10 +30,10 @@ function BoardDatail(){
     }
     const fetchBoard = async () => {
         try {
-            // 경로가 /api/board/${id} 인지 확인!
-            const res = await apiClient.get(`/api/board/${id}`);
+            // 주소를 컨트롤러 @RequestMapping과 일치시킴
+            const res = await apiClient.get(`/api/notice/${id}`); 
             setBoard(res.data);
-        }catch (error) {
+        } catch (error) {
             console.log("게시글 조회 실패", error);
         }
         }
@@ -50,7 +50,8 @@ function BoardDatail(){
             <p><strong>작성자</strong>{board.writer}</p>
             <p><strong>내용</strong></p>
             <div style={{border: "1px solid #ddd", padding:"12px", minHeight:"200px"}} >
-                {board.Content}
+                {/* 대문자 Content를 소문자 content로 변경 */}
+                {board.content} 
             </div>
             <br/>
             <button onClick={()=> navigate("/board/list")}>목록</button>

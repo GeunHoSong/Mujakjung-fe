@@ -32,19 +32,10 @@ function BoardUpdate() {
     <div>
       <h2>게시글 수정</h2>
       <div>
-        <input 
-          type="text"
-          value={board.title} 
-          onChange={(e) => setBoard({ ...board, title: e.target.value })} 
-          placeholder="제목"
-        />
+        <input type="text"value={board.title} onChange={(e) => setBoard({ ...board, title: e.target.value })} placeholder="제목"/>
       </div>
       <div>
-        <textarea 
-          value={board.content} 
-          onChange={(e) => setBoard({ ...board, content: e.target.value })} 
-          placeholder="내용"
-        />
+        <textarea value={board.content} onChange={(e) => setBoard({ ...board, content: e.target.value })} placeholder="내용"/>
       </div>
       <button onClick={handleUpdate}>수정 완료</button>
     </div>
