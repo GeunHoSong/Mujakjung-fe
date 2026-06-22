@@ -100,7 +100,8 @@ function Search() {
               travel={{
                 id: place.id,
                 title: place.title,
-                image: place.image_path || "/test.jpg",
+                
+                image: place.image_path ? `http://localhost:8080/image/${place.image_path}` :"test.png" ,
                 location: place.location,
                 price: "가격 미정",
               }}

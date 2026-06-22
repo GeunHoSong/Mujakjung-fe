@@ -38,16 +38,21 @@ const handleDelete = () => {
 };
 
   useEffect(() => {
-    const fetchDetail = async () => {
-      try {
-        const response = await axios.get(`/api/travel/${id}`);
-        setTravel(response.data);
-      } catch (error) {
-        console.error("데이터 가져오는 중 에러:", error);
-      } finally {
-        setLoading(false);
+  const fetchDetail = async () => {
+  const token = localStorage.getItem("token"); // 토큰 가져오기
+  try {
+    const response = await axios.get(`http://localhost:8080/api/travel/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}` // 여기에 토큰 실어서 보내기!
       }
-    };
+    });
+    setTravel(response.data);
+  } catch (error) {
+    console.error("데이터 가져오는 중 에러:", error);
+  } finally {
+    setLoading(false);
+  }
+};
     fetchDetail();
   }, [id]);
 
