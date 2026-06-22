@@ -8,53 +8,53 @@ function TravelDetail() {
   const [travel, setTravel] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
-  // 1. 관리자 권한 확인 (ROLE_ADMIN으로 비교)
+  // 로컬 스토리지에서 정보 가져오기
   const role = localStorage.getItem("role");
- const isAdmin = role === "ADMIN"; 
+  const isAdmin = role === "ADMIN";
 
-  console.log("현재 로컬 스토리지 role 값:", role);
-  console.log("관리자 여부(isAdmin):", isAdmin);
+  const handleDelete = async () => {
+    if (!window.confirm("정말 삭제 하시겠습니까?")) return;
 
-const handleDelete = () => {
-    if (window.confirm("정말 삭제 하시겠습니까??")) {
-        // 토큰 가져오기 (localStorage에 저장되어 있다고 가정)
-        const token = localStorage.getItem("token"); 
-
-        axios.delete(`http://localhost:8080/api/admin/${id}`, {
-            headers: {
-                Authorization: `Bearer ${token}` // 여기에 토큰을 넣어줘야 해!
-            }
-        })
-        .then(() => {
-            alert("삭제 완료");
-            navigate("/travel/list");
-        })
-        .catch((err) => {
-            console.error("삭제 실패", err);
-            // 401 에러가 뜨면 토큰이 만료되었거나 없을 확률이 높아
-            alert("삭제 권한이 없거나 로그인이 만료되었습니다.");
-        });
+    const token = localStorage.getItem("token");
+    try {
+      await axios.delete(`http://localhost:8080/api/admin/${id}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      alert("삭제 완료");
+      navigate("/travel/list");
+    } catch (err: any) {
+      handleAuthError(err);
     }
-};
+  };
+
+  // [수정 포인트] 인증 에러(401) 공통 처리 함수
+  const handleAuthError = (err: any) => {
+    if (err.response?.status === 401) {
+      alert("로그인이 만료되었습니다. 다시 로그인해 주세요.");
+      localStorage.clear();
+      navigate("/login");
+    } else {
+      console.error("요청 실패:", err);
+      alert("작업 중 오류가 발생했습니다.");
+    }
+  };
 
   useEffect(() => {
-  const fetchDetail = async () => {
-  const token = localStorage.getItem("token"); // 토큰 가져오기
-  try {
-    const response = await axios.get(`http://localhost:8080/api/travel/${id}`, {
-      headers: {
-        Authorization: `Bearer ${token}` // 여기에 토큰 실어서 보내기!
+    const fetchDetail = async () => {
+      const token = localStorage.getItem("token");
+      try {
+        const response = await axios.get(`http://localhost:8080/api/travels/${id}`, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        setTravel(response.data);
+      } catch (error: any) {
+        handleAuthError(error);
+      } finally {
+        setLoading(false);
       }
-    });
-    setTravel(response.data);
-  } catch (error) {
-    console.error("데이터 가져오는 중 에러:", error);
-  } finally {
-    setLoading(false);
-  }
-};
+    };
     fetchDetail();
-  }, [id]);
+  }, [id, navigate]); // navigate 추가
 
   if (loading) return <div>힐링 정보를 불러오는 중...</div>;
   if (!travel) return <div>정보가 없습니다.</div>;
@@ -70,6 +70,7 @@ const handleDelete = () => {
 
       <div style={{ marginTop: '30px' }}>
         <img 
+          // 서버에서 오는 전체 URL 경로일 확률이 높으니 확인해봐
           src={travel.imageUrl || "https://via.placeholder.com/800x400"} 
           alt={travel.title} 
           style={{ width: '100%', borderRadius: '15px' }} 
@@ -84,7 +85,6 @@ const handleDelete = () => {
         <h3>쉼 포인트</h3>
         <p>{travel.healingPoint}</p>
 
-        {/* 3. 관리자일 때만 수정/삭제 버튼 표시 */}
         {isAdmin && (
           <div style={{ marginTop: "30px", display: "flex", gap: "10px" }}>
             <button onClick={() => navigate(`/admin/update/${id}`)}>수정</button>
