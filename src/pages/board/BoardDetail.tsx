@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import apiClient from "../../axiosConfig";
+import CommentSave from "../../comment/CommentSave";
 
 
 function BoardDatail(){
@@ -57,6 +58,9 @@ function BoardDatail(){
             <button onClick={()=> navigate("/board/list")}>목록</button>
             <button onClick={()=> navigate(`/board/update/${id}`)}>수정</button>
             <button onClick={handleDelete}>삭제</button>
+            <br/>
+            <h3>댓글</h3>
+            <CommentSave boardId={id!} /> 
         </div>
     )
 

@@ -25,6 +25,9 @@ import BoardUpdate from "./pages/board/BoardUpdate";
 import NoticeList from "./pages/notice/NoticeList";
 import NoticeUpdate from "./pages/notice/NoticeUpdate";
 import NoticeDetail from "./pages/notice/NoticeDetail";
+import AentSession from "./pages/chat/ChatComponent";
+import ChatComponent from "./pages/chat/ChatComponent";
+import CommentSave from "./comment/CommentSave";
 
 function App() {
   return (
@@ -55,6 +58,7 @@ function App() {
           <Route path="/notice/list" element={<NoticeList />} />
           <Route path="/notice/:id" element={<NoticeDetail/>}/>
           <Route path="/notice/update/:id" element={<NoticeUpdate/>}/>
+          <Route path="/chat/ChatComponent" element={<ChatComponent/>}/>
         </Routes>
 
         <Footer />
