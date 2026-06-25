@@ -57,7 +57,6 @@ function BoardList() {
             <table style={{ width: "100%", borderCollapse: "collapse", textAlign: "center" }}>
                 <thead>
                     <tr style={{ borderBottom: "2px solid #333" }}>
-                        <th style={{padding:"10px"}}>관리</th>
                         <th style={{ padding: "10px" }}>번호</th>
                         <th style={{ padding: "10px" }}>제목</th>
                         <th style={{ padding: "10px" }}>작성자</th>
@@ -76,7 +75,7 @@ function BoardList() {
                                 >
                                     {board.title}
                                 </td>
-                                <td style={{ padding: "10px" }}>{board.author}</td>
+                                <td style={{ padding: "10px" }}>{board.writer}</td>
                                 <td style={{padding: "10px"}}>
                                     <button onClick={()=>navigate(`/board/update/${board.id}`)}>수정</button>
                                 </td>
