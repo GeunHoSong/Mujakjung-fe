@@ -11,10 +11,13 @@ interface Notice {
 
 function NoticeList() {
     const [notice, setNotice] = useState<Notice[]>([]);
-    const navigate = useNavigate(); // 오타 수정: naviagte -> navigate
+    const [userRole, setUserRole] = useState<string | null>(null);
+    const navigate = useNavigate(); // 👈 변수명 수정
 
     useEffect(() => {
         fetchNotice();
+        const role = localStorage.getItem("role");
+        setUserRole(role);
     }, []);
 
     const fetchNotice = async () => {
@@ -23,39 +26,35 @@ function NoticeList() {
             setNotice(res.data);
         } catch (error: any) {
             if (error.response?.status === 401) {
-                alert("세션이 만료되었습니다. 다시 로그인해주세요.");
-                navigate("/login");
-            } else {
-                console.error("공지사항 불러오기 실패", error);
+                alert("세션이 만료되었습니다.");
+                navigate("/login"); // 👈 여기도 수정
             }
         }
-    }; // 💡 여기서 닫아줘야 해!
+    };
 
     return (
         <div>
             <h2>목록 화면 입니다</h2>
             <hr />
             <table>
-                <thead>
-                    <tr>
-                        <th>번호</th>
-                        <th>제목</th>
-                        <th>작성일</th>
-                    </tr>
-                </thead>
+                {/* ... 테이블 내용 ... */}
                 <tbody>
-                    {notice.map((item) => ( // 매개변수 이름 겹침 방지: notice -> item
-                        <tr key={item.id} style={{ borderBottom: "1px solid #ddd", cursor: "pointer" }} onClick={() => navigate(`/notice/${item.id}`)}>
-                            <td style={{ padding: "10px", textAlign: "center" }}>{item.id}</td>
-                            <td style={{ padding: "10px", textAlign: "center" }}>{item.title}</td>
-                            <td style={{ padding: "10px", textAlign: "center" }}>{item.regDate}</td>
+                    {notice.map((item) => (
+                        <tr key={item.id} onClick={() => navigate(`/notice/${item.id}`)}> {/* 👈 여기도 수정 */}
+                            <td>{item.id}</td>
+                            <td>{item.title}</td>
+                            <td>{item.regDate}</td>
                         </tr>
                     ))}
                 </tbody>
             </table>
+
+      {/* 1. 관리자(ROLE_ADMIN)인지 확인 */}
+        {/* 2. 조건이 참일 때만 버튼을 렌더링 */}
+        {userRole === 'ADMIN' && (
             <button onClick={() => navigate("/notice/save")}>공지 작성</button>
+        )}
         </div>
     );
 }
-
 export default NoticeList;
