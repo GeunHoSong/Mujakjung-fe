@@ -3,9 +3,10 @@ import axios from "axios"; // 1. axios import 추가
 
 interface CommentSaveProps {
     boardId: string | number;
+    onSave: ()=> void;
 }
 
-function CommentSave({ boardId }: CommentSaveProps) {
+function CommentSave({ boardId, onSave }: CommentSaveProps) {
     const [comment, setComment] = useState("");
     const [isLoading, setIsLoading] = useState(false);
 
