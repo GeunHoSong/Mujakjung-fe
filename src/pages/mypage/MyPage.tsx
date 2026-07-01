@@ -14,27 +14,23 @@ function Mypage() {
 
     const fileInputRef = useRef<HTMLInputElement>(null);
     const navigate = useNavigate();
-
-    // --- 1. 초기 데이터 가져오기 ---
+// Mypage.tsx 의 useEffect 부분을 아래와 같이 수정하세요
     useEffect(() => {
         setIsLoading(true);
-        // api 인스턴스 사용 (토큰 자동 포함)
-        api.post('/api/member/mypage')
-            .then(res => {
-                setUserProfile(res.data);
-                setIsLoading(false);
-            })
-            .catch(err => {
-                    console.log("에러 상세:", err.response?.data); 
     
-                    if (err.response?.status === 401) {
-                    alert("로그인이 만료되었습니다. 다시 로그인해주세요.");
-                    localStorage.removeItem("accessToken"); // 토큰 삭제
-                    window.location.href = '/login';
-            }
+        // 서버 통신 시도
+        api.get('/api/member/mypage') 
+            .then(res => {
+             setUserProfile(res.data);
+         })
+            .catch(err => {
+             console.error("서버 에러:", err);
+             // 에러가 나도 로딩을 끝내야 화면이 나옵니다
+            })
+            .finally(() => {
+             setIsLoading(false); // 성공하든 실패하든 로딩 종료
             });
     }, []);
-
     // --- 2. 핸들러 함수들 (모두 api 인스턴스 사용) ---
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {

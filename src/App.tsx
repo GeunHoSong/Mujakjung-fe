@@ -1,4 +1,4 @@
-// ⭕ src/App.tsx 는 이 코드가 들어가야 해!
+//  src/App.tsx 는 이 코드가 들어가야 해!
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import Main from "./pages/travel/Main";
@@ -7,7 +7,7 @@ import Login from "./pages/member/Login";
 import Search from "./pages/travel/Search";
 import TravelDetail from "./pages/travel/TravelDetail";
 import AdminMain from "./pages/admin/AdminMain";
-import Mypage from "./pages/member/MyPage";
+import Mypage from "./pages/mypage/MyPage";
 import AdminMainMember from "./pages/admin/AdminMember";
 
 import Footer from "./components/Footer";
@@ -25,9 +25,7 @@ import BoardUpdate from "./pages/board/BoardUpdate";
 import NoticeList from "./pages/notice/NoticeList";
 import NoticeUpdate from "./pages/notice/NoticeUpdate";
 import NoticeDetail from "./pages/notice/NoticeDetail";
-import AentSession from "./pages/chat/ChatComponent";
 import ChatComponent from "./pages/chat/ChatComponent";
-import CommentSave from "./comment/CommentSave";
 import AdminCart from "./pages/admin/AdminCart";
 import CartList from "./pages/cart/CartList";
 import CartOrder from "./pages/cart/CartOrder";
@@ -66,6 +64,7 @@ function App() {
           <Route path="/cart/CartList" element={<CartList/>}/>
           <Route path="/cart/CartOrder" element={<CartOrder/>}/>
           <Route path="/cart/CartLocalStoage" element={<CartLocalStoage/>}/>
+          
         </Routes>
 
         <Footer />
