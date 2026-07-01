@@ -30,6 +30,7 @@ import AdminCart from "./pages/admin/AdminCart";
 import CartList from "./pages/cart/CartList";
 import CartOrder from "./pages/cart/CartOrder";
 import CartLocalStoage from "./pages/cart/CartLocalStorage";
+import MyPageEditProfile from "./pages/mypage/MyPageEditProfile";
 function App() {
   return (
     <BrowserRouter>
@@ -44,6 +45,7 @@ function App() {
           <Route path="/search" element={<Search />} />
           <Route path="/admin" element={<AdminMain />} />
           <Route path="/mypage" element={<Mypage />} />
+          <Route path="/mypage/MyPageEditProFile" element={<MyPageEditProfile />} />
           <Route path="/travel/:id" element={<TravelDetail />} />
           <Route path="/admin/members" element={<AdminMainMember/>} />
           <Route path="/admin/cart" element={<AdminCart/>} />
