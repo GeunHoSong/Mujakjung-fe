@@ -28,7 +28,10 @@ import NoticeDetail from "./pages/notice/NoticeDetail";
 import AentSession from "./pages/chat/ChatComponent";
 import ChatComponent from "./pages/chat/ChatComponent";
 import CommentSave from "./comment/CommentSave";
-
+import AdminCart from "./pages/admin/AdminCart";
+import CartList from "./pages/cart/CartList";
+import CartOrder from "./pages/cart/CartOrder";
+import CartLocalStoage from "./pages/cart/CartLocalStorage";
 function App() {
   return (
     <BrowserRouter>
@@ -45,6 +48,7 @@ function App() {
           <Route path="/mypage" element={<Mypage />} />
           <Route path="/travel/:id" element={<TravelDetail />} />
           <Route path="/admin/members" element={<AdminMainMember/>} />
+          <Route path="/admin/cart" element={<AdminCart/>} />
           <Route path="/admin/list" element={<AdminList/>} />
           <Route path="/admin/update/:id" element={<AdminUpdate />} />
           <Route path="/board/list" element={<BoardList />} />
@@ -59,6 +63,9 @@ function App() {
           <Route path="/notice/:id" element={<NoticeDetail/>}/>
           <Route path="/notice/update/:id" element={<NoticeUpdate/>}/>
           <Route path="/chat/ChatComponent" element={<ChatComponent/>}/>
+          <Route path="/cart/CartList" element={<CartList/>}/>
+          <Route path="/cart/CartOrder" element={<CartOrder/>}/>
+          <Route path="/cart/CartLocalStoage" element={<CartLocalStoage/>}/>
         </Routes>
 
         <Footer />

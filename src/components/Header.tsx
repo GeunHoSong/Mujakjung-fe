@@ -9,7 +9,7 @@ function Header() {
   const [keyword, setKeyword] = useState("");
   const [type, setType] = useState("domestic");
 
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem("accessToken");
   const userRole = localStorage.getItem("role");
   const userName = localStorage.getItem("userName");
 
