@@ -26,6 +26,7 @@ function TravelDetail() {
       handleAuthError(err);
     }
   };
+  
 
   // [수정 포인트] 인증 에러(401) 공통 처리 함수
   const handleAuthError = (err: any) => {
@@ -38,6 +39,36 @@ function TravelDetail() {
       alert("작업 중 오류가 발생했습니다.");
     }
   };
+  // 장바구니 
+  const handleAddToCart = async ()=> {
+    const cart = JSON.parse(localStorage.getItem("cart") || "[]")
+    // 이미 담겨져 있는지 확인 
+    const isAlreadyInCart=  cart.find((item: any)=> item.id === travel.id)
+      if(isAlreadyInCart) {
+        alert("이미 장바구니에 있는 상품입니다");
+        return ;
+      }
+    // 새 상품 추가 
+    const newItem = {
+      id: travel.id,
+      title: travel.title,
+      price: travel.price || 0,
+      imageUrl : travel.imageUrl,
+    };
+    cart.push(newItem);
+    //다시 로컬 스토리지에 저장 
+    localStorage.setItem("cart", JSON.stringify(cart));
+    alert("장바구니에 담겼습니다");
+  }
+  const handleAddToWishlist = () => {
+    const wishlist = JSON.parse(localStorage.getItem("wishlist") || "[]");
+    // 이미 짬했는지 확인 
+    const isAlreadyWished = wishlist.find((item: any) => item.id === travel.id);
+    if(isAlreadyWished){
+      alert("이미 찜 한 상품 입니다 ");
+      return ;
+    }
+  }
 
   useEffect(() => {
     const fetchDetail = async () => {
@@ -84,6 +115,14 @@ function TravelDetail() {
       <footer style={{ marginTop: '50px', borderTop: '1px solid #eee', paddingTop: '20px' }}>
         <h3>쉼 포인트</h3>
         <p>{travel.healingPoint}</p>
+        {/*장바 구니 */}
+        <div>
+          <button onClick={handleAddToCart} style={{ padding: "10px 20px", cursor: "pointer"}}>장바구니 담기</button>
+        </div>
+        {/*찜하기  */}
+        <div>
+          <button onClick={handleAddToWishlist} style={{ padding: "10px 20px", cursor: "pointer"}}>찜하기</button>
+        </div>
 
         {isAdmin && (
           <div style={{ marginTop: "30px", display: "flex", gap: "10px" }}>
@@ -95,6 +134,7 @@ function TravelDetail() {
               삭제
             </button>
           </div>
+
         )}
       </footer>
     </div>
