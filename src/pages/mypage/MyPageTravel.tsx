@@ -1,10 +1,12 @@
 import axios from "axios";
 import { useState , useEffect} from "react";
 
-
-
+interface TravelItem {
+  id: number; // API 응답 데이터에 따라 number 또는 string
+  title: string;
+}
 function MyPageTravel(){
-    const [travelList, setTravelList] = useState([]);
+    const [travelList, setTravelList] = useState<TravelItem[]>([]);
     const [loading , setLoading] = useState(true);
     useEffect(()=> {
         const fetchTravelData = async ()=> {
