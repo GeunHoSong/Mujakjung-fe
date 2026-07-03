@@ -32,6 +32,7 @@ import CartLocalStoage from "./pages/cart/CartLocalStorage";
 // 💡 아래 이 부분의 경로 끝을 Profile -> ProFile (대문자 F)로 수정했습니다!
 import MyPageEditProfile from "./pages/mypage/MyPageEditProFile";
 import MyPageBoard from "./pages/mypage/MyPageBoard";
+import MyPageTravel from "./pages/mypage/MyPageTravel";
 
 function App() {
   return (
@@ -49,6 +50,7 @@ function App() {
           <Route path="/mypage" element={<Mypage />} />
           <Route path="/mypage/MyPageEditProFile" element={<MyPageEditProfile />} />
           <Route path="/mypage/MyPageBoard" element={<MyPageBoard/>}/>
+          <Route path="mypage/MypageTravel" element={<MyPageTravel/>}/>
           <Route path="/travel/:id" element={<TravelDetail />} />
           <Route path="/admin/members" element={<AdminMainMember/>} />
           <Route path="/admin/cart" element={<AdminCart/>} />

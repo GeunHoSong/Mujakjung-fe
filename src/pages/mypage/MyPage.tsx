@@ -94,6 +94,8 @@ function Mypage() {
                 <button onClick={()=> navigate("/cart/CartLocalStoage")}>장바구니</button>
                 <button onClick={()=> navigate("/cart/CartOrder")}>주문내역</button>
                 <button onClick={()=> navigate("/mypage/MyPageEditProfile")}>프로필 수정 하러 가기</button>
+                <button onClick={()=> navigate("/mypage/MyPageTravel")}>나의 여행 일지</button>
+                <button  onClick={()=> navigate("/mypage/MyPageBoard")}>내 게시글 </button>
                 <button>찜한 상품</button>
                 <button>설정</button>
             </div>
