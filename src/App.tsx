@@ -1,4 +1,3 @@
-//  src/App.tsx 는 이 코드가 들어가야 해!
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import Main from "./pages/travel/Main";
@@ -30,7 +29,10 @@ import AdminCart from "./pages/admin/AdminCart";
 import CartList from "./pages/cart/CartList";
 import CartOrder from "./pages/cart/CartOrder";
 import CartLocalStoage from "./pages/cart/CartLocalStorage";
-import MyPageEditProfile from "./pages/mypage/MyPageEditProfile";
+// 💡 아래 이 부분의 경로 끝을 Profile -> ProFile (대문자 F)로 수정했습니다!
+import MyPageEditProfile from "./pages/mypage/MyPageEditProFile";
+import MyPageBoard from "./pages/mypage/MyPageBoard";
+
 function App() {
   return (
     <BrowserRouter>
@@ -46,6 +48,7 @@ function App() {
           <Route path="/admin" element={<AdminMain />} />
           <Route path="/mypage" element={<Mypage />} />
           <Route path="/mypage/MyPageEditProFile" element={<MyPageEditProfile />} />
+          <Route path="/mypage/MyPageBoard" element={<MyPageBoard/>}/>
           <Route path="/travel/:id" element={<TravelDetail />} />
           <Route path="/admin/members" element={<AdminMainMember/>} />
           <Route path="/admin/cart" element={<AdminCart/>} />
@@ -66,7 +69,6 @@ function App() {
           <Route path="/cart/CartList" element={<CartList/>}/>
           <Route path="/cart/CartOrder" element={<CartOrder/>}/>
           <Route path="/cart/CartLocalStoage" element={<CartLocalStoage/>}/>
-          
         </Routes>
 
         <Footer />
