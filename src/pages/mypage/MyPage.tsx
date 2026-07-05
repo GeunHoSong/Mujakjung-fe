@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import api from "../../axiosConfig";
-import { useNavigate } from "react-router-dom";
+import api from "../../axiosConfig"; // Axios 설정 파일 불러오기
+import { useNavigate } from "react-router-dom"; // 페이지 이동을 위한 훅
 
-// 인터페이스명은 관례상 대문자로 시작 (UserProfile)
+// 1. 사용자 정보 타입 정의 (TypeScript 인터페이스)
 interface UserProfile {
     id: number | string;
     nickname: string;
@@ -12,7 +12,9 @@ interface UserProfile {
 }
 
 function Mypage() {
+    // 로딩 상태 관리 (데이터를 불러오는 동안 화면 제어)
     const [isLoading, setIsLoading] = useState(true);
+    // 사용자 정보 상태 관리
     const [userProfile, setUserProfile] = useState<UserProfile>({
         id: 0,
         nickname: '',
@@ -21,29 +23,31 @@ function Mypage() {
         email: '',
     });
 
-    const navigate = useNavigate();
+    const navigate = useNavigate(); // 페이지 이동을 위한 함수
 
+    // 2. 컴포넌트가 처음 렌더링될 때 서버에서 사용자 정보를 가져옴
     useEffect(() => {
         setIsLoading(true);
-        api.post('/api/member/mypage')
+        api.post('/api/member/mypage') // 서버 API 호출
             .then(res => {
-                setUserProfile(res.data);
+                setUserProfile(res.data); // 성공 시 데이터를 상태에 저장
             })
             .catch(err => {
-                console.error("서버 에러:", err);
+                console.error("서버 에러:", err); // 에러 발생 시 콘솔 로그 출력
             })
             .finally(() => {
-                setIsLoading(false);
+                setIsLoading(false); // 로딩 종료
             });
     }, []);
 
+    // 3. 데이터를 불러오는 중일 때 보여줄 로딩 화면
     if (isLoading) return <div>데이터 불러 오는 중...</div>;
 
     return (
         <div>
             <h1>마이페이지</h1>
             
-            {/* 정보 표시 영역 */}
+            {/* 정보 표시 영역: 단순히 읽기 전용으로 데이터를 보여줌 */}
             <div style={{ marginBottom: '20px' }}>
                 <img 
                     src={`http://localhost:8080/api/member/display?fileName=${userProfile.profileImg}`}
@@ -57,12 +61,13 @@ function Mypage() {
 
             <hr />
 
-            {/* 네비게이션 버튼 영역 */}
+            {/* 네비게이션 버튼 영역: 클릭 시 해당 경로로 이동 */}
             <div>
                 <button onClick={() => navigate("/cart/CartLocalStoage")}>장바구니</button>
-                <button onClick={() => navigate("/cart/CartOrder")}>주문내역</button>
+                <button onClick={() => navigate("/cart/CartOrder")}>주문내역</button><br/>
+                {/* 프로필 수정 버튼 클릭 시 Edit 페이지로 이동 */}
                 <button onClick={() => navigate("/mypage/MyPageEditProfile")}>프로필 수정</button>
-                <button onClick={() => navigate("/mypage/MyPageTravel")}>나의 여행 일지</button>
+                <button onClick={() => navigate("/mypage/MyPageTravel")}>나의 여행 일지</button><br/>
                 <button onClick={() => navigate("/mypage/MyPageBoard")}>내 게시글</button>
                 <button>찜한 상품</button>
                 <button>설정</button>
