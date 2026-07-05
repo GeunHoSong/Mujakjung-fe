@@ -67,6 +67,7 @@ function Header() {
           <>
             <button onClick={() => navigate("/join")}>회원가입</button>
             <button onClick={() => navigate("/login")}>로그인</button>
+            <button>설정</button>
           </>
         )}
       </div>

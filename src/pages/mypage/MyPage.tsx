@@ -2,10 +2,20 @@ import React, { useState, useEffect, useRef } from "react";
 import api from "../../axiosConfig"; // 경로를 정확히 확인하세요 (axiosConfig.ts 위치에 맞게 수정)
 import { useNavigate } from "react-router-dom";
 
+interface setUserProfile {
+    id: number | string;
+    nickname: string;
+    bio: string;
+    profileTmg: string;
+    email: string;
+
+}
+
 function Mypage() {
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
     const [userProflie, setUserProfile] = useState({
+        id: 0, 
         nickname: '',
         bio: '',
         profileImg: '',
@@ -37,12 +47,21 @@ function Mypage() {
         const { name, value } = e.target;
         setUserProfile({ ...userProflie, [name]: value });
     };
-
     const handleSave = () => {
-        api.post('/api/member/mypage/update', userProflie)
-            .then(() => alert("정보 수정 완료!"))
-            .catch(err => alert("저장 실패"));
-    }
+    // 1. userProflie에 실제 id 값이 들어있는지 확인이 필요해
+    // 만약 백엔드에서 주는 데이터에 id가 있다면 아래처럼 사용해
+        if (!userProflie.id) {
+            alert("사용자 정보를 찾을 수 없습니다.");
+            return;
+        }
+
+    api.put(`/api/mypage/update/${userProflie.id}`, userProflie)
+        .then(() => alert("정보 수정 완료!"))
+        .catch(err => {
+            console.error(err);
+            alert("저장 실패");
+        });
+}
 
     const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
