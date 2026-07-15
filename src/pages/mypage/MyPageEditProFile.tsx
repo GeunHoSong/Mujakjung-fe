@@ -11,24 +11,22 @@ function MyPageEditProfile() {
     const fileInputRef = useRef<HTMLInputElement>(null); // 파일 선택창 숨김을 위한 참조
 
     // [데이터 불러오기] 컴포넌트 마운트 시 1회 실행
-    useEffect(() => {
-        const targetId = 1; // 추후 로그인 정보(Auth)에서 가져오도록 수정 필요
-        setLoading(true);
+useEffect(() => {
+    console.log("데이터 불러오기 useEffect 진입"); // 추가
+    const targetId = 13; // 실제 존재하는 ID로 확인
+    setLoading(true);
 
-        api.get(`/api/mypage/${targetId}`) 
-            .then(res => {
-                const { id, nickname, bio, profileImg } = res.data;
-                setId(id);
-                setNickName(nickname);
-                setBio(bio);
-                setProFileImg(profileImg);
-            })
-            .catch(err => {
-                console.error("데이터 불러오기 에러:", err);
-                alert("프로필 정보를 불러오는 데 실패했습니다.");
-            })
-            .finally(() => setLoading(false));
-    }, []);
+    api.get(`/api/mypage/${targetId}`) 
+        .then(res => {
+            console.log("서버 응답 성공:", res.data); // 추가
+            // ... 데이터 세팅
+        })
+        .catch(err => {
+            console.error("데이터 불러오기 에러:", err); // 추가
+            alert("프로필 정보를 불러오는 데 실패했습니다.");
+        })
+        .finally(() => setLoading(false));
+}, []);
 
     // [이미지 업로드] 파일 변경 시 서버로 바로 전송
     const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -48,18 +46,21 @@ function MyPageEditProfile() {
         }
     };
 
-    // [정보 저장] 수정된 닉네임과 자기소개 서버 저장
-    const handleSave = async () => {
-        if (!id) return;
-
-        try {
-            await api.put(`/api/mypage/update/${id}`, { nickname, bio, profileImg });
-            alert("수정 완료!");
-        } catch (e) {
-            console.error("저장 에러:", e);
-            alert("수정 실패");
-        }
-    };
+const handleSave = async () => {
+    try {
+        // 백틱(`)을 사용하여 URL에 id를 포함시킵니다.
+        const response = await api.put(`/api/mypage/update/${id}`, {
+            nickname: nickname,
+            bio: bio
+        });
+        
+        console.log("저장 성공:", response.data);
+        alert("수정이 완료되었습니다.");
+    } catch (error) {
+        console.error("저장 실패:", error);
+        alert("저장에 실패했습니다.");
+    }
+};
 
     // [로딩 화면] 데이터가 올 때까지 표시
     if (loading) return <div>로딩 중...</div>;
@@ -71,12 +72,11 @@ function MyPageEditProfile() {
             {/* 프로필 이미지 영역 */}
             <div style={{ marginBottom: "15px" }}>
                 <img 
-                    // 프로필 이미지가 있으면 보여주고, 없으면 기본 이미지(placeholder) 출력
-                    src={profileImg ? `http://localhost:8080/api/mypage/display?fileName=${profileImg}` : "https://via.placeholder.com/100"} 
+                    src={profileImg ? `http://localhost:8080/api/mypage/display?fileName=${profileImg}` : "/default-profile.png"} // 외부 URL 대신 로컬 public 폴더에 이미지 파일을 넣고 경로 수정
                     style={{ width: '100px', height: '100px', borderRadius: '50%', cursor: 'pointer' }} 
                     onClick={() => fileInputRef.current?.click()} 
-                    alt="프로필"
-                    onError={(e) => (e.target as HTMLImageElement).src = "https://via.placeholder.com/100"}
+                     alt="프로필"
+                      // onError 로직에서 또 다른 외부 서버를 참조하지 않도록 주의하세요
                 /> 
                 <input type="file" ref={fileInputRef} onChange={handleFileChange} style={{ display: 'none' }} />
                 <p style={{ fontSize: "12px", color: "#666" }}>이미지를 클릭하면 사진을 변경할 수 있습니다.</p>
