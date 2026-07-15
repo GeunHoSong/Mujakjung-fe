@@ -11,23 +11,28 @@ function MyPageEditProfile() {
     const fileInputRef = useRef<HTMLInputElement>(null); // 파일 선택창 숨김을 위한 참조
 
     // [데이터 불러오기] 컴포넌트 마운트 시 1회 실행
+// [데이터 불러오기]
+// [데이터 불러오기]
 useEffect(() => {
-    console.log("데이터 불러오기 useEffect 진입"); // 추가
-    const targetId = 13; // 실제 존재하는 ID로 확인
+    const targetId = 13; // 로그인한 회원의 member_id라고 가정
     setLoading(true);
 
     api.get(`/api/mypage/${targetId}`) 
         .then(res => {
-            console.log("서버 응답 성공:", res.data); // 추가
-            // ... 데이터 세팅
+            console.log("서버 응답 성공:", res.data);
+            
+            // 핵심: 서버에서 준 데이터(res.data.id)를 상태에 저장해야 합니다!
+            setId(res.data.id);  // 이 부분이 필수입니다. (이제 id는 2가 됨)
+            setNickName(res.data.nickname);
+            setBio(res.data.bio);
+            setProFileImg(res.data.profileImg);
         })
         .catch(err => {
-            console.error("데이터 불러오기 에러:", err); // 추가
+            console.error("데이터 불러오기 에러:", err);
             alert("프로필 정보를 불러오는 데 실패했습니다.");
         })
         .finally(() => setLoading(false));
 }, []);
-
     // [이미지 업로드] 파일 변경 시 서버로 바로 전송
     const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
@@ -47,21 +52,25 @@ useEffect(() => {
     };
 
 const handleSave = async () => {
+    console.log("현재 id 상태값 :", id);
+    
+    if (!id) {
+        alert("ID 정보를 불러오는 중입니다. 잠시만 기다려주세요.");
+        return;
+    }
+    
     try {
-        // 백틱(`)을 사용하여 URL에 id를 포함시킵니다.
+        // 이제 setId(res.data.id)를 통해 id가 2로 설정되어 있을 것입니다.
         const response = await api.put(`/api/mypage/update/${id}`, {
             nickname: nickname,
             bio: bio
         });
-        
-        console.log("저장 성공:", response.data);
         alert("수정이 완료되었습니다.");
     } catch (error) {
         console.error("저장 실패:", error);
         alert("저장에 실패했습니다.");
     }
 };
-
     // [로딩 화면] 데이터가 올 때까지 표시
     if (loading) return <div>로딩 중...</div>;
 
