@@ -60,7 +60,7 @@ function AdminMain() {
         <div style={{ marginTop: "20px", display: "flex", flexDirection: "column", gap: "10px" }}>
           <button onClick={() => setActiveTab('list')}>상품 리스트</button>
           <button onClick={() => setActiveTab('update')}>상품 수정</button>
-          <button onClick={() => setActiveTab('sales')}>매출 관리</button>
+          <button onClick={() => setActiveTab('select')}>매출 관리</button>
         </div>
       </div>
 
@@ -118,7 +118,7 @@ function AdminMain() {
         {activeTab === "notice" && <NoticeSave />}
 
         {/* 탭 6: 매출 관리 */}
-        {activeTab === "sales" && (
+        {activeTab === "select" && (
           <div>
             <h2>매출 관리</h2>
             <hr />
@@ -126,6 +126,7 @@ function AdminMain() {
             {/* 추후 <AdminSales /> 컴포넌트 추가 */}
           </div>
         )}
+    
         
       </div>
     </div>
