@@ -6,6 +6,7 @@ import AdminList from "./AdminList";
 import AdminUpdate from "./AdminUpdate";
 import NoticeSave from "../notice/NoticeSave";
 import AdminSelect from "./AdminSelect";
+import AdminRemainingSeats from "./AdminRemainingSeats";
 
 function AdminMain() {
   const navigate = useNavigate();
@@ -62,6 +63,7 @@ function AdminMain() {
           <button onClick={() => setActiveTab('list')}>상품 리스트</button>
           <button onClick={() => setActiveTab('update')}>상품 수정</button>
           <button onClick={() => setActiveTab('select')}>매출 관리</button>
+          <button onClick={()=> setActiveTab('seats')}>잔여석 확인</button>
         </div>
       </div>
 
@@ -124,6 +126,12 @@ function AdminMain() {
             <h2>매출 관리</h2>
             <hr />
             <AdminSelect/>
+          </div>
+        )}
+        {/** 탭 7:  잔여석 확인 */}
+        {activeTab == "seats" &&(
+          <div>
+            <AdminRemainingSeats/>
           </div>
         )}
     
