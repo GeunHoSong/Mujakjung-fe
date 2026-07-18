@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import api from "../../axiosConfig";
 
 function MyPageEditProfile() {
@@ -9,29 +10,35 @@ function MyPageEditProfile() {
     const [profileImg, setProFileImg] = useState("");  // 프로필 이미지 경로/이름
     const [loading, setLoading] = useState(true);      // 데이터 로딩 상태
     const fileInputRef = useRef<HTMLInputElement>(null); // 파일 선택창 숨김을 위한 참조
-
+    const navigate = useNavigate();
+    const [useData, setUserData] = useState("");
+ 
     // [데이터 불러오기] 컴포넌트 마운트 시 1회 실행
 // [데이터 불러오기]
+// MyPage.js (마이페이지 조회 컴포넌트)
 // [데이터 불러오기]
 useEffect(() => {
-    const targetId  =localStorage.getItem("memberId"); // 로그인한 회원의 member_id라고 가정
-    setLoading(true);
+    const targetId = localStorage.getItem("memberId");
+    const effectiveId = targetId || 13;
+    
+    setLoading(true); // 로딩 시작
 
-    api.get(`/api/mypage/${targetId}`) 
+    api.get(`/api/mypage/${effectiveId}`) 
         .then(res => {
             console.log("서버 응답 성공:", res.data);
             
-            // 핵심: 서버에서 준 데이터(res.data.id)를 상태에 저장해야 합니다!
-            setId(res.data.id);  // 이 부분이 필수입니다. (이제 id는 2가 됨)
-            setNickName(res.data.nickname);
-            setBio(res.data.bio);
+            // 1. 여기서 상태값을 다 채워줘야 함!
+            setId(res.data.id);           // 이게 있어야 handleSave가 동작함
+            setNickName(res.data.nickname || "");
+            setBio(res.data.bio || "");
             setProFileImg(res.data.profileImg);
+            setUserData(res.data);        // 현재 페이지 상태 저장
         })
         .catch(err => {
             console.error("데이터 불러오기 에러:", err);
             alert("프로필 정보를 불러오는 데 실패했습니다.");
         })
-        .finally(() => setLoading(false));
+        .finally(() => setLoading(false)); // 2. 여기서 로딩을 끝내야 화면이 나옴!
 }, []);
     // [이미지 업로드] 파일 변경 시 서버로 바로 전송
     const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -52,24 +59,23 @@ useEffect(() => {
     };
 
 const handleSave = async () => {
-    console.log("현재 id 상태값 :", id);
+    // 3. 여기서 id가 제대로 찍히는지 확인
+    console.log("저장 시도하는 id값:", id);
     
     if (!id) {
-        alert("사용자 정보를 불러오지 못했습니다. 페이지를 새로고침 해보세요.");
+        alert("사용자 정보를 불러오지 못했습니다.");
         return;
     }
     
     try {
-        // 이제 setId(res.data.id)를 통해 id가 2로 설정되어 있을 것입니다.
         const response = await api.put(`/api/mypage/update/${id}`, {
             nickname: nickname,
             bio: bio
         });
-        alert("수정이 완료되었습니다.");
-        if(response){
-            alert("수정이 완료 되었습니다");
-            setNickName(response.data.nickname);
-            setBio(response.data.bio);
+        
+        if (response) {
+            alert("수정이 완료되었습니다.");
+            navigate("/mypage"); // 완료 후 이동
         }
     } catch (error) {
         console.error("저장 실패:", error);
