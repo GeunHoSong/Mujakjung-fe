@@ -5,6 +5,7 @@ import AdminMainMember from "./AdminMember";
 import AdminList from "./AdminList";
 import AdminUpdate from "./AdminUpdate";
 import NoticeSave from "../notice/NoticeSave";
+import AdminSelect from "./AdminSelect";
 
 function AdminMain() {
   const navigate = useNavigate();
@@ -122,8 +123,7 @@ function AdminMain() {
           <div>
             <h2>매출 관리</h2>
             <hr />
-            <p>여기에 매출 데이터 표가 표시됩니다.</p>
-            {/* 추후 <AdminSales /> 컴포넌트 추가 */}
+            <AdminSelect/>
           </div>
         )}
     
