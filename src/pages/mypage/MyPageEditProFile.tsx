@@ -14,7 +14,7 @@ function MyPageEditProfile() {
 // [데이터 불러오기]
 // [데이터 불러오기]
 useEffect(() => {
-    const targetId = 13; // 로그인한 회원의 member_id라고 가정
+    const targetId  =localStorage.getItem("memberId"); // 로그인한 회원의 member_id라고 가정
     setLoading(true);
 
     api.get(`/api/mypage/${targetId}`) 
@@ -55,7 +55,7 @@ const handleSave = async () => {
     console.log("현재 id 상태값 :", id);
     
     if (!id) {
-        alert("ID 정보를 불러오는 중입니다. 잠시만 기다려주세요.");
+        alert("사용자 정보를 불러오지 못했습니다. 페이지를 새로고침 해보세요.");
         return;
     }
     
@@ -66,6 +66,11 @@ const handleSave = async () => {
             bio: bio
         });
         alert("수정이 완료되었습니다.");
+        if(response){
+            alert("수정이 완료 되었습니다");
+            setNickName(response.data.nickname);
+            setBio(response.data.bio);
+        }
     } catch (error) {
         console.error("저장 실패:", error);
         alert("저장에 실패했습니다.");
