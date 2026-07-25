@@ -75,7 +75,7 @@ function App() {
           <Route path="/chat/ChatComponent" element={<ChatComponent/>}/>
           <Route path="/reservation/ReservationList" element={<ReservationList/>}/>
           <Route path="/reservation/ReservationOrder" element={<ReservationOrder/>}/>
-          <Route path="/reservation/ResrvationLocalStorage" element={<ResrvationLocalStorage/>}/>
+         <Route path="/reservation/ReservationLocalStorage" element={<ResrvationLocalStorage/>}/>
           <Route path= "/admin/AdminSelect" element={<AdminSelect/>}/>
          <Route path="/admin/AdminRemainingSeats" element={<AdminRemainingSeats/>}/>
         </Routes>
