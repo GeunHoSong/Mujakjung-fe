@@ -62,16 +62,16 @@ function Mypage() {
             <hr />
 
             {/* 네비게이션 버튼 영역: 클릭 시 해당 경로로 이동 */}
-            <div>
-                <button onClick={() => navigate("/cart/CartLocalStoage")}>장바구니</button>
-                <button onClick={() => navigate("/cart/CartOrder")}>주문내역</button><br/>
-                {/* 프로필 수정 버튼 클릭 시 Edit 페이지로 이동 */}
-                <button onClick={() => navigate("/mypage/MyPageEditProfile")}>프로필 수정</button>
-                <button onClick={() => navigate("/mypage/MyPageTravel")}>나의 여행 일지</button><br/>
-                <button onClick={() => navigate("/mypage/MyPageBoard")}>내 게시글</button>
-                <button>찜한 상품</button>
-                <button>설정</button>
-            </div>
+                <div>
+                    <button onClick={() => navigate("/reservation/ReservationLocalStorage")}>나의 예약</button>
+                    <button onClick={() => navigate("/reservation/ReservationOrder")}>주문내역</button><br/>
+                    {/* 프로필 수정 버튼 클릭 시 Edit 페이지로 이동 */}
+                    <button onClick={() => navigate("/mypage/MyPageEditProfile")}>프로필 수정</button>
+                    <button onClick={() => navigate("/mypage/MyPageTravel")}>나의 여행 일지</button><br/>
+                    <button onClick={() => navigate("/mypage/MyPageBoard")}>내 게시글</button>
+                    <button>찜한 상품</button>
+                    <button>설정</button>
+                </div>
         </div>
     );
 }
