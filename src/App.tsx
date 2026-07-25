@@ -26,13 +26,18 @@ import NoticeUpdate from "./pages/notice/NoticeUpdate";
 import NoticeDetail from "./pages/notice/NoticeDetail";
 import ChatComponent from "./pages/chat/ChatComponent";
 import AdminCart from "./pages/admin/AdminCart";
-import CartList from "./pages/cart/CartList";
-import CartOrder from "./pages/cart/CartOrder";
-import CartLocalStoage from "./pages/cart/CartLocalStorage";
+import CartList from "./pages/reservation/ReservationList";
+import CartOrder from "./pages/reservation/ReservationOrder";
+import CartLocalStoage from "./pages/reservation/ResrvationLocalStorage";
 // 💡 아래 이 부분의 경로 끝을 Profile -> ProFile (대문자 F)로 수정했습니다!
 import MyPageEditProfile from "./pages/mypage/MyPageEditProFile";
 import MyPageBoard from "./pages/mypage/MyPageBoard";
 import MyPageTravel from "./pages/mypage/MyPageTravel";
+import AdminSelect from "./pages/admin/AdminSelect";
+import AdminRemainingSeats from "./pages/admin/AdminRemainingSeats";
+import ResrvationLocalStorage from "./pages/reservation/ResrvationLocalStorage";
+import ReservationList from "./pages/reservation/ReservationList";
+import ReservationOrder from "./pages/reservation/ReservationOrder";
 
 function App() {
   return (
@@ -68,9 +73,11 @@ function App() {
           <Route path="/notice/:id" element={<NoticeDetail/>}/>
           <Route path="/notice/update/:id" element={<NoticeUpdate/>}/>
           <Route path="/chat/ChatComponent" element={<ChatComponent/>}/>
-          <Route path="/cart/CartList" element={<CartList/>}/>
-          <Route path="/cart/CartOrder" element={<CartOrder/>}/>
-          <Route path="/cart/CartLocalStoage" element={<CartLocalStoage/>}/>
+          <Route path="/reservation/ReservationList" element={<ReservationList/>}/>
+          <Route path="/reservation/ReservationOrder" element={<ReservationOrder/>}/>
+          <Route path="/reservation/ResrvationLocalStorage" element={<ResrvationLocalStorage/>}/>
+          <Route path= "/admin/AdminSelect" element={<AdminSelect/>}/>
+         <Route path="/admin/AdminRemainingSeats" element={<AdminRemainingSeats/>}/>
         </Routes>
 
         <Footer />
