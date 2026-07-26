@@ -22,7 +22,7 @@ function Main() {
       </main>
 
       {/* 💡 3. 화면 하단에 푸터를 배치합니다. */}
-      <Footer />
+   
     </div>
   );
 }
