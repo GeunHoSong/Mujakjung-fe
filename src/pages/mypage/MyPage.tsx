@@ -67,9 +67,9 @@ function Mypage() {
                 <button onClick={() => navigate("/reservation/ReservationOrder")}>예약 하기</button><br/>
             {/* 프로필 수정 버튼 클릭 시 Edit 페이지로 이동 */}
                  <button onClick={() => navigate("/mypage/MyPageEditProfile")}>프로필 수정</button>
-                <button onClick={() => navigate("/mypage/MyPageTravel")}>나의 여행 일지</button><br/>
+                <button onClick={() => navigate("/mypage/MyPageTravel")}>여행 후기</button><br/>
             <button onClick={() => navigate("/mypage/MyPageBoard")}>내 게시글</button>
-            <button>찜한 상품</button>
+            <button>찜한 여행 </button>
             <button>설정</button>
             </div>
         </div>
