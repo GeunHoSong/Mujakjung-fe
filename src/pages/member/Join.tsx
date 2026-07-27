@@ -7,7 +7,7 @@ function Join() {
     const [email, setEmail] = useState("");
     const [isEmailVerified , setIsEamilVerified] = useState("");
     const [authCode , setAuthCode] = useState("");
-    const [showAuthInput , setShowAuthInput] = useState("");
+    const [showAuthInput , setShowAuthInput] = useState(false);
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [name, setName] = useState("");
@@ -29,6 +29,8 @@ function Join() {
     const navigate = useNavigate(); // 가입 완료 후 페이지 이동을 위한 함수
 
     const SERVER_URL = "http://localhost:8081";
+
+    // 이메일 인증 전송 코드 를 위한 함수
     const handleSendEmailAuth = async ()=> {
         if(!email) {
             alert("이메일 을 입력을 하세요");
@@ -38,13 +40,53 @@ function Join() {
         try{
             const res  = await fetch(`${SERVER_URL}/api/member/email-auth`, {
                 method: "POST",
-                headers: {"Content-Type": "application/json" }
-                se
-            })
+                headers: {"Content-Type": "application/json" },
+                body: JSON.stringify({email}),
+            });
+            if(res.ok) {
+                alert("인증코드가 전송이 되었습니다 , 메일을 확인 해보세요");
+                setShowAuthInput(true);
+            }else (err) {
+                console.log(err);
+                alert("서버통신 중 오류가 발생을 하였습니다");
 
+            }
+        }
+    };
+
+    // 이메일 인증 코드 확인 
+    const handleVerifiedEmailCode = async ()=> {
+        try{
+            const res =  await fetch(`${SERVER_URL}/api/member/email-verified`,{
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({email, code: authCode }),
+            });
+            if(res) {
+                alert("이메일 인증이 완료가 되었습니다");
+                setShowAuthInput(true);
+            }else {
+                alert("인증 코드가 일치 하지 않습니다");
+            }
+        }catch(err){
+            console.error(err);
         }
     }
+    //[전화번호] 인증 번호 전송 요청
+    const handleSendPhoneAuth = async ()=> {
+        if(!phone) {
+            alert("전화 번호를 입력을 하세요");
+            return;
+        }
+        alert("인증하신 번호로 인증 번호가 전송이 되었습니다");
+        setShowAuthInput(true);
+    }
 
+     // [전화번호] 인증 번호 확인
+     const handleVerifiedPhoneCode = async () => {
+        alert("휴대폰 인증이 완료 되었습니다");
+        setShowAuthInput(true);
+     }
 
     // --- 3. 이벤트 핸들러 (동작 로직) ---
 
