@@ -5,10 +5,16 @@ import DaumPostcode from 'react-daum-postcode';
 function Join() {
     // --- 1. 상태 관리 (사용자 입력값) ---
     const [email, setEmail] = useState("");
+    const [isEmailVerified , setIsEamilVerified] = useState("");
+    const [authCode , setAuthCode] = useState("");
+    const [showAuthInput , setShowAuthInput] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [name, setName] = useState("");
+    const [nickname , setNickName] = useState("");
+
     const [phone, setPhoen] = useState("");
+    const [isPhoneVerified , setIsPhoeVerified] = useState("");
     const [gender, setGender] = useState("");
     const [zipcode, setZipcode] = useState("");
     const [address, setAddress] = useState("");
@@ -21,6 +27,24 @@ function Join() {
     const [previewUrl, setPreviewUrl] = useState(""); // 브라우저에 보여줄 미리보기 이미지 경로
     const fileInputRef = useRef<HTMLInputElement>(null); // 숨겨진 파일 input 태그에 접근하기 위한 변수
     const navigate = useNavigate(); // 가입 완료 후 페이지 이동을 위한 함수
+
+    const SERVER_URL = "http://localhost:8081";
+    const handleSendEmailAuth = async ()=> {
+        if(!email) {
+            alert("이메일 을 입력을 하세요");
+            return;
+
+        }
+        try{
+            const res  = await fetch(`${SERVER_URL}/api/member/email-auth`, {
+                method: "POST",
+                headers: {"Content-Type": "application/json" }
+                se
+            })
+
+        }
+    }
+
 
     // --- 3. 이벤트 핸들러 (동작 로직) ---
 
