@@ -59,8 +59,8 @@ function Login() {
   return (
     <div>
       <h2>로그인</h2>
-      <input type="email" placeholder="이메일" value={email} onChange={(e) => setEmail(e.target.value)} />
-      <input type="password" placeholder="비밀번호" value={password} onChange={(e) => setPassword(e.target.value)} />
+      <input type="email" placeholder="이메일" value={email} onChange={(e) => setEmail(e.target.value)} /><br/>
+      <input type="password" placeholder="비밀번호" value={password} onChange={(e) => setPassword(e.target.value)} /><br/>
       <button onClick={login}>로그인</button>
 
       <hr />
