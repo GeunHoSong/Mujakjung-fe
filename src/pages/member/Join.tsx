@@ -32,7 +32,7 @@ function Join() {
     const fileInputRef = useRef<HTMLInputElement>(null);
     const navigate = useNavigate();
 
-    const SERVER_URL = "http://localhost:8081";
+    const SERVER_URL = "http://localhost:8080";
 
     // [이메일] 인증 번호 전송
     const handleSendEmailAuth = async () => {
@@ -41,7 +41,7 @@ function Join() {
             return;
         }
         try {
-            const res = await fetch(`${SERVER_URL}/api/member/email-auth`, {
+            const res = await fetch(`${SERVER_URL}/api/email/send`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ email }),
@@ -61,7 +61,7 @@ function Join() {
     // [이메일] 인증 코드 확인
     const handleVerifiedEmailCode = async () => {
         try {
-            const res = await fetch(`${SERVER_URL}/api/member/email-verified`, {
+            const res = await fetch(`${SERVER_URL}/api/email/verify`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ email, code: authCode }),
@@ -80,7 +80,7 @@ function Join() {
         }
     };
 
-    // [닉네임] 중복 확인 함수 추가
+    // [닉네임] 중복 확인 함수 수정
     const handleCheckNickname = async () => {
         if (!nickname) {
             alert("닉네임을 입력하세요.");
@@ -91,7 +91,16 @@ function Join() {
                 method: "GET",
             });
             
-            if (res.ok) {
+            if (!res.ok) {
+                alert("서버 통신 중 오류가 발생했습니다.");
+                return;
+            }
+
+            // 백엔드가 boolean 값(true: 중복됨, false: 사용 가능)을 리턴함
+            const isDuplicate = await res.json(); 
+
+            // 💡 핵심: isDuplicate가 'false'여야 사용 가능한 닉네임!
+            if (!isDuplicate) {
                 alert("사용 가능한 닉네임입니다.");
                 setIsNicknameChecked(true);
             } else {
@@ -102,7 +111,6 @@ function Join() {
             alert("서버 통신 중 오류가 발생했습니다.");
         }
     };
-
     // [주소] 다음 주소 API
     const handleComplete = (data: any) => {
         setZipcode(data.zonecode);
@@ -119,7 +127,6 @@ function Join() {
         }
     };
 
-    // --- 4. 회원가입 서버 전송 ---
     const join = async () => {
         if (!agree) {
             alert("약관에 동의해야 회원가입이 가능합니다.");
@@ -140,7 +147,17 @@ function Join() {
 
         const formData = new FormData();
         const memberData = {
-            email, password, name, nickname, phone, gender, zipcode, address, detailAddress, role: "USER"
+            email, 
+            password, 
+            confirmPassword, // 👈 이 부분이 빠져있었음! 추가해주기
+            name, 
+            nickname, 
+            phone, 
+            gender, 
+            zipcode, 
+            address, 
+            detailAddress, 
+            role: "USER"
         };
         formData.append("memberData", new Blob([JSON.stringify(memberData)], { type: "application/json" }));
 
@@ -166,7 +183,6 @@ function Join() {
             alert("서버와 통신 중 문제가 발생했습니다.");
         }
     };
-
     // --- 5. UI 렌더링 ---
     return (
         <div style={{ padding: '20px', maxWidth: '400px', margin: '0 auto' }}>
@@ -222,12 +238,7 @@ function Join() {
             {/* 닉네임 입력 및 중복 확인 버튼 */}
             <div style={{ display: 'flex', gap: '5px', marginBottom: '10px' }}>
                 <input 
-                    value={nickname} 
-                    onChange={(e) => setNickName(e.target.value)} 
-                    placeholder="닉네임" 
-                    disabled={isNicknameChecked}
-                    style={{ flex: 1 }}
-                />
+                    value={nickname}  onChange={(e) => setNickName(e.target.value)} placeholder="닉네임" disabled={isNicknameChecked} style={{ flex: 1 }}/>
                 <button type="button" onClick={handleCheckNickname} disabled={isNicknameChecked}>
                     {isNicknameChecked ? "확인 완료" : "중복 확인"}
                 </button>

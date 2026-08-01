@@ -9,7 +9,7 @@ function Login() {
   const navigate = useNavigate();
 
   // 서버 주소 통일 (8081로 설정, 서버 포트에 맞게 수정하세요)
-  const SERVER_URL = "http://localhost:8081";
+  const SERVER_URL = "http://localhost:8080";
 
   // 1. 카카오 로그인 성공 후 토큰 처리
   useEffect(() => {
