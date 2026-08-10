@@ -32,7 +32,9 @@ function AdminRemainingSeats(){
                                 <td>{item.data}</td>
                                 <td>{item.maxPeople}</td>
                                 <td>{item.remaining}</td>
-
+                                <td style={{ fontWeight: "bold", color: item.remainingSeats === 0 ? "red" : "blue" }}>
+                                    {item.remainingSeats}석
+                                </td>
                             </tr>
                         ))
                     )}

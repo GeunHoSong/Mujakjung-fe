@@ -26,7 +26,7 @@ function ResrvationLocalStorage() {
         const newReservation = {
             id: Date.now(), // 고유 ID 부여 (현재 시간 밀리초 활용)
             productName: "강릉 커피 투어",
-            departureData: formattedDate,
+            departureDate: formattedDate,
             status: "예약 완료"
         };
 
@@ -107,7 +107,7 @@ function ResrvationLocalStorage() {
                             <li key={item.id} style={{ marginBottom: '15px', padding: '15px', border: '1px solid #ddd', borderRadius: '8px', backgroundColor: '#f9f9f9', display: 'flex', justifyContent: 'space-between', alignItems: 'center', boxShadow: '0 1px 3px rgba(0,0,0,0.05)' }}>
                                 <div>
                                     <p style={{ margin: '3px 0' }}><strong>상품명:</strong> {item.productName}</p>
-                                    <p style={{ margin: '3px 0' }}><strong>출발 날짜:</strong> {item.departureData}</p>
+                                    <p style={{ margin: '3px 0' }}><strong>출발 날짜:</strong> {item.departureDate}</p>
                                     <p style={{ margin: '3px 0' }}><strong>상태:</strong> <span style={{ color: 'blue' }}>{item.status}</span></p>
                                 </div>
                                 {/* 예약 취소 버튼 */}
