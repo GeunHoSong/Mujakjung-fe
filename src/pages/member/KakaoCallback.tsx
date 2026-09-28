@@ -9,7 +9,7 @@ function KakaoCallback(){
         const token = searchParams.get("token");
         if(token){
             console.log("카카오 로그인 성공~! 토큰 저장 하는 중 ");
-            localStorage.setItem("token", token);
+            localStorage.setItem("accessToken", token );
             navigate("/");
         }else{
             console.error("카카오 토큰을 찾을 수 없습니다");

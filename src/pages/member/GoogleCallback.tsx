@@ -7,10 +7,10 @@ function GoogleCallback() {
     const navigate = useNavigate();
     
     useEffect(()=> {
-        const token  = SearchParams.get("toekn");
+        const token = SearchParams.get("token");
         if(token){
             console.log("구글 로그인 성공 토큰 저장 성공" )
-            localStorage.setItem("token" ,token);
+            localStorage.setItem("accessToken", token);
             navigate("/");
         } else {
             console.log("구글 토큰을 찾을 수 없습니다");
