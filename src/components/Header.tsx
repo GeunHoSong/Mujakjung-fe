@@ -12,6 +12,7 @@ function Header() {
   const token = localStorage.getItem("accessToken");
   const userRole = localStorage.getItem("role");
   const userName = localStorage.getItem("userName");
+  const [isMenuOpne, setIsMenuOpne] = useState(false);
 
   const logout = () => {
     localStorage.clear();
@@ -28,17 +29,21 @@ function Header() {
       zIndex: 1000, boxSizing: "border-box", overflow: "hidden" 
     }}>
       {/* 왼쪽: 로고 및 메뉴 */}
-      <div style={{ display: "flex", alignItems: "center", gap: "20px" }}>
-        <Link to="/">
-          <img src={logo} alt="로고" width="50" style={{ borderRadius: "50%" }} />
-        </Link>
-        <h1 style={{ margin: 0, fontSize: "1.2rem", whiteSpace: "nowrap" }}>AI 여행</h1>
-        
-        <nav style={{ display: "flex", gap: "15px" }}>
-          <Link to="/chat" style={{ textDecoration: "none", color: "#333" }}>상담</Link>
-          <Link to="/notice/list" style={{ textDecoration: "none", color: "#333" }}>공지</Link>
-          <Link to="/board/list" style={{ textDecoration: "none", color: "#333" }}>게시판</Link>
-        </nav>
+      <div style={{display: "flex" , alignContent: "center" , gap: "20px" , position: "relative" }}>
+         {/*  [여기 추가] 햄버거 메뉴 버튼 */}
+         <button onClick={()=> setIsMenuOpne(!isMenuOpne)} style={{background: "none",  fontSize: "22px" , cursor: "pointer", padding: "5px"}}>
+         </button>
+         {/* [여기 추가] 햄버거 메뉴 누르면 나오는 카테고리 목록 */}
+          {isMenuOpne && (
+            <div style={{ position: "absolute", top: "55px", left:"0 " , backgroundColor: "white", border:"1px solid #ccc", borderRadius:"8px", 
+              boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)" , width: "140px", zIndex: "1100", display: "flex" , flexDirection: "column", padding: "10px 0"
+            }}>
+            <Link to={/domestic} onClick={}>
+            </Link>
+            </div>
+          )}
+
+
 
         {/* 검색창 */}
         <div style={{ display: "flex", gap: "5px" }}>
