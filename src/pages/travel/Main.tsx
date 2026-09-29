@@ -72,7 +72,7 @@ function Main() {
               onClick={() => setIsChatOpen(!isChatOpen)} 
               style={{ background: "linear-gradient(135deg, #3b82f6, #1d4ed8)", color: "white", border: "none", padding: "14px 28px", fontSize: "16px", fontWeight: "bold", borderRadius: "12px", cursor: "pointer", boxShadow: "0 4px 12px rgba(59, 130, 246, 0.3)" }}
             >
-              {isChatOpen ? "💬 AI 대화창 닫기" : "✨ AI 비서와 대화 시작하기"}
+              {isChatOpen ? "💬 AI 대화창 닫기" : " AI 비서와 대화 시작하기"}
             </button>
           </div>
 
