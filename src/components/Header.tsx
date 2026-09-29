@@ -7,12 +7,14 @@ function Header() {
 
   const [keyword, setKeyword] = useState("");
   const [type, setType] = useState("domestic");
-
+  
   // 토큰 및 사용자 정보 가져오기
   const token = localStorage.getItem("accessToken");
   const userRole = localStorage.getItem("role");
   const userName = localStorage.getItem("userName");
-  const [isMenuOpne, setIsMenuOpne] = useState(false);
+  
+  // 햄버거 메뉴 상태 (오타 수정)
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const logout = () => {
     localStorage.clear();
@@ -26,24 +28,49 @@ function Header() {
       position: "fixed", top: 0, left: 0, width: "100%", height: "70px",
       display: "flex", justifyContent: "space-between", alignItems: "center",
       padding: "0 20px", borderBottom: "1px solid #ccc", backgroundColor: "white",
-      zIndex: 1000, boxSizing: "border-box", overflow: "hidden" 
+      zIndex: 1000, boxSizing: "border-box" // overflow: "hidden" 제거함 (메뉴 잘림 방지)
     }}>
-      {/* 왼쪽: 로고 및 메뉴 */}
-      <div style={{display: "flex" , alignContent: "center" , gap: "20px" , position: "relative" }}>
-         {/*  [여기 추가] 햄버거 메뉴 버튼 */}
-         <button onClick={()=> setIsMenuOpne(!isMenuOpne)} style={{background: "none",  fontSize: "22px" , cursor: "pointer", padding: "5px"}}>
-         </button>
-         {/* [여기 추가] 햄버거 메뉴 누르면 나오는 카테고리 목록 */}
-          {isMenuOpne && (
-            <div style={{ position: "absolute", top: "55px", left:"0 " , backgroundColor: "white", border:"1px solid #ccc", borderRadius:"8px", 
-              boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)" , width: "140px", zIndex: "1100", display: "flex" , flexDirection: "column", padding: "10px 0"
-            }}>
-            <Link to={/domestic} onClick={}>
+      {/* 왼쪽: 햄버거 메뉴, 로고 및 메뉴 */}
+      <div style={{ display: "flex", alignItems: "center", gap: "20px", position: "relative" }}>
+        
+        {/* 햄버거 메뉴 버튼 (☰ 기호 추가) */}
+        <button 
+          onClick={() => setIsMenuOpen(!isMenuOpen)} 
+          style={{ background: "none", border: "none", fontSize: "22px", cursor: "pointer", padding: "5px" }}
+        >
+          ☰
+        </button>
+
+        {/* 햄버거 메뉴 누르면 나오는 카테고리 목록 */}
+        {isMenuOpen && (
+          <div style={{ 
+            position: "absolute", top: "55px", left: "0", backgroundColor: "white", 
+            border: "1px solid #ccc", borderRadius: "8px", boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)", 
+            width: "140px", zIndex: 1100, display: "flex", flexDirection: "column", padding: "10px 0" 
+          }}>
+            <Link to="/domestic" onClick={() => setIsMenuOpen(false)} style={{ padding: "10px 15px", textDecoration: "none", color: "#333", display: "block" }}>
+              국내 여행
             </Link>
-            </div>
-          )}
+            <Link to="/overseas" onClick={() => setIsMenuOpen(false)} style={{ padding: "10px 15px", textDecoration: "none", color: "#333", display: "block" }}>
+              해외 여행
+            </Link>
+            <Link to="/support" onClick={() => setIsMenuOpen(false)} style={{ padding: "10px 15px", textDecoration: "none", color: "#333", display: "block" }}>
+              고객 센터
+            </Link>
+          </div>
+        )}
 
-
+        {/* 로고 및 상단 네비게이션 (다시 추가됨) */}
+        <Link to="/">
+          <img src={logo} alt="로고" width="50" style={{ borderRadius: "50%" }} />
+        </Link>
+        <h1 style={{ margin: 0, fontSize: "1.2rem", whiteSpace: "nowrap" }}>무작정</h1>
+        
+        <nav style={{ display: "flex", gap: "15px" }}>
+          <Link to="/chat" style={{ textDecoration: "none", color: "#333" }}>상담</Link>
+          <Link to="/notice/list" style={{ textDecoration: "none", color: "#333" }}>공지</Link>
+          <Link to="/board/list" style={{ textDecoration: "none", color: "#333" }}>게시판</Link>
+        </nav>
 
         {/* 검색창 */}
         <div style={{ display: "flex", gap: "5px" }}>
@@ -73,7 +100,6 @@ function Header() {
           <>
             <button onClick={() => navigate("/join")}>회원가입</button>
             <button onClick={() => navigate("/login")}>로그인</button>
-            
           </>
         )}
       </div>
