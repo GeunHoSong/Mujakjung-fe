@@ -38,6 +38,7 @@ import AdminRemainingSeats from "./pages/admin/AdminRemainingSeats";
 import ResrvationLocalStorage from "./pages/reservation/ResrvationLocalStorage";
 import ReservationList from "./pages/reservation/ReservationList";
 import ReservationOrder from "./pages/reservation/ReservationOrder";
+import GoogleCallback from "./pages/member/GoogleCallback";
 
 function App() {
   return (
@@ -78,6 +79,8 @@ function App() {
          <Route path="/reservation/ReservationLocalStorage" element={<ResrvationLocalStorage/>}/>
           <Route path= "/admin/AdminSelect" element={<AdminSelect/>}/>
          <Route path="/admin/AdminRemainingSeats" element={<AdminRemainingSeats/>}/>
+          <Route path="/login/oauth2/code/google" element={<GoogleCallback />} />
+
         </Routes>
 
         <Footer />

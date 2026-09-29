@@ -4,66 +4,143 @@ import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import MainBanner from "./MainBanner";
 
+interface Message {
+  sender: 'ai' | 'user';
+  text: string;
+}
+
 // Main 페이지
 function Main() {
-  const [prompt , setPrompt] = useState('');
-  const [destination, setDestination] = useState('');
-  const [loading , setLoading ] = useState(false);
-  const [aiResult, setAiResult] = useState<any>(null);
-  const handleAiSearch =async (e: React.FormEvent) => {
-    e.preventDefault();
-    if(!prompt.trim){
-      alert("AI 에게 현재 기분이나 여행 목적을 살짝 들려 주세요");
-    }
-    setLoading (true);
+  const [isChatOpen, setIsChatOpen] = useState(false);
+  
+  // 1. 상태 변수 이름을 소문자 messages로 통일
+  const [messages, setMessages] = useState<Message[]>([
+    { sender: 'ai', text: "요즘 많이 지치셨나요? 마음속 이야기를 편하게 들려주시면 딱 맞는 힐링 여행지와 일정을 함께 찾아드릴게요. 🌊" }
+  ]);
+  
+  const [input, setInput] = useState('');
+  const [loading, setLoading] = useState(false);
 
-    setTimeout(() => {
-      setAiResult({
-        emition : "지친 마음 의 휴식과 힐링 필요",
-        comforMessage: "요즘 많이 지치셨군요 파도 소리를 들으면서 아무 생각 없이 쉴수 있는 속초 바다를 추천해 드릴 께요 ",
-        itinrary: [
-          {day: 1, title: "오션뷰 카페에서 멍 때리기 & 바닷가 산책" , desc: "도착 하자마자 조용한 카페에서 따뜻한 차 한잔과 함께 파도 감상 "},
-          {day: 2, title: "자연 속에서 힐링 산책로 걷기" , desc: "피톤치트 가득한 숲길을 걸으면서 머릿속에 복잡한 생각 비우기"}
-        ]
+  const handleSendMessage = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!input.trim() || loading) return;
+
+    const userMessage = input;
+    
+    // 2. 유저가 보낸 메시지는 sender를 'user'로 지정해야 우측에 정렬됩니다.
+    setMessages((prev) => [...prev, { sender: 'user', text: userMessage }]);
+    setInput('');
+    setLoading(true);
+
+    try {
+      // FastAPI 백엔드로 요청 전송
+      const response = await fetch('http://localhost:8000/generate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ content: userMessage })
       });
-      setLoading(false)
-    }, 1500);
-  }
+      const data = await response.json();
+      
+      // 3. 백엔드 응답 필드명 오타 수정 (analysis_result)
+      setMessages((prev) => [...prev, { sender: 'ai', text: data.analysis_result }]);
+
+    } catch (error) {
+      console.log("통신 에러", error);
+      setMessages((prev) => [...prev, { sender: 'ai', text: "서버와 연결하지 못했어요. FastAPI 서버가 켜져 있는지 확인해 주세요!" }]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div>
-      {/* 💡 1. 누락되었던 헤더 컴포넌트를 맨 위에 배치합니다. */}
+      {/* 💡 헤더 컴포넌트 */}
       <Header />
 
-      {/* 💡 2. 헤더(height: 70px)가 fixed 스타일이므로, 본문이 가려지지 않도록 패딩을 줍니다. */}
-      <main style={{ paddingTop: "70px", minHeight: "calc(100vh - 70px)" }}>
+      {/* 본문 영역 */}
+      <main style={{ paddingTop: "70px", minHeight: "calc(100vh - 70px)", background: "#f8f9fa" }}>
         <MainBanner />
         
-        <div style={{maxWidth: "900px" , margin: "40px auto ", padding: "0 20px" }} >
-          <div style={{background:"#fffff", padding: "30px",  borderRadius: "20px", boxShadow: "0 10px 30px rgba(0,0,0,0.08)", border:"1px solid #eaeaea", }}>
-            <h2 style={{fontSize:"24px", color:"#333" , marginBottom: "8px"}}>AI 감성 여행 플래너</h2>
-            <p style={{ color:"#666", fontSize:" 14px", marginBottom:"20px"}}>어떤 기분이신가요 ? 혹은 어떤 여행 을 꿈꾸고 시나요 ??</p>
-            <form onSubmit={handleAiSearch}>
-              {/* 감정 입력 창*/}
-              <div style={{ display: "flex", alignItems: "center", background: "#f8f9fa", border: "2px solid #e2e8f0", borderRadius: "12px", padding: "12px 16px", marginBottom: "16px" }}>
-                <span style={{fontSize: "10px"}}></span>
-                <input type="text" value={prompt} onChange={(e) => setPrompt(e.target.value)} placeholder="예: 요즘 너무 지쳐 서 조용한 곳에서 힐링 하고 싶어 ..." />
-                
-              </div>
-              {/*목적지및 일정 요약 그리드*/}
-              <div style={{display: "grid" , gridTemplateColumns: "2fr 1.5fr 1fr" ,gap: "12px", marginBottom:"20px" }}>
-                <div style={{}}>
-
-                </div>
-
-              </div>
-            </form>
+        <div style={{ maxWidth: "900px", margin: "40px auto", padding: "0 20px" }}>
+          
+          {/* AI 비서 토글 버튼 영역 */}
+          <div style={{ background: "#ffffff", padding: "30px", borderRadius: "20px", boxShadow: "0 10px 30px rgba(0,0,0,0.08)", border: "1px solid #eaeaea", textAlign: "center" }}>
+            <h2 style={{ fontSize: "24px", color: "#333", marginBottom: "8px" }}>무작정 개인 AI 여행 비서</h2>
+            <p style={{ color: "#666", fontSize: "14px", marginBottom: "20px" }}>마음이 지칠 때, 언제든 나만의 AI 비서와 대화를 시작해보세요.</p>
+            
+            <button 
+              onClick={() => setIsChatOpen(!isChatOpen)} 
+              style={{ background: "linear-gradient(135deg, #3b82f6, #1d4ed8)", color: "white", border: "none", padding: "14px 28px", fontSize: "16px", fontWeight: "bold", borderRadius: "12px", cursor: "pointer", boxShadow: "0 4px 12px rgba(59, 130, 246, 0.3)" }}
+            >
+              {isChatOpen ? "💬 AI 대화창 닫기" : "✨ AI 비서와 대화 시작하기"}
+            </button>
           </div>
-      
+
+          {/* 버튼을 누르면 열리는 인라인 대화형 채팅 창 */}
+          {isChatOpen && (
+            <div style={{ marginTop: "24px", background: "#ffffff", borderRadius: "20px", border: "1px solid #eaeaea", boxShadow: "0 10px 30px rgba(0,0,0,0.08)", overflow: "hidden", display: "flex", flexDirection: "column", height: "550px" }}>
+              
+              {/* 채팅창 헤더 */}
+              <div style={{ background: "#1d4ed8", color: "white", padding: "16px 20px", fontWeight: "bold", fontSize: "16px", display: "flex", alignItems: "center", gap: "8px" }}>
+                <span>🤖</span> 무작정 AI 감성 가이드와 대화 중
+              </div>
+
+              {/* 대화 말풍선 리스트 영역 */}
+              <div style={{ flex: 1, padding: "20px", overflowY: "auto", display: "flex", flexDirection: "column", gap: "16px", background: "#f8f9fa" }}>
+                {/* 4. 타입스크립트 에러 방지를 위해 msg: Message 명시 */}
+                {messages.map((msg: Message, idx: number) => (
+                  <div key={idx} style={{ display: "flex", justifyContent: msg.sender === 'user' ? 'flex-end' : 'flex-start' }}>
+                    <div style={{ 
+                      maxWidth: "75%", 
+                      padding: "14px 18px", 
+                      borderRadius: "16px", 
+                      fontSize: "14px", 
+                      lineHeight: "1.5",
+                      whiteSpace: "pre-line",
+                      background: msg.sender === 'user' ? "#2563eb" : "#ffffff",
+                      color: msg.sender === 'user' ? "#ffffff" : "#1f2937",
+                      border: msg.sender === 'ai' ? "1px solid #e5e7ed" : "none",
+                      boxShadow: msg.sender === 'ai' ? "0 2px 5px rgba(0,0,0,0.02)" : "none"
+                    }}>
+                      {msg.text}
+                    </div>
+                  </div>
+                ))}
+                {loading && (
+                  <div style={{ display: "flex", justifyContent: "flex-start" }}>
+                    <div style={{ background: "#ffffff", padding: "12px 16px", borderRadius: "16px", fontSize: "14px", color: "#888", border: "1px solid #e5e7ed" }}>
+                      고민을 깊이 읽고 답변을 정리하는 중이에요... ✍️
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* 메시지 입력폼 영역 */}
+              <form onSubmit={handleSendMessage} style={{ padding: "16px", background: "#ffffff", borderTop: "1px solid #eaeaea", display: "flex", gap: "10px" }}>
+                <input 
+                  type="text" 
+                  value={input} 
+                  onChange={(e) => setInput(e.target.value)} 
+                  placeholder="예: 요즘 너무 지쳐서 조용한 곳에서 힐링하고 싶어..." 
+                  style={{ flex: 1, border: "1px solid #d1d5db", borderRadius: "10px", padding: "12px 16px", outline: "none", fontSize: "14px" }}
+                />
+                <button 
+                  type="submit" 
+                  disabled={loading}
+                  style={{ background: "#2563eb", color: "white", border: "none", padding: "0 20px", borderRadius: "10px", fontWeight: "bold", cursor: "pointer", fontSize: "14px" }}
+                >
+                  보내기
+                </button>
+              </form>
+
+            </div>
+          )}
+
         </div>
       </main>
 
-      {/* 💡 3. 화면 하단에 푸터를 배치합니다. */}
-   
+      {/* 푸터 컴포넌트 */}
+      <Footer />
     </div>
   );
 }
