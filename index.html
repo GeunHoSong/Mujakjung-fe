@@ -1,15 +1,20 @@
 <!doctype html>
-<html lang="en">
+<html lang="ko">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>무작정 프로젝트</title>
-<script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=a2cfe81416efc3f5169aa956268cdf82&libraries=services&autoload=false"></script>
-<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    <title>무작정</title>
+    
+    <!-- 🗺️ 구글 지도 JavaScript API 스크립트 로드 -->
+    <!-- async defer 속성을 통해 페이지 렌더링을 차단하지 않고 비동기적으로 안전하게 불러옵니다. -->
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAfvDw7glkYnWbkGteRCgw_5AnUxyl9fZw"></script>
   </head>
   <body>
+    <!-- React 앱이 마운트되는 루트(root) 엘리먼트 -->
     <div id="root"></div>
+    
+    <!-- 메인리액트 진입점(TypeScript/JavaScript 모듈) 스크립트 -->
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
