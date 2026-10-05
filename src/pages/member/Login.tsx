@@ -53,7 +53,7 @@ function Login() {
 
   // 3. 소셜 로그인 이동 함수들
   const kakaoLogin = () => { window.location.href = `${SERVER_URL}/auth/kakao`; };
-  const naverLogin = () => { window.location.href = `${SERVER_URL}/auth/naver`; };
+  const naverLogin = () => { window.location.href = `${SERVER_URL}/oauth2/authorization/naver`; };
   const googleLogin = () => { window.location.href = `${SERVER_URL}/oauth2/authorization/google`; }; // 구글 로그인 함수
 
   return (

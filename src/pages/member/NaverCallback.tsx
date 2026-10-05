@@ -10,7 +10,7 @@ function NaverCallback (){
         const token = searchParams.get("token");
         if(token){
             console.log("소셜 로그인 성공 토큰을 브라우저 에 저장 합니다 ");
-            localStorage.setItem("token", token);// 로컬 스토리지에 JWT 저장
+            localStorage.setItem("accessToken", token);// 로컬 스토리지에 JWT 저장
             navigate("/");
         }else {
             console.error("url애 토큰 이 존재 하지 않습니다");
