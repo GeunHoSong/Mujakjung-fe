@@ -39,6 +39,7 @@ import ResrvationLocalStorage from "./pages/reservation/ResrvationLocalStorage";
 import ReservationList from "./pages/reservation/ReservationList";
 import ReservationOrder from "./pages/reservation/ReservationOrder";
 import GoogleCallback from "./pages/member/GoogleCallback";
+import SupportPage from "./pages/support/SupportPage";
 
 function App() {
   return (
@@ -80,6 +81,7 @@ function App() {
           <Route path= "/admin/AdminSelect" element={<AdminSelect/>}/>
          <Route path="/admin/AdminRemainingSeats" element={<AdminRemainingSeats/>}/>
           <Route path="/login/oauth2/code/google" element={<GoogleCallback />} />
+          <Route path="/support/SupportPage" element={<SupportPage/>}/>
 
         </Routes>
 
