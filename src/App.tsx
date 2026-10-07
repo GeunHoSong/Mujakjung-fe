@@ -81,7 +81,7 @@ function App() {
           <Route path= "/admin/AdminSelect" element={<AdminSelect/>}/>
          <Route path="/admin/AdminRemainingSeats" element={<AdminRemainingSeats/>}/>
           <Route path="/login/oauth2/code/google" element={<GoogleCallback />} />
-          <Route path="/support/SupportPage" element={<SupportPage/>}/>
+          <Route path="/support" element={<SupportPage/>}/>
 
         </Routes>
 
