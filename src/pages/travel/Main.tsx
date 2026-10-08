@@ -349,8 +349,7 @@ function Main() {
                 />
 
                 {/* 전송 버튼 */}
-                <button
-                  type="submit"
+                <button type="submit"
                   disabled={loading}
                   style={{
                     background: loading
