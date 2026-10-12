@@ -61,16 +61,19 @@ function Mypage() {
 
             <hr />
 
-            <div>
+             <div>
                 <button onClick={() => navigate("/reservation/ReservationLocalStorage")}>나의 예약</button>
-                <button onClick={() => navigate("/reservation/ReservationList")}>에약 목록 </button><br/>
-                <button onClick={() => navigate("/reservation/ReservationOrder")}>예약 하기</button><br/>
-            {/* 프로필 수정 버튼 클릭 시 Edit 페이지로 이동 */}
-                 <button onClick={() => navigate("/mypage/MyPageEditProfile")}>프로필 수정</button>
-                <button onClick={() => navigate("/mypage/MyPageTravel")}>여행 일정 </button><br/>
-            <button onClick={() => navigate("/mypage/MyPageBoard")}>내 게시글</button><br/>
-            <button>찜한 여행 </button>
-            <button>설정</button>
+                <button onClick={() => navigate("/reservation/ReservationList")}>예약 목록</button><br/>
+                <button onClick={() => navigate("/reservation/ReservationCreate")}>예약 하기</button><br/>
+                
+                {/* 프로필 수정 경로를 App.tsx와 일치시킴 (/mypage/edit) */}
+                <button onClick={() => navigate("/mypage/edit")}>프로필 수정</button>
+                <button onClick={() => navigate("/mypage/travel")}>여행 일정</button><br/>
+                 <button onClick={() => navigate("/travel/TravelSave")}>여행 일정 저장</button><br/>
+                <button onClick={() => navigate("/mypage/board")}>내 게시글</button><br/>
+                
+                <button>찜한 여행</button>
+                <button>설정</button>
             </div>
         </div>
     );

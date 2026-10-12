@@ -1,19 +1,20 @@
 import React from "react";
+
 interface ReservationItem {
     id: number;
     productName: string;
     departureDate: string;
     status: string;
-
 }
 
 interface ReservationListProps {
     reservation: ReservationItem[];
     onDelete: (id: number) => void;    
 }
-function ReservationList({ reservation = [], onDelete } : ReservationListProps) {
+
+function ReservationList({ reservation = [], onDelete }: ReservationListProps) {
     return (
-        <div>
+        <div style={{ padding: '40px', maxWidth: '800px', margin: '0 auto' }}>
             <h2>나의 예약 내역 목록</h2>
             {reservation.length === 0 ? (
                 <p style={{ color: '#777', marginTop: '15px' }}>예약된 내용이 없습니다.</p>
