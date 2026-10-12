@@ -12,14 +12,24 @@ function Login() {
   // 서버 주소 통일
   const SERVER_URL = "http://localhost:8080";
 
-  // 1. 소셜 로그인 성공 후 토큰 처리
+  // 1. 소셜 로그인 성공 후 토큰, 권한, 이름 처리
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const token = params.get("token");
+    const role = params.get("role");
+    const name = params.get("name");
 
     if (token) {
       console.log("소셜 로그인 토큰 감지됨:", token);
       localStorage.setItem("accessToken", token); 
+      
+      if (role) {
+        localStorage.setItem("role", role);
+      }
+      if (name) {
+        localStorage.setItem("userName", name);
+      }
+
       window.location.href = "/";
     }
   }, []);
@@ -54,7 +64,7 @@ function Login() {
   // 3. 소셜 로그인 이동 함수들
   const kakaoLogin = () => { window.location.href = `${SERVER_URL}/auth/kakao`; };
   const naverLogin = () => { window.location.href = `${SERVER_URL}/oauth2/authorization/naver`; };
-  const googleLogin = () => { window.location.href = `${SERVER_URL}/oauth2/authorization/google`; }; // 구글 로그인 함수
+  const googleLogin = () => { window.location.href = `${SERVER_URL}/oauth2/authorization/google`; };
 
   return (
     <div>

@@ -7,6 +7,7 @@ import AdminUpdate from "./AdminUpdate";
 import NoticeSave from "../notice/NoticeSave";
 import AdminSelect from "./AdminSelect";
 import AdminRemainingSeats from "./AdminRemainingSeats";
+import AdminInquiry from "./AdminInquiry"; // 파일명을 정확히 맞춤 (Inquiry)
 
 function AdminMain() {
   const navigate = useNavigate();
@@ -23,7 +24,7 @@ function AdminMain() {
 
   // 2. 이벤트 핸들러: 여행지 등록
   const handleRegister = () => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("accessToken"); // 키값을 accessToken으로 통일!
     const travelData = {
       category, title, location, content, price,
       imageName: imageFile ? imageFile.name : "없음",
@@ -56,6 +57,9 @@ function AdminMain() {
         <div onClick={() => setActiveTab("members")} style={{ padding: "15px", cursor: "pointer", borderRadius: "5px", backgroundColor: activeTab === "members" ? "#3e8e41" : "transparent" }}>
           고객 관리 등록
         </div>
+        <div onClick={() => setActiveTab("inquiry")} style={{ padding: "15px", cursor: "pointer", borderRadius: "5px", backgroundColor: activeTab === "inquiry" ? "#3e8e41" : "transparent" }}>
+          고객센터 문의 관리
+        </div>
         <div onClick={() => setActiveTab("notice")} style={{ padding: "15px", cursor: "pointer", borderRadius: "5px", backgroundColor: activeTab === "notice" ? "#3e8e41" : "transparent" }}>
           공지 사항
         </div>
@@ -63,7 +67,7 @@ function AdminMain() {
           <button onClick={() => setActiveTab('list')}>상품 리스트</button>
           <button onClick={() => setActiveTab('update')}>상품 수정</button>
           <button onClick={() => setActiveTab('select')}>매출 관리</button>
-          <button onClick={()=> setActiveTab('seats')}>잔여석 확인</button>
+          <button onClick={() => setActiveTab('seats')}>잔여석 확인</button>
         </div>
       </div>
 
@@ -101,7 +105,10 @@ function AdminMain() {
         {/* 탭 2: 회원 관리 */}
         {activeTab === "members" && <AdminMainMember />}
 
-        {/* 탭 3: 상품 리스트 */}
+        {/* 탭 3: 1:1 고객센터 문의 관리 */}
+        {activeTab === "inquiry" && <AdminInquiry />}
+
+        {/* 탭 4: 상품 리스트 */}
         {activeTab === "list" && (
           <div>
             <h2>상품 리스트</h2>
@@ -109,7 +116,7 @@ function AdminMain() {
           </div>
         )}
 
-        {/* 탭 4: 상품 수정 */}
+        {/* 탭 5: 상품 수정 */}
         {activeTab === "update" && (
           <div>
             <h2>상품 수정</h2>
@@ -117,24 +124,24 @@ function AdminMain() {
           </div>
         )}
 
-        {/* 탭 5: 공지사항 */}
+        {/* 탭 6: 공지사항 */}
         {activeTab === "notice" && <NoticeSave />}
 
-        {/* 탭 6: 매출 관리 */}
+        {/* 탭 7: 매출 관리 */}
         {activeTab === "select" && (
           <div>
             <h2>매출 관리</h2>
             <hr />
-            <AdminSelect/>
+            <AdminSelect />
           </div>
         )}
-        {/** 탭 7:  잔여석 확인 */}
-        {activeTab == "seats" &&(
+
+        {/* 탭 8: 잔여석 확인 */}
+        {activeTab === "seats" && (
           <div>
-            <AdminRemainingSeats/>
+            <AdminRemainingSeats />
           </div>
         )}
-    
         
       </div>
     </div>

@@ -17,7 +17,7 @@ function AdminMainMember(){
     const [loading , setLoading] = useState<boolean>(true);
     // 백엔드 api 연동 영역 주설 처리 예측 
     useEffect(()=>{
-        const token = localStorage.getItem("token");
+        const token = localStorage.getItem("accessToken");
       axios.get("http://localhost:8080/api/admin/members", {
         headers: { Authorization: `Bearer ${token}` }
       })
