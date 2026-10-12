@@ -44,36 +44,79 @@ function Mypage() {
     if (isLoading) return <div>데이터 불러 오는 중...</div>;
 
     return (
-        <div>
+        <div style={{ padding: "40px", maxWidth: "800px", margin: "0 auto", fontFamily: "sans-serif" }}>
             <h1>마이페이지</h1>
             
             {/* 정보 표시 영역: 단순히 읽기 전용으로 데이터를 보여줌 */}
-            <div style={{ marginBottom: '20px' }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "20px", marginBottom: '30px' }}>
                 <img 
                     src={`http://localhost:8080/api/member/display?fileName=${userProfile.profileImg}`}
                     alt="프로필 이미지"
-                    style={{ width: '120px', height: '120px', borderRadius: '50%' }}
+                    style={{ width: '100px', height: '100px', borderRadius: '50%', objectFit: "cover", border: "1px solid #ddd" }}
                 />
-                <p><strong>닉네임:</strong> {userProfile.nickname}</p>
-                <p><strong>이메일:</strong> {userProfile.email}</p>
-                <p><strong>자기소개:</strong> {userProfile.bio}</p>
+                <div>
+                    <p style={{ margin: "4px 0" }}><strong>닉네임:</strong> {userProfile.nickname}</p>
+                    <p style={{ margin: "4px 0" }}><strong>이메일:</strong> {userProfile.email}</p>
+                    <p style={{ margin: "4px 0" }}><strong>자기소개:</strong> {userProfile.bio || "등록된 자기소개가 없습니다."}</p>
+                </div>
             </div>
 
-            <hr />
+            <hr style={{ border: "0", borderTop: "1px solid #eee", marginBottom: "20px" }} />
 
-             <div>
-                <button onClick={() => navigate("/reservation/ReservationLocalStorage")}>나의 예약</button>
-                <button onClick={() => navigate("/reservation/ReservationList")}>예약 목록</button><br/>
-                <button onClick={() => navigate("/reservation/ReservationCreate")}>예약 하기</button><br/>
-                
-                {/* 프로필 수정 경로를 App.tsx와 일치시킴 (/mypage/edit) */}
-                <button onClick={() => navigate("/mypage/edit")}>프로필 수정</button>
-                <button onClick={() => navigate("/mypage/travel")}>여행 일정</button><br/>
-                 <button onClick={() => navigate("/travel/TravelSave")}>여행 일정 저장</button><br/>
-                <button onClick={() => navigate("/mypage/board")}>내 게시글</button><br/>
-                
-                <button>찜한 여행</button>
-                <button>설정</button>
+            {/* 메뉴 버튼 영역 ("나의 예약" 제거 및 정리) */}
+            <div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
+                <button 
+                    onClick={() => navigate("/travel/list")}
+                    style={{ padding: "10px 16px", backgroundColor: "#2563eb", color: "#fff", border: "none", borderRadius: "6px", cursor: "pointer", fontWeight: "bold" }}
+                >
+                    🗺️ 내 여행 목록
+                </button>
+                <button 
+                    onClick={() => navigate("/reservation/ReservationList")}
+                    style={{ padding: "10px 16px", backgroundColor: "#f8fafc", border: "1px solid #cbd5e1", borderRadius: "6px", cursor: "pointer" }}
+                >
+                    예약 목록
+                </button>
+                <button 
+                    onClick={() => navigate("/reservation/ReservationCreate")}
+                    style={{ padding: "10px 16px", backgroundColor: "#f8fafc", border: "1px solid #cbd5e1", borderRadius: "6px", cursor: "pointer" }}
+                >
+                    예약 하기
+                </button>
+                <button 
+                    onClick={() => navigate("/mypage/edit")}
+                    style={{ padding: "10px 16px", backgroundColor: "#f8fafc", border: "1px solid #cbd5e1", borderRadius: "6px", cursor: "pointer" }}
+                >
+                    프로필 수정
+                </button>
+                <button 
+                    onClick={() => navigate("/mypage/travel")}
+                    style={{ padding: "10px 16px", backgroundColor: "#f8fafc", border: "1px solid #cbd5e1", borderRadius: "6px", cursor: "pointer" }}
+                >
+                    여행 일정
+                </button>
+                <button 
+                    onClick={() => navigate("/travel/TravelSave")}
+                    style={{ padding: "10px 16px", backgroundColor: "#f8fafc", border: "1px solid #cbd5e1", borderRadius: "6px", cursor: "pointer" }}
+                >
+                    여행 일정 저장
+                </button>
+                <button 
+                    onClick={() => navigate("/mypage/board")}
+                    style={{ padding: "10px 16px", backgroundColor: "#f8fafc", border: "1px solid #cbd5e1", borderRadius: "6px", cursor: "pointer" }}
+                >
+                    내 게시글
+                </button>
+                <button 
+                    style={{ padding: "10px 16px", backgroundColor: "#f8fafc", border: "1px solid #cbd5e1", borderRadius: "6px", cursor: "pointer" }}
+                >
+                    찜한 여행
+                </button>
+                <button 
+                    style={{ padding: "10px 16px", backgroundColor: "#f8fafc", border: "1px solid #cbd5e1", borderRadius: "6px", cursor: "pointer" }}
+                >
+                    설정
+                </button>
             </div>
         </div>
     );
