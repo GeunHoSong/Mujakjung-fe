@@ -38,7 +38,10 @@ import SupportPage from "./pages/support/SupportPage";
 import MyPageEditProfile from "./pages/mypage/MyPageEditProFile";
 import MyPageBoard from "./pages/mypage/MyPageBoard";
 import MyPageTravel from "./pages/mypage/MyPageTravel";
-import TravelSave from "./pages/travel/TravelLog";
+
+// 여행 관련 (TravelSave import 경로 수정!)
+import TravelSave from "./pages/travel/TravelSave";
+
 
 function App() {
   return (
@@ -60,6 +63,9 @@ function App() {
           <Route path="/mypage/travel" element={<MyPageTravel />} />
 
           <Route path="/travel/:id" element={<TravelDetail />} />
+          <Route path="/travel/TravelSave" element={<TravelSave />} />
+    
+
           <Route path="/admin/members" element={<AdminMainMember />} />
           <Route path="/admin/cart" element={<AdminCart />} />
           <Route path="/admin/list" element={<AdminList />} />
@@ -76,10 +82,9 @@ function App() {
           <Route path="/notice/:id" element={<NoticeDetail />} />
           <Route path="/notice/update/:id" element={<NoticeUpdate />} />
           <Route path="/chat/ChatComponent" element={<ChatComponent />} />
-          <Route path="/travel/TravelSave" element={<TravelSave/>}/>
           
           {/* 예약 관련 경로들 */}
-          <Route path="/reservation/ReservationList" element={<ResrvationLocalStorage />} />          
+          <Route path="/reservation/ReservationList" element={<ReservationList />} />          
           <Route path="/reservation/ReservationOrder" element={<ReservationOrder />} />
           <Route path="/reservation/ReservationLocalStorage" element={<ResrvationLocalStorage />} />
           

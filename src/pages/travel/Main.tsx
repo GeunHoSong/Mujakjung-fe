@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import Header from "../../components/Header";
-import Footer from "../../components/Footer";
-import MainBanner from "./MainBanner";
+import { useNavigate } from "react-router-dom";
+import Header from "../../components/Header"; // 상위로 두 번 나가서 components 접근
+import Footer from "../../components/Footer"; // 상위로 두 번 나가서 components 접근
+import MainBanner from "./MainBanner";       // 같은 travel 폴더 안
 
 interface Message {
   sender: "ai" | "user";
@@ -9,6 +10,7 @@ interface Message {
 }
 
 function Main() {
+  const navigate = useNavigate();
   const [isChatOpen, setIsChatOpen] = useState(false);
 
   const [messages, setMessages] = useState<Message[]>([
@@ -284,6 +286,47 @@ function Main() {
                         }}
                       >
                         {msg.text}
+
+                        {/* AI의 답변이고 첫 번째 환영 인사가 아닐 때 저장 버튼 노출 */}
+                        {msg.sender === "ai" && idx > 0 && (
+                          <div style={{ marginTop: "12px" }}>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                navigate("/travel/TravelSave", {
+                                  state: {
+                                    tripId: "trip_2026_01",
+                                    visitDate: "2026-10-12",
+                                    places: [
+                                      {
+                                        name: "AI 추천 맞춤 코스",
+                                        latitude: 37.5665,
+                                        longitude: 126.9780,
+                                        order_index: 1,
+                                        memo: msg.text.slice(0, 50) + "...",
+                                      },
+                                    ],
+                                  },
+                                });
+                              }}
+                              style={{
+                                padding: "8px 14px",
+                                backgroundColor: "#4F46E5",
+                                color: "#ffffff",
+                                border: "none",
+                                borderRadius: "6px",
+                                fontSize: "13px",
+                                fontWeight: "bold",
+                                cursor: "pointer",
+                                display: "inline-flex",
+                                alignItems: "center",
+                                gap: "6px",
+                              }}
+                            >
+                              📅 이 일정 TravelSave로 저장하기
+                            </button>
+                          </div>
+                        )}
                       </div>
                     </div>
                   )
