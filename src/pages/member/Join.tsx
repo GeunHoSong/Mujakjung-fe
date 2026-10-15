@@ -30,6 +30,8 @@ function Join() {
     const [profileFile, setProfileFile] = useState<File | null>(null);
     const [previewUrl, setPreviewUrl] = useState("");
     const fileInputRef = useRef<HTMLInputElement>(null);
+    const [locationAgreed, setLocationAgreed] = useState(false);
+    const [thirdPartyAgreed, setThirdPartyAgreed] = useState(false);
     const navigate = useNavigate();
 
     const SERVER_URL = "http://localhost:8080";
@@ -124,15 +126,20 @@ function Join() {
     };
 
     // 💡 모달에서 약관 동의를 완료했을 때 실행되는 함수 (모달을 닫고 폼 입력 허용)
-    const handleModalAgree = (agreedData: any) => {
-        console.log("약관 동의 완료:", agreedData);
-        setIsModalOpen(false);
-    };
+   const handleModalAgree = (agreedData: any) => {
+    console.log("약관 동의 완료:", agreedData);
 
-    // 💡 사용자가 약관 동의를 거부하고 취소를 눌렀을 때 (이전 페이지로 튕겨내기)
+    setLocationAgreed(agreedData.location);
+    setThirdPartyAgreed(agreedData.thirdParty);
+    setIsModalOpen(false);
+};
+
+  // 💡 취소 시 무조건 페이지가 뒤로 가던 부분을 잠시 막아두기
+     // 💡 취소 시 무조건 페이지가 뒤로 가던 부분을 잠시 막아두기
     const handleModalClose = () => {
         alert("약관에 동의해야 회원가입을 진행할 수 있습니다.");
-        navigate(-1); // 이전 페이지로 이동
+        // navigate(-1); // 👈 이 부분을 주석 처리해서 뒤로 튕기는 현상 방지
+        setIsModalOpen(false); // 모달만 닫히게 처리
     };
 
     // 💡 마지막 '회원 가입 완료' 버튼을 눌렀을 때 최종 서버 전송 함수
@@ -153,7 +160,7 @@ function Join() {
         const formData = new FormData();
         const memberData = {
             email, password, confirmPassword, name, nickname, 
-            phone, gender, zipcode, address, detailAddress, role: "USER"
+            phone, gender, zipcode, address, detailAddress, role: "USER" , locationAgreed, thirdPartyAgreed
         };
 
         formData.append("memberData", new Blob([JSON.stringify(memberData)], { type: "application/json" }));
