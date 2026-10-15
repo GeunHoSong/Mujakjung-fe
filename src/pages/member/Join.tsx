@@ -1,42 +1,41 @@
 import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import DaumPostcode from 'react-daum-postcode';
+import PrivacyPolicyModal from './PrivacyPolicyModal';
 
 function Join() {
-    // --- 1. 상태 관리 (사용자 입력값 및 검증 상태) ---
+    // --- 1. 상태 관리 ---
     const [email, setEmail] = useState("");
-    const [isEmailVerified, setIsEmailVerified] = useState(false); // 이메일 인증 완료 여부 (true/false)
-    const [authCode, setAuthCode] = useState(""); // 이메일 인증 번호 입력값
-    const [showAuthInput, setShowAuthInput] = useState(false); // 인증 번호 입력창 노출 여부
+    const [isEmailVerified, setIsEmailVerified] = useState(false);
+    const [authCode, setAuthCode] = useState("");
+    const [showAuthInput, setShowAuthInput] = useState(false);
 
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [name, setName] = useState("");
     
-    // 닉네임 및 중복 확인 상태
     const [nickname, setNickName] = useState("");
-    const [isNicknameChecked, setIsNicknameChecked] = useState(false); // 닉네임 중복 확인 완료 여부
+    const [isNicknameChecked, setIsNicknameChecked] = useState(false);
 
     const [phone, setPhone] = useState("");
-    const [isPhoneVerified, setIsPhoneVerified] = useState(false); // 휴대폰 인증 상태 (추후 확장용)
-    const [gender, setGender] = useState(""); // 성별 (M / F)
-    const [zipcode, setZipcode] = useState(""); // 우편번호
-    const [address, setAddress] = useState(""); // 기본 주소
-    const [detailAddress, setDetailAddress] = useState(""); // 상세 주소
-    const [agree, setAgree] = useState(false); // 필수 약관 동의 여부
+    const [gender, setGender] = useState("");
+    const [zipcode, setZipcode] = useState("");
+    const [address, setAddress] = useState("");
+    const [detailAddress, setDetailAddress] = useState("");
+    
+    // 💡 핵심: 페이지 진입 시 바로 모달이 뜨도록 초기값을 true로 설정!
+    const [isModalOpen, setIsModalOpen] = useState(true);
 
-    // --- 2. 이미지 및 부가 기능 상태 ---
-    const [isPostcodeOpen, setIsPostcodeOpen] = useState(false); // 다음 주소 API 창 열기/닫기
-    const [profileFile, setProfileFile] = useState<File | null>(null); // 업로드할 프로필 이미지 파일 객체
-    const [previewUrl, setPreviewUrl] = useState(""); // 프로필 이미지 미리보기 URL
-    const fileInputRef = useRef<HTMLInputElement>(null); // 숨겨진 파일 input에 접근하기 위한 ref
-    const navigate = useNavigate(); // 페이지 이동을 위한 hook
+    const [isPostcodeOpen, setIsPostcodeOpen] = useState(false);
+    const [profileFile, setProfileFile] = useState<File | null>(null);
+    const [previewUrl, setPreviewUrl] = useState("");
+    const fileInputRef = useRef<HTMLInputElement>(null);
+    const navigate = useNavigate();
 
-    const SERVER_URL = "http://localhost:8080"; // 백엔드 서버 기본 주소
+    const SERVER_URL = "http://localhost:8080";
 
     // --- 3. 비즈니스 로직 함수들 ---
 
-    // [이메일] 인증 번호 전송 요청
     const handleSendEmailAuth = async () => {
         if (!email) {
             alert("이메일을 입력하세요.");
@@ -50,7 +49,7 @@ function Join() {
             });
             if (res.ok) {
                 alert("인증코드가 전송되었습니다. 메일을 확인해보세요.");
-                setShowAuthInput(true); // 인증 번호 입력창 활성화
+                setShowAuthInput(true);
             } else {
                 alert("인증코드 전송에 실패했습니다.");
             }
@@ -60,7 +59,6 @@ function Join() {
         }
     };
 
-    // [이메일] 입력한 인증 코드 검증 요청
     const handleVerifiedEmailCode = async () => {
         try {
             const res = await fetch(`${SERVER_URL}/api/email/verify`, {
@@ -71,8 +69,8 @@ function Join() {
             
             if (res.ok) {
                 alert("이메일 인증이 완료되었습니다.");
-                setIsEmailVerified(true); // 인증 성공 처리
-                setShowAuthInput(false); // 인증 입력창 닫기
+                setIsEmailVerified(true);
+                setShowAuthInput(false);
             } else {
                 alert("인증 코드가 일치하지 않습니다.");
             }
@@ -82,7 +80,6 @@ function Join() {
         }
     };
 
-    // [닉네임] 중복 확인 요청
     const handleCheckNickname = async () => {
         if (!nickname) {
             alert("닉네임을 입력하세요.");
@@ -98,13 +95,11 @@ function Join() {
                 return;
             }
 
-            // 백엔드 응답값: true (중복됨), false (사용 가능)
             const isDuplicate = await res.json(); 
 
-            // false여야 정상적으로 사용 가능
             if (!isDuplicate) {
                 alert("사용 가능한 닉네임입니다.");
-                setIsNicknameChecked(true); // 중복 확인 완료 처리
+                setIsNicknameChecked(true);
             } else {
                 alert("이미 사용 중인 닉네임입니다.");
             }
@@ -114,29 +109,34 @@ function Join() {
         }
     };
 
-    // [주소] 다음 주소 API 선택 완료 시 실행되는 콜백 함수
     const handleComplete = (data: any) => {
         setZipcode(data.zonecode);
         setAddress(data.address);
-        setIsPostcodeOpen(false); // 주소 검색창 닫기
+        setIsPostcodeOpen(false);
     };
 
-    // [이미지] 프로필 사진 선택 시 미리보기 URL 생성 함수
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (file) {
             setProfileFile(file);
-            setPreviewUrl(URL.createObjectURL(file)); // 브라우저 메모리에 임시 URL 생성
+            setPreviewUrl(URL.createObjectURL(file));
         }
     };
 
-    // [회원가입] 최종 제출 함수 (FormData로 JSON 데이터와 이미지 파일을 함께 전송)
-    const join = async () => {
-        // 유효성 검사
-        if (!agree) {
-            alert("약관에 동의해야 회원가입이 가능합니다.");
-            return;
-        }
+    // 💡 모달에서 약관 동의를 완료했을 때 실행되는 함수 (모달을 닫고 폼 입력 허용)
+    const handleModalAgree = (agreedData: any) => {
+        console.log("약관 동의 완료:", agreedData);
+        setIsModalOpen(false);
+    };
+
+    // 💡 사용자가 약관 동의를 거부하고 취소를 눌렀을 때 (이전 페이지로 튕겨내기)
+    const handleModalClose = () => {
+        alert("약관에 동의해야 회원가입을 진행할 수 있습니다.");
+        navigate(-1); // 이전 페이지로 이동
+    };
+
+    // 💡 마지막 '회원 가입 완료' 버튼을 눌렀을 때 최종 서버 전송 함수
+    const handleFinalJoin = async () => {
         if (!isEmailVerified) {
             alert("이메일 인증을 완료해주세요.");
             return;
@@ -145,32 +145,19 @@ function Join() {
             alert("닉네임 중복 확인을 해주세요.");
             return;
         }
-        if (password !== confirmPassword) {
-            alert("비밀번호가 일치하지 않습니다.");
+        if (!password || password !== confirmPassword) {
+            alert("비밀번호가 일치하지 않거나 입력되지 않았습니다.");
             return;
         }
 
         const formData = new FormData();
-        
-        // 백엔드로 보낼 회원 정보 객체 (DTO 매핑용)
         const memberData = {
-            email, 
-            password, 
-            confirmPassword, 
-            name, 
-            nickname, 
-            phone, 
-            gender, 
-            zipcode, 
-            address, 
-            detailAddress, 
-            role: "USER" // 기본 회원 권한 설정
+            email, password, confirmPassword, name, nickname, 
+            phone, gender, zipcode, address, detailAddress, role: "USER"
         };
 
-        // JSON 데이터를 Blob 타입으로 변환하여 FormData에 추가
         formData.append("memberData", new Blob([JSON.stringify(memberData)], { type: "application/json" }));
 
-        // 프로필 이미지가 존재할 경우 FormData에 추가
         if (profileFile) {
             formData.append("profileImage", profileFile);
         }
@@ -178,7 +165,7 @@ function Join() {
         try {
             const response = await fetch(`${SERVER_URL}/api/member/join`, {
                 method: "POST",
-                body: formData, // Content-Type은 브라우저가 multipart/form-data로 자동 설정
+                body: formData,
             });
 
             if (!response.ok) {
@@ -187,7 +174,7 @@ function Join() {
             }
 
             alert("회원 가입 성공! 환영합니다.");
-            navigate("/login"); // 가입 성공 시 로그인 페이지로 이동
+            navigate("/login");
         } catch (error) {
             console.error("전송 에러:", error);
             alert("서버와 통신 중 문제가 발생했습니다.");
@@ -202,7 +189,7 @@ function Join() {
             {/* 프로필 이미지 업로드 영역 */}
             <div style={{ textAlign: 'center', marginBottom: '20px' }}>
                 <div 
-                    onClick={() => fileInputRef.current?.click()} // 원형 영역 클릭 시 숨겨진 file input 클릭 효과
+                    onClick={() => fileInputRef.current?.click()}
                     style={{ 
                         width: '120px', height: '120px', borderRadius: '50%', border: '2px dashed #ccc',
                         margin: '0 auto', cursor: 'pointer', display: 'flex', alignItems: 'center', 
@@ -212,7 +199,6 @@ function Join() {
                 >
                     {!previewUrl && <span style={{ color: '#888', fontSize: '14px' }}>사진 등록</span>}
                 </div>
-                {/* 화면에 보이지 않는 파일 업로드 input */}
                 <input type="file" ref={fileInputRef} onChange={handleFileChange} style={{ display: 'none' }} accept="image/*" />
             </div>
 
@@ -230,7 +216,7 @@ function Join() {
                 </button>
             </div>
             
-            {/* 인증 번호 입력 칸 (인증 버튼 누른 후 노출) */}
+            {/* 인증 번호 입력 칸 */}
             {showAuthInput && !isEmailVerified && (
                 <div style={{ display: 'flex', gap: '5px', marginBottom: '10px' }}>
                     <input 
@@ -289,19 +275,21 @@ function Join() {
             <input value={address} readOnly placeholder="기본 주소" style={{ width: '300px' }} /><br/><br/>
             <input value={detailAddress} onChange={(e) => setDetailAddress(e.target.value)} placeholder="상세 주소" /><br/><br/>
 
-            {/* 약관 동의 체크박스 */}
-            <label style={{ fontSize: '14px', cursor: 'pointer' }}>
-                <input type="checkbox" checked={agree} onChange={(e) => setAgree(e.target.checked)} />
-                [필수] 개인정보 수집 및 이용에 동의합니다.
-            </label><br/><br/>
-
-            {/* 회원가입 완료 버튼 */}
+            {/* 최종 회원가입 완료 버튼 */}
             <button 
-                onClick={join} 
+                type="button"
+                onClick={handleFinalJoin} 
                 style={{ width: '100%', padding: '10px', backgroundColor: '#4A90E2', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
             >
                 회원 가입 완료
             </button>
+
+            {/* 💡 페이지 진입 시 뜨는 약관 동의 모달 */}
+            <PrivacyPolicyModal 
+                isOpen={isModalOpen}
+                onClose={handleModalClose}
+                onAgree={handleModalAgree}
+            />
         </div>
     );
 }
