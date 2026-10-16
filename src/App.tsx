@@ -38,6 +38,7 @@ import SupportPage from "./pages/support/SupportPage";
 import MyPageEditProfile from "./pages/mypage/MyPageEditProFile";
 import MyPageBoard from "./pages/mypage/MyPageBoard";
 import MyPageTravel from "./pages/mypage/MyPageTravel";
+import MyPageBookmark from "./pages/mypage/MyPageBookmark"; // 👈 1. 북마크 컴포넌트 임포트 추가!
 
 // 여행 관련 (TravelSave import 경로 수정!)
 import TravelSave from "./pages/travel/TravelSave";
@@ -61,6 +62,7 @@ function App() {
           <Route path="/mypage/edit" element={<MyPageEditProfile />} />
           <Route path="/mypage/board" element={<MyPageBoard />} />
           <Route path="/mypage/travel" element={<MyPageTravel />} />
+          <Route path="/mypage/bookmark" element={<MyPageBookmark />} /> {/* 👈 2. 북마크 라우트 추가! */}
 
           <Route path="/travel/:id" element={<TravelDetail />} />
           <Route path="/travel/TravelSave" element={<TravelSave />} />
@@ -92,6 +94,7 @@ function App() {
           <Route path="/admin/AdminRemainingSeats" element={<AdminRemainingSeats />} />
           <Route path="/login/oauth2/code/google" element={<GoogleCallback />} />
           <Route path="/support" element={<SupportPage />} />
+          
         </Routes>
 
         <Footer />

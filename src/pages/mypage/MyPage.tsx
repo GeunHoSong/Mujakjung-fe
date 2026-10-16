@@ -107,10 +107,11 @@ function Mypage() {
                 >
                     내 게시글
                 </button>
-                <button 
+                <button
+                    onClick={()=> navigate("/mypage/bookmark")} 
                     style={{ padding: "10px 16px", backgroundColor: "#f8fafc", border: "1px solid #cbd5e1", borderRadius: "6px", cursor: "pointer" }}
                 >
-                    찜한 여행
+                   찜 한 여행
                 </button>
                 <button 
                     style={{ padding: "10px 16px", backgroundColor: "#f8fafc", border: "1px solid #cbd5e1", borderRadius: "6px", cursor: "pointer" }}
