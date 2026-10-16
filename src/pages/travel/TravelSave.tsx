@@ -37,17 +37,18 @@ function TravelSave() {
         
         const payload = {
             trip_id: tripId,
-            visit_date: visitDate, // 백엔드 모델에 맞춰 visit_date로 수정
+            visit_date: visitDate,
             places: places,
         };
 
         try {
             setLoading(true);
-            // 올바른 백엔드 엔드포인트 주소 (/api/v1/schedules/today)
             const response = await axios.post("http://127.0.0.1:8000/api/v1/schedules/today", payload);
             console.log("오늘 여행 일정 성공적으로 저장이 되었습니다", response.data);
             alert("오늘의 여행 일정이 성공적으로 저장되었습니다!");
-            navigate("/mypage");
+            
+            // 💡 저장 성공 시 여행 일정 목록 페이지로 이동하도록 변경!
+            navigate("/mypage/travel");
         } catch (error: any) {
             console.error("일정 저장 실패", error);
             alert("일정 저장 오류가 발생되었습니다. FastAPI 서버 상태를 확인해 주세요.");
@@ -97,7 +98,7 @@ function TravelSave() {
                         style={{ 
                             flex: 2, 
                             padding: "14px", 
-                            backgroundColor: loading ? "#cbd5e1" : "#4F46E5", // # 기호 추가 완료
+                            backgroundColor: loading ? "#cbd5e1" : "#4F46E5",
                             color: "#fff", 
                             border: "none",
                             borderRadius: "8px", 

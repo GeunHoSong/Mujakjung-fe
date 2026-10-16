@@ -42,6 +42,7 @@ import MyPageBookmark from "./pages/mypage/MyPageBookmark"; // 👈 1. 북마크
 
 // 여행 관련 (TravelSave import 경로 수정!)
 import TravelSave from "./pages/travel/TravelSave";
+import ReservationCreate from "./pages/reservation/ReservationCreate";
 
 
 function App() {
@@ -86,6 +87,7 @@ function App() {
           <Route path="/chat/ChatComponent" element={<ChatComponent />} />
           
           {/* 예약 관련 경로들 */}
+          <Route path="/reservation/ReservationCreate" element={<ReservationCreate/>}/>
           <Route path="/reservation/ReservationList" element={<ReservationList />} />          
           <Route path="/reservation/ReservationOrder" element={<ReservationOrder />} />
           <Route path="/reservation/ReservationLocalStorage" element={<ResrvationLocalStorage />} />
@@ -94,6 +96,7 @@ function App() {
           <Route path="/admin/AdminRemainingSeats" element={<AdminRemainingSeats />} />
           <Route path="/login/oauth2/code/google" element={<GoogleCallback />} />
           <Route path="/support" element={<SupportPage />} />
+        
           
         </Routes>
 
