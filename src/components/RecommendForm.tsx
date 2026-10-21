@@ -37,14 +37,28 @@ function RecommendForm() {
             query
         };
 
-        // 임시 테스트 딜레이 
-        setTimeout(() => {
-            setRecommendationResult({
-                message: "데이터 전송 성공",
-                data: payload
+        try {
+            // 🚀 올바른 포트(8000) 및 경로(/api/ai/recommend)로 변경 완료
+            const response = await fetch("http://localhost:8000/api/ai/recommend", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(payload)
             });
+
+            if (!response.ok) {
+                throw new Error(`FastAPI 서버 에러: ${response.status}`);
+            }
+
+            const data = await response.json();
+            setRecommendationResult(data);
+        } catch (error) {
+            console.error("추천 요청 실패", error);
+            alert("AI 추천을 불러오는데 실패했습니다. FastAPI 서버 상태를 확인해 주세요!");
+        } finally {
             setIsSubmitting(false);
-        }, 1000);
+        }
     };
 
     return (
@@ -133,13 +147,17 @@ function RecommendForm() {
                 </button>
             </form>
 
-            {/* 결과 테스트 출력 창 */}
+            {/* AI 맞춤 추천 결과 출력 창 */}
             {recommendationResult && (
-                <div style={{ marginTop: '20px', padding: '16px', background: '#f3f4f6', borderRadius: '10px', fontSize: '13px' }}>
-                    <h4 style={{ margin: '0 0 8px 0', color: '#1f2937' }}>테스트 전송 결과</h4>
-                    <pre style={{ margin: 0, whiteSpace: 'pre-wrap', wordBreak: 'break-all', color: '#374151' }}>
-                        {JSON.stringify(recommendationResult, null, 2)}
-                    </pre>
+                <div style={{ marginTop: '20px', padding: '16px', background: '#f0fdf4', borderRadius: '10px', border: '1px solid #bbf7d0', fontSize: '14px' }}>
+                    <h4 style={{ margin: '0 0 8px 0', color: '#166534', fontWeight: 'bold' }}>✨ AI 맞춤 추천 결과</h4>
+                    <div style={{ whiteSpace: 'pre-line', color: '#1f2937', lineHeight: '1.6' }}>
+                        {recommendationResult.recommendation
+                            ? recommendationResult.recommendation
+                            : typeof recommendationResult === 'string'
+                            ? recommendationResult
+                            : JSON.stringify(recommendationResult, null, 2)}
+                    </div>
                 </div>
             )}
         </div>
