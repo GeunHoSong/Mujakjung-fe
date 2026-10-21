@@ -43,6 +43,7 @@ import MyPageBookmark from "./pages/mypage/MyPageBookmark"; // 👈 1. 북마크
 // 여행 관련 (TravelSave import 경로 수정!)
 import TravelSave from "./pages/travel/TravelSave";
 import ReservationCreate from "./pages/reservation/ReservationCreate";
+import RecommendForm from "./components/RecommendForm";
 
 
 function App() {
@@ -96,6 +97,7 @@ function App() {
           <Route path="/admin/AdminRemainingSeats" element={<AdminRemainingSeats />} />
           <Route path="/login/oauth2/code/google" element={<GoogleCallback />} />
           <Route path="/support" element={<SupportPage />} />
+          
         
           
         </Routes>
