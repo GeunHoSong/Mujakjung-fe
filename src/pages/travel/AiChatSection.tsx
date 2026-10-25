@@ -1,12 +1,20 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
+// 1. props 타입 정의
+interface AiChatSectionProps {
+    latitude: number | null;
+    longitude: number | null;
+    initialQuery: string;
+}
+
+// 2. 메시지 타입 정의 추가
 interface Message {
-    sender: "ai" | "user";
+    sender: string;
     text: string;
 }
 
-function AiChatSection() {
+function AiChatSection({ latitude, longitude, initialQuery }: AiChatSectionProps) {
     const navigate = useNavigate();
     const [input, setInput] = useState("");
     const [loading, setLoading] = useState(false);
@@ -17,27 +25,77 @@ function AiChatSection() {
         },
     ]);
 
-    // AI 메시지 전송
+    // 🚀 부모 컴포넌트에서 위치 설정 후 대화 시작이 들어올 때 자동 처리
+    useEffect(() => {
+        if (initialQuery) {
+            handleAutoSend(initialQuery);
+        }
+    }, [initialQuery]);
+
+    // 초기 쿼리 자동 전송 함수 (위치 정보 포함)
+    const handleAutoSend = async (queryText: string) => {
+        if (loading) return;
+
+        const enhancedMessage = `[현재 위치 정보: 위도 ${latitude || '알 수 없음'}, 경도 ${longitude || '알 수 없음'}]\n${queryText}`;
+        
+        setMessage((prev) => [...prev, { sender: "user", text: queryText }]);
+        setLoading(true);
+
+        try {
+            const response = await fetch("http://localhost:8001/generate", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ content: enhancedMessage }),
+            });
+
+            if (!response.ok) throw new Error(`FastAPI 서버 오류: ${response.status}`);
+            
+            const data = await response.json();
+
+            setMessage((prev) => [
+                ...prev,
+                {
+                    sender: "ai",
+                    text: data.analysis_result || "AI가 응답을 생성하지 못했어요. 다시 시도해주세요.",
+                },
+            ]);
+        } catch (error) {
+            console.error("FastAPI 통신 에러:", error);
+            setMessage((prev) => [
+                ...prev,
+                {
+                    sender: "ai",
+                    text: "서버와 연결하지 못했어요.\nFastAPI 서버가 실행 중인지 확인해주세요!",
+                },
+            ]);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    // 일반 AI 메시지 수동 전송
     const handleSendMessage = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!input.trim() || loading) return;
 
         const userMessage = input.trim();
-        setMessage((prev) => [...prev, { sender: "user", text: userMessage }]);
         setInput("");
+        
+        // 위치 정보를 대화 내용에 자연스럽게 녹여서 전송
+        const enhancedMessage = `[현재 위치 정보: 위도 ${latitude || '알 수 없음'}, 경도 ${longitude || '알 수 없음'}]\n${userMessage}`;
+
+        setMessage((prev) => [...prev, { sender: "user", text: userMessage }]);
         setLoading(true);
 
         try {
-            // 1. URL 포트 및 슬래시 수정 (8000번, /generate)
-            const response = await fetch("http://localhost:8000/generate", {
+            const response = await fetch("http://localhost:8001/generate", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ content: userMessage }),
+                body: JSON.stringify({ content: enhancedMessage }),
             });
 
             if (!response.ok) throw new Error(`FastAPI 서버 오류: ${response.status}`);
             
-            // 2. .json() 함수 호출 형태로 수정
             const data = await response.json();
 
             setMessage((prev) => [
@@ -78,9 +136,9 @@ function AiChatSection() {
                             padding: "14px 18px",
                             borderRadius: "16px",
                             fontSize: "14px",
-                            lineHeight: "1.5", // 오타 수정 (1-5 -> 1.5)
+                            lineHeight: "1.5",
                             whiteSpace: "pre-line",
-                            background: msg.sender === "user" ? "#2563eb" : "#ffffff", // 오타 수정 (#fffff -> #ffffff)
+                            background: msg.sender === "user" ? "#2563eb" : "#ffffff",
                             color: msg.sender === "user" ? "#ffffff" : "#1f2937",
                             border: msg.sender === "ai" ? "1px solid #e5e7ed" : "none"
                         }}>
@@ -109,7 +167,7 @@ function AiChatSection() {
                 )}
             </div>
 
-            {/* 메시지 입력 폼 (이 부분이 빠져있어서 추가함!) */}
+            {/* 메시지 입력 폼 */}
             <form onSubmit={handleSendMessage} style={{ padding: "16px", background: "#ffffff", borderTop: "1px solid #eaeaea", display: "flex", gap: "10px" }}>
                 <input
                     type="text"

@@ -1,22 +1,25 @@
 import React, { useState } from "react";
-import useGeolocation from "../hooks/useGeolocation";
 
-// 기분 / 취향 태그 목록
+// 1. 부모로부터 받을 Props 타입 정의
+interface RecommendFormProps {
+    latitude: number | null;
+    longitude: number | null;
+    selectedTags: string[];
+    setSelectedTags: React.Dispatch<React.SetStateAction<string[]>>;
+    onSendToChat: (query: string) => void;
+}
+
 const MOOD_TAGS = ['조용한 곳', '출발 하기 좋은 곳', '매운 음식', '사색/휴식', '분위기 좋은', '빠르게 먹는'];
 
-function RecommendForm() {
-    // 1. 위치 커스텀 훅 사용
-    const { latitude, longitude, error: geoError, loading } = useGeolocation();
-
-    // 2. 입력 상태값 관리
-    const [selectedTags, setSelectedTags] = useState<string[]>([]);
+// 2. 파라미터로 props 구조분해 할당
+function RecommendForm({ latitude, longitude, selectedTags, setSelectedTags, onSendToChat }: RecommendFormProps) {
     const [query, setQuery] = useState<string>("인천인데 맛집 소개해 줘");
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
     const [recommendationResult, setRecommendationResult] = useState<any>(null);
 
     // 태그 선택 토글 함수
     const toggleTag = (tag: string) => {
-        setSelectedTags((prev) =>
+        setSelectedTags((prev: string[]) =>
             prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]
         );
     };
@@ -38,8 +41,7 @@ function RecommendForm() {
         };
 
         try {
-            // 🚀 올바른 포트(8000) 및 경로(/api/ai/recommend)로 변경 완료
-            const response = await fetch("http://localhost:8000/api/ai/recommend", {
+            const response = await fetch("http://localhost:8001/api/ai/recommend", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -53,6 +55,10 @@ function RecommendForm() {
 
             const data = await response.json();
             setRecommendationResult(data);
+
+            // 🚀 AI 채팅창으로 컨텍스트 전달!
+            onSendToChat(query);
+
         } catch (error) {
             console.error("추천 요청 실패", error);
             alert("AI 추천을 불러오는데 실패했습니다. FastAPI 서버 상태를 확인해 주세요!");
@@ -67,11 +73,10 @@ function RecommendForm() {
                 위치 기반 맞춤 설정
             </h2>
 
-            {/* 위치 상태 표시 바 */}
+            {/* 위치 상태 표시 바 (부모로부터 받은 latitude/longitude 활용) */}
             <div style={{ marginBottom: '20px', padding: '12px 16px', background: '#f0f4f8', borderRadius: '10px', fontSize: '14px' }}>
                 <strong>현재 위치 상태: </strong>
-                {loading && <span style={{ color: '#0284c7' }}>위치 정보를 계산 중입니다...</span>}
-                {geoError && <span style={{ color: '#dc2626' }}>{geoError}</span>}
+                {!latitude && <span style={{ color: '#0284c7' }}>위치 정보를 계산 중입니다...</span>}
                 {latitude && longitude && (
                     <span style={{ color: '#16a34a', fontWeight: '600' }}>
                         위치 확인 완료! (위도: {latitude.toFixed(4)}, 경도: {longitude.toFixed(4)})

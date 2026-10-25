@@ -1,54 +1,65 @@
 import React, { useState } from "react";
-import Header from "../../components/Header";
-import Footer from "../../components/Footer";
-import RecommendForm from "../../components/RecommendForm"; // 1. 맞춤 추천 폼
-import MainBanner from "./MainBanner";
-import AiChatSection from "./AiChatSection"; // 2. 분리한 AI 채팅 섹션
+import RecommendForm from "../../components/RecommendForm";
+import AiChatSection from "./AiChatSection";
+import useGeolocation from "../../hooks/useGeolocation";
 
 function Main() {
-  const [isChatOpen, setIsChatOpen] = useState(false);
+    const { latitude, longitude, error: geoError, loading } = useGeolocation();
+    const [selectedTags, setSelectedTags] = useState<string[]>([]);
+    const [aiInitialQuery, setAiInitialQuery] = useState<string>("");
 
-  return (
-    <div>
-      <Header />
+    // '맞춤 장소 찾기' 완료 시 또는 대화 시작 시 AI 채팅으로 데이터 전달
+    const handleStartChatWithContext = (query: string) => {
+    // 1. 위치 확인이 진행 중인지 검사
+    if (loading) {
+        alert("현재 위치를 확인하고 있어요. 잠시만 기다려 주세요.");
+        return;
+    }
 
-      <main style={{ paddingTop: "70px", minHeight: "calc(100vh - 70px)", background: "#f8f9fa" }}>
-        <MainBanner />
+    // 2. 위치 확인 실패 여부 검사
+    if (geoError || latitude == null || longitude == null) {
+        alert("현재 위치를 확인할 수 없어요. 위치 권한을 확인해 주세요.");
+        return;
+    }
 
-        <div style={{ maxWidth: "900px", margin: "40px auto", padding: "0 20px" }}>
-          
-          {/* 📍 1. 메인 상단: 위치 & 기분 맞춤 추천 폼 */}
-          <RecommendForm />
+    // 3. 선택한 태그 정리
+    const tagStr =
+        selectedTags.length > 0
+            ? selectedTags.map(tag => `#${tag}`).join(" ")
+            : "특별한 태그 없음";
 
-          {/* 🤖 2. 메인 하단: AI 비서 채팅 토글 영역 */}
-          <div style={{ marginTop: "30px", textAlign: "center" }}>
-            <button
-              onClick={() => setIsChatOpen(!isChatOpen)}
-              style={{
-                background: "linear-gradient(135deg, #3b82f6, #1d4ed8)",
-                color: "white",
-                border: "none",
-                padding: "14px 28px",
-                fontSize: "16px",
-                fontWeight: "bold",
-                borderRadius: "12px",
-                cursor: "pointer",
-                boxShadow: "0 4px 12px rgba(59, 130, 246, 0.3)",
-              }}
-            >
-              {isChatOpen ? "💬 AI 대화창 닫기" : "🤖 AI 비서와 심층 대화하기"}
-            </button>
+    // 4. AI에 전달할 질문 구성
+    const contextMessage = `
+현재 위치: 위도 ${latitude}, 경도 ${longitude}
+선호 태그: ${tagStr}
+사용자 요청: ${query}
 
-            {/* 버튼 누르면 분리해둔 AiChatSection 컴포넌트 등장! */}
-            {isChatOpen && <AiChatSection />}
-          </div>
+요청에 맞는 장소를 추천해 줘.
+실제 장소 정보는 연결된 장소 검색 결과를 바탕으로 안내해 줘.
+    `.trim();
 
+    // 5. AI 대화창에 전달
+    setAiInitialQuery(contextMessage);
+};
+    return (
+        <div>
+            {/* 위치 설정 폼 */}
+            <RecommendForm 
+                latitude={latitude}
+                longitude={longitude}
+                selectedTags={selectedTags}
+                setSelectedTags={setSelectedTags}
+                onSendToChat={handleStartChatWithContext}
+            />
+
+            {/* AI 대화 섹션에 초기 컨텍스트 전달 */}
+            <AiChatSection 
+                latitude={latitude}
+                longitude={longitude}
+                initialQuery={aiInitialQuery}
+            />
         </div>
-      </main>
-
-      <Footer />
-    </div>
-  );
+    );
 }
 
 export default Main;
