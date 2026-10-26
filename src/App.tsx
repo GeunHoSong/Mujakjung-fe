@@ -39,11 +39,12 @@ import SupportPage from "./pages/support/SupportPage";
 import MyPageEditProfile from "./pages/mypage/MyPageEditProFile";
 import MyPageBoard from "./pages/mypage/MyPageBoard";
 import MyPageTravel from "./pages/mypage/MyPageTravel";
-import MyPageBookmark from "./pages/mypage/MyPageBookmark"; // 👈 1. 북마크 컴포넌트 임포트 추가!
+import MyPageBookmark from "./pages/mypage/MyPageBookmark";
 
-// 여행 관련 (TravelSave import 경로 수정!)
+// 여행 관련
 import TravelSave from "./pages/travel/TravelSave";
 import ReservationCreate from "./pages/reservation/ReservationCreate";
+
 interface ItineraryItem {
   place?: string;
   latitude?: number | null;
@@ -57,15 +58,17 @@ interface RecommendationResponse {
 }
 
 function App() {
-  const [recommendationResult, setRecommendationResult] = useState<RecommendationResponse | null >(null);
+  const [recommendationResult, setRecommendationResult] = useState<RecommendationResponse | null>(null);
+
   return (
     <BrowserRouter>
       <Header />
 
       <div style={{ paddingTop: "70px" }}>
         <Routes>
-          <Route path="/" element={<Main onRecommendationReceived={setRecommendationResult} />} />
-          <Route path="/join" element={<Join />} />
+          {/* Main 컴포넌트에 props 에러가 나지 않도록 임시로 제거하거나 필요시 Main 쪽 타입을 맞춰주세요 */}
+          <Route path="/" element={<Main onRecommendationReceived={setRecommendationResult} />} />         
+           <Route path="/join" element={<Join />} />
           <Route path="/login" element={<Login />} />
           <Route path="/search" element={<Search />} />
           <Route path="/admin" element={<AdminMain />} />
@@ -75,11 +78,10 @@ function App() {
           <Route path="/mypage/edit" element={<MyPageEditProfile />} />
           <Route path="/mypage/board" element={<MyPageBoard />} />
           <Route path="/mypage/travel" element={<MyPageTravel />} />
-          <Route path="/mypage/bookmark" element={<MyPageBookmark />} /> {/* 👈 2. 북마크 라우트 추가! */}
+          <Route path="/mypage/bookmark" element={<MyPageBookmark />} />
 
           <Route path="/travel/:id" element={<TravelDetail />} />
           <Route path="/travel/TravelSave" element={<TravelSave />} />
-    
 
           <Route path="/admin/members" element={<AdminMainMember />} />
           <Route path="/admin/cart" element={<AdminCart />} />
@@ -99,8 +101,8 @@ function App() {
           <Route path="/chat/ChatComponent" element={<ChatComponent />} />
           
           {/* 예약 관련 경로들 */}
-          <Route path="/reservation/ReservationCreate" element={<ReservationCreate/>}/>
-          <Route path="/reservation/ReservationList" element={<ReservationList />} />          
+          <Route path="/reservation/ReservationCreate" element={<ReservationCreate />} />
+          <Route path="/reservation/ReservationList" element={<ReservationList />} />         
           <Route path="/reservation/ReservationOrder" element={<ReservationOrder />} />
           <Route path="/reservation/ReservationLocalStorage" element={<ResrvationLocalStorage />} />
           
@@ -108,12 +110,9 @@ function App() {
           <Route path="/admin/AdminRemainingSeats" element={<AdminRemainingSeats />} />
           <Route path="/login/oauth2/code/google" element={<GoogleCallback />} />
           <Route path="/support" element={<SupportPage />} />
-          
-        
-          
         </Routes>
 
-        <Footer/>
+        <Footer />
       </div>
     </BrowserRouter>
   );
