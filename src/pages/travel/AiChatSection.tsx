@@ -206,77 +206,20 @@ function AiChatSection({
     };
 
     return (
-        <div
-            style={{
-                marginTop: "30px",
-                background: "#ffffff",
-                borderRadius: "20px",
-                border: "1px solid #eaeaea",
-                overflow: "hidden",
-                display: "flex",
-                flexDirection: "column",
-                height: "650px"
-            }}
-        >
+        <div style={{marginTop: "30px",background: "#ffffff",borderRadius: "20px",border: "1px solid #eaeaea",overflow: "hidden",display: "flex",flexDirection: "column",height: "650px"}}>
             {/* 13. 채팅창 헤더 */}
-            <div
-                style={{
-                    background: "#1d4ed8",
-                    color: "white",
-                    padding: "16px 20px",
-                    fontWeight: "bold",
-                    fontSize: "16px"
-                }}
-            >
-                🌿 무작정 AI 감성 가이드와 대화 중
+            <div style={{background: "#1d4ed8",color: "white",padding: "16px 20px",fontWeight: "bold",fontSize: "16px"}}>
+                무작정 AI 감성 가이드와 대화 중
             </div>
 
             {/* 14. 메시지 목록 */}
-            <div
-                style={{
-                    flex: 1,
-                    padding: "20px",
-                    overflowY: "auto",
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: "16px",
-                    background: "#f8f9fa"
-                }}
-            >
+            <div style={{flex: 1,padding: "20px",overflowY: "auto",display: "flex",flexDirection: "column",gap: "16px",background: "#f8f9fa"}}
+>
                 {message.map((msg, idx) => (
-                    <div
-                        key={idx}
-                        style={{
-                            display: "flex",
-                            justifyContent:
-                                msg.sender === "user"
-                                    ? "flex-end"
-                                    : "flex-start"
-                        }}
-                    >
-                        <div
-                            style={{
-                                width: "fit-content",
-                                maxWidth: "90%",
-                                padding: "14px 18px",
-                                borderRadius: "16px",
-                                fontSize: "14px",
-                                lineHeight: "1.6",
-                                whiteSpace: "pre-line",
-                                background:
-                                    msg.sender === "user"
-                                        ? "#2563eb"
-                                        : "#ffffff",
-                                color:
-                                    msg.sender === "user"
-                                        ? "#ffffff"
-                                        : "#1f2937",
-                                border:
-                                    msg.sender === "ai"
-                                        ? "1px solid #e5e7eb"
-                                        : "none"
-                            }}
-                        >
+                    <div key={idx}style={{display: "flex",justifyContent:msg.sender === "user"? "flex-end": "flex-start"}}>
+                        <div style={{width: "fit-content", maxWidth: "90%", padding: "14px 18px",borderRadius: "16px",fontSize: "14px",lineHeight: "1.6",whiteSpace: "pre-line",background:
+                            msg.sender === "user"? "#2563eb": "#ffffff",color:msg.sender === "user"? "#ffffff": "#1f2937",border:
+                                    msg.sender === "ai"? "1px solid #e5e7eb": "none"}}>
                             {/* AI 설명 또는 사용자 질문 */}
                             <div>{msg.text}</div>
 
@@ -291,7 +234,7 @@ function AiChatSection({
                                                 color: "#166534"
                                             }}
                                         >
-                                            ✨ {msg.recommendation.title ||
+                                             {msg.recommendation.title ||
                                                 "맞춤 추천 장소"}
                                         </h3>
 

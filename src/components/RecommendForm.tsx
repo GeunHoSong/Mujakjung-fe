@@ -8,6 +8,10 @@ interface RecommendFormProps {
     selectedTags: string[];
     setSelectedTags: React.Dispatch<React.SetStateAction<string[]>>;
     onSendToChat: (query: string) => void;
+    onRecommendationReceived: (
+    result: RecommendationResponse | null
+) => void;
+    
 }
 
 // 2. 기분별 장소 태그
@@ -39,13 +43,15 @@ interface RecommendationResponse {
     itinerary?: ItineraryItem[];
 }
 
+
 // 5. 추천 입력 및 결과 컴포넌트
 function RecommendForm({
     latitude,
     longitude,
     selectedTags,
     setSelectedTags,
-    onSendToChat
+    onSendToChat,
+    onRecommendationReceived
 }: RecommendFormProps) {
 
     const [query, setQuery] = useState<string>(
@@ -83,7 +89,7 @@ function RecommendForm({
         }
 
         setIsSubmitting(true);
-        setRecommendationResult(null);
+        onRecommendationReceived(null);
 
         // FastAPI 서버에 전달할 데이터
         const payload = {
@@ -111,12 +117,16 @@ function RecommendForm({
                 );
             }
 
-            const data: RecommendationResponse = await response.json();
+           const data: RecommendationResponse = await response.json();
+           console.log("FestApi 실제 응답: ", data );
 
-            // 8. AI 추천 결과 저장
+            // 8. 내 컴포넌트 화면에 추천 결과 저장
             setRecommendationResult(data);
 
-            // 9. AI 채팅창으로 질문 전달
+            // 9. 부모 컴포넌트에 추천 결과 전달
+            onRecommendationReceived(data);
+
+            // 10. AI 채팅창으로 질문 전달
             onSendToChat(query.trim());
 
         } catch (error) {
@@ -131,40 +141,14 @@ function RecommendForm({
     };
 
     return (
-        <div
-            style={{
-                maxWidth: '600px',
-                margin: '40px auto',
-                padding: '20px',
-                fontFamily: 'sans-serif',
-                background: '#ffffff',
-                borderRadius: '12px',
-                boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
-            }}
-        >
+        <div style={{maxWidth: '600px',margin: '40px auto',padding: '20px',fontFamily: 'sans-serif',background: '#ffffff',borderRadius: '12px',boxShadow: '0 4px 12px rgba(0,0,0,0.1)'}}>
             {/* 10. 제목 */}
-            <h2
-                style={{
-                    fontSize: '22px',
-                    fontWeight: 'bold',
-                    color: '#111827',
-                    marginBottom: '16px',
-                    textAlign: 'center'
-                }}
-            >
+            <h2 style={{fontSize: '22px',fontWeight: 'bold',color: '#111827',marginBottom: '16px',textAlign: 'center'}}>
                 위치 기반 맞춤 설정
             </h2>
 
             {/* 11. 현재 위치 상태 표시 */}
-            <div
-                style={{
-                    marginBottom: '20px',
-                    padding: '12px 16px',
-                    background: '#f0f4f8',
-                    borderRadius: '10px',
-                    fontSize: '14px'
-                }}
-            >
+            <div style={{marginBottom: '20px',padding: '12px 16px',background: '#f0f4f8',borderRadius: '10px',fontSize: '14px'}}>
                 <strong>현재 위치 상태: </strong>
 
                 {latitude == null || longitude == null ? (
@@ -172,14 +156,8 @@ function RecommendForm({
                         위치 정보를 확인할 수 없습니다.
                     </span>
                 ) : (
-                    <span
-                        style={{
-                            color: '#16a34a',
-                            fontWeight: '600'
-                        }}
-                    >
-                        위치 확인 완료! (위도: {latitude.toFixed(4)},
-                        경도: {longitude.toFixed(4)})
+                    <span style={{color: '#16a34a',fontWeight: '600'}}>
+                        위치 확인 완료! (위도: {latitude.toFixed(4)},경도: {longitude.toFixed(4)})
                     </span>
                 )}
             </div>
@@ -189,53 +167,20 @@ function RecommendForm({
 
                 {/* 기분 태그 선택 */}
                 <div style={{ marginBottom: '20px' }}>
-                    <label
-                        style={{
-                            display: 'block',
-                            fontWeight: 'bold',
-                            marginBottom: '10px',
-                            color: '#374151',
-                            fontSize: '15px'
-                        }}
-                    >
+                    <label style={{display: 'block',fontWeight: 'bold',marginBottom: '10px',color: '#374151',fontSize: '15px'}}>
                         지금 어떤 느낌의 장소를 원해?
                     </label>
 
-                    <div
-                        style={{
-                            display: 'flex',
-                            flexWrap: 'wrap',
-                            gap: '8px'
-                        }}
-                    >
+                    <div style={{display: 'flex',flexWrap: 'wrap',gap: '8px'}}>
                         {MOOD_TAGS.map((tag) => {
                             const isSelected = selectedTags.includes(tag);
 
                             return (
-                                <button
-                                    type="button"
-                                    key={tag}
-                                    onClick={() => toggleTag(tag)}
-                                    style={{
-                                        padding: '8px 14px',
-                                        borderRadius: '20px',
-                                        border: isSelected
-                                            ? '2px solid #2563eb'
-                                            : '1px solid #d1d5db',
-                                        backgroundColor: isSelected
-                                            ? '#eff6ff'
-                                            : '#ffffff',
-                                        color: isSelected
-                                            ? '#2563eb'
-                                            : '#4b5563',
-                                        cursor: 'pointer',
-                                        fontWeight: isSelected
-                                            ? 'bold'
-                                            : 'normal',
-                                        fontSize: '14px',
-                                        transition: 'all 0.2s ease'
-                                    }}
-                                >
+                                <button type="button" key={tag}onClick={() => toggleTag(tag)}
+                                    style={{padding: '8px 14px',borderRadius: '20px',border: isSelected? '2px solid #2563eb': '1px solid #d1d5db',
+                                        backgroundColor: isSelected? '#eff6ff' : '#ffffff',color: isSelected? '#2563eb': '#4b5563',
+                                        cursor: 'pointer',fontWeight: isSelected? 'bold': 'normal',
+                                        fontSize: '14px',transition: 'all 0.2s ease'}}>
                                     #{tag}
                                 </button>
                             );
@@ -245,53 +190,21 @@ function RecommendForm({
 
                 {/* 질문 입력 */}
                 <div style={{ marginBottom: '20px' }}>
-                    <label
-                        style={{
-                            display: 'block',
-                            fontWeight: 'bold',
-                            marginBottom: '8px',
-                            color: '#374151',
-                            fontSize: '15px'
-                        }}
-                    >
+                    <label style={{display: 'block',fontWeight: 'bold',marginBottom: '8px',color: '#374151',fontSize: '15px'}}>
                         AI에게 물어볼 내용
                     </label>
 
-                    <input
-                        type="text"
-                        value={query}
-                        onChange={(e) => setQuery(e.target.value)}
-                        style={{
-                            width: '100%',
-                            padding: '12px 16px',
-                            borderRadius: '10px',
-                            border: '1px solid #d1d5db',
-                            boxSizing: 'border-box',
-                            fontSize: '14px',
-                            outline: 'none'
-                        }}
+                    <input type="text"value={query}onChange={(e) => setQuery(e.target.value)}style={{width: '100%',
+                            padding: '12px 16px',borderRadius: '10px',border: '1px solid #d1d5db',boxSizing: 'border-box',fontSize: '14px',outline: 'none'}}
                         placeholder="혼밥하기 좋은 식당 알려줘"
                     />
                 </div>
 
                 {/* 추천 요청 버튼 */}
                 <button type="submit"disabled={isSubmitting ||latitude == null ||longitude == null}
-                    style={{width: '100%',padding: '14px',backgroundColor:isSubmitting ||
-                            latitude == null ||
-                            longitude == null
-                                ? '#9ca3af'
-                                : '#2563eb',
-                        color: '#ffffff',
-                        border: 'none',
-                        borderRadius: '10px',
-                        fontSize: '16px',
-                        fontWeight: 'bold',
-                        cursor:
-                            isSubmitting ||
-                            latitude == null ||
-                            longitude == null
-                                ? 'not-allowed'
-                                : 'pointer',
+                    style={{width: '100%',padding: '14px',backgroundColor:isSubmitting ||latitude == null ||longitude == null? '#9ca3af': '#2563eb',
+                        color: '#ffffff',border: 'none',borderRadius: '10px',fontSize: '16px',fontWeight: 'bold',
+                        cursor:isSubmitting ||latitude == null ||longitude == null? 'not-allowed': 'pointer',
                         transition: 'background-color 0.2s ease'
                     }}
                 >
@@ -303,35 +216,14 @@ function RecommendForm({
 
             {/* 13. AI 추천 결과 출력 */}
             {recommendationResult && (
-                <div
-                    style={{
-                        marginTop: '24px',
-                        padding: '16px',
-                        background: '#f0fdf4',
-                        borderRadius: '10px',
-                        border: '1px solid #bbf7d0',
-                        fontSize: '14px'
-                    }}
-                >
-                    <h3
-                        style={{
-                            color: '#166534',
-                            marginTop: 0,
-                            marginBottom: '12px'
-                        }}
-                    >
-                        ✨ {recommendationResult.title || 'AI 맞춤 추천 결과'}
+                <div style={{marginTop: '24px',padding: '16px',background: '#f0fdf4',borderRadius: '10px',border: '1px solid #bbf7d0',fontSize: '14px'}}>
+                    <h3 style={{color: '#166534',marginTop: 0,marginBottom: '12px'}}>
+                         {recommendationResult.title || 'AI 맞춤 추천 결과'}
                     </h3>
 
                     {/* 전체 추천 설명 */}
                     {recommendationResult.summary && (
-                        <p
-                            style={{
-                                color: '#374151',
-                                lineHeight: '1.6',
-                                whiteSpace: 'pre-line'
-                            }}
-                        >
+                        <p style={{color: '#374151',lineHeight: '1.6', whiteSpace: 'pre-line'}}>
                             {recommendationResult.summary}
                         </p>
                     )}
@@ -341,80 +233,38 @@ function RecommendForm({
                     recommendationResult.itinerary.length > 0 ? (
                         recommendationResult.itinerary.map(
                             (item, index) => (
-                                <div
-                                    key={`${item.place || 'place'}-${index}`}
-                                    style={{
-                                        marginTop: '12px',
-                                        padding: '14px',
-                                        background: '#ffffff',
-                                        border: '1px solid #e5e7eb',
-                                        borderRadius: '10px'
-                                    }}
-                                >
-                                    <h4
-                                        style={{
-                                            margin: '0 0 8px',
-                                            color: '#111827',
-                                            fontSize: '16px'
-                                        }}
-                                    >
+                                <div key={`${item.place || 'place'}-${index}`}style={{marginTop: '12px',padding: '14px',background: '#ffffff',border: '1px solid #e5e7eb',borderRadius: '10px'}}>
+                                    <h4 style={{margin: '0 0 8px',color: '#111827',fontSize: '16px'}}>
                                         {index + 1}. {item.place || '장소명 없음'}
                                     </h4>
 
                                     {item.category && (
-                                        <p
-                                            style={{
-                                                margin: '4px 0',
-                                                color: '#2563eb'
-                                            }}
-                                        >
-                                            🏷️ {item.category}
+                                        <p style={{margin: '4px 0',color: '#2563eb'}}>
+                                            {item.category}
                                         </p>
                                     )}
 
                                     {item.time && (
-                                        <p
-                                            style={{
-                                                margin: '4px 0',
-                                                color: '#4b5563'
-                                            }}
-                                        >
-                                            🕒 {item.time}
+                                        <p style={{margin: '4px 0',color: '#4b5563'}}>
+                                            {item.time}
                                         </p>
                                     )}
 
                                     {item.address && (
-                                        <p
-                                            style={{
-                                                margin: '4px 0',
-                                                color: '#4b5563'
-                                            }}
-                                        >
-                                            📍 {item.address}
+                                        <p style={{margin: '4px 0',color: '#4b5563'}}>
+                                            {item.address}
                                         </p>
                                     )}
 
                                     {item.description && (
-                                        <p
-                                            style={{
-                                                margin: '8px 0',
-                                                color: '#374151',
-                                                lineHeight: '1.6'
-                                            }}
-                                        >
+                                        <p style={{margin: '8px 0',color: '#374151',lineHeight: '1.6'}}>
                                             {item.description}
                                         </p>
                                     )}
 
                                     {item.recommendation_reason && (
-                                        <p
-                                            style={{
-                                                margin: '8px 0 0',
-                                                color: '#166534',
-                                                lineHeight: '1.6'
-                                            }}
-                                        >
-                                            💡 추천 이유:{' '}
+                                        <p style={{margin: '8px 0 0',color: '#166534',lineHeight: '1.6'}}>
+                                            추천 이유:{' '}
                                             {item.recommendation_reason}
                                         </p>
                                     )}
@@ -422,13 +272,7 @@ function RecommendForm({
                                     {/* 지도 연결에 사용할 좌표 */}
                                     {item.latitude != null &&
                                     item.longitude != null && (
-                                        <p
-                                            style={{
-                                                margin: '8px 0 0',
-                                                color: '#6b7280',
-                                                fontSize: '12px'
-                                            }}
-                                        >
+                                        <p style={{margin: '8px 0 0',color: '#6b7280',fontSize: '12px'}}>
                                             좌표 확인 완료
                                         </p>
                                     )}

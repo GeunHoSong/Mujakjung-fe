@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { useState } from "react";
 
 import Main from "./pages/travel/Main";
 import Join from "./pages/member/Join";
@@ -43,17 +44,27 @@ import MyPageBookmark from "./pages/mypage/MyPageBookmark"; // 👈 1. 북마크
 // 여행 관련 (TravelSave import 경로 수정!)
 import TravelSave from "./pages/travel/TravelSave";
 import ReservationCreate from "./pages/reservation/ReservationCreate";
-import RecommendForm from "./components/RecommendForm";
+interface ItineraryItem {
+  place?: string;
+  latitude?: number | null;
+  longitude?: number | null;
+}
 
+interface RecommendationResponse {
+  title?: string;
+  summary?: string;
+  itinerary?: ItineraryItem[];
+}
 
 function App() {
+  const [recommendationResult, setRecommendationResult] = useState<RecommendationResponse | null >(null);
   return (
     <BrowserRouter>
       <Header />
 
       <div style={{ paddingTop: "70px" }}>
         <Routes>
-          <Route path="/" element={<Main />} />
+          <Route path="/" element={<Main onRecommendationReceived={setRecommendationResult} />} />
           <Route path="/join" element={<Join />} />
           <Route path="/login" element={<Login />} />
           <Route path="/search" element={<Search />} />
@@ -102,7 +113,7 @@ function App() {
           
         </Routes>
 
-        <Footer />
+        <Footer/>
       </div>
     </BrowserRouter>
   );
