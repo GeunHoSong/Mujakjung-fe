@@ -1,6 +1,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import ItineraryMap from "./ItineraryMap";
 
 // 1. 부모 컴포넌트에서 전달받는 Props
 interface AiChatSectionProps {
@@ -247,6 +248,11 @@ function AiChatSection({
                                             >
                                                 {msg.recommendation.summary}
                                             </p>
+                                        )}
+                                        {msg.recommendation.itinerary && (
+                                            msg.recommendation.itinerary.length >0 && (
+                                                <ItineraryMap itinerary={msg.recommendation.itinerary}/>
+                                            )
                                         )}
 
                                         {msg.recommendation.itinerary?.map(
