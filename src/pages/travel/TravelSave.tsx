@@ -33,29 +33,35 @@ function TravelSave() {
 
     // FastAPI 서버로 오늘 일정 전송 함수 
     const handleSaveSchedule = async (e: React.FormEvent) => {
-        e.preventDefault();
-        
-        const payload = {
-            trip_id: tripId,
-            visit_date: visitDate,
-            places: places,
-        };
+    e.preventDefault();
 
-        try {
-            setLoading(true);
-            const response = await axios.post("http://127.0.0.1:8000/api/v1/schedules/today", payload);
-            console.log("오늘 여행 일정 성공적으로 저장이 되었습니다", response.data);
-            alert("오늘의 여행 일정이 성공적으로 저장되었습니다!");
-            
-            // 💡 저장 성공 시 여행 일정 목록 페이지로 이동하도록 변경!
-            navigate("/mypage/travel");
-        } catch (error: any) {
-            console.error("일정 저장 실패", error);
-            alert("일정 저장 오류가 발생되었습니다. FastAPI 서버 상태를 확인해 주세요.");
-        } finally {
-            setLoading(false);
-        }
+    const payload = {
+        title: `${visitDate} 여행`
     };
+
+    try {
+        setLoading(true);
+
+        const response = await axios.post(
+            "http://localhost:8080/api/mypage/travel-plans",
+            payload,
+            {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+                }
+            }
+        );
+
+        console.log("여행 일정 저장 응답:", response.data);
+        alert("여행 제목 저장 요청이 성공했어!");
+        navigate("/mypage/travel");
+    } catch (error) {
+        console.error("여행 일정 저장 실패:", error);
+        alert("저장에 실패했어. 로그인 상태와 Spring Boot 서버를 확인해 줘.");
+    } finally {
+        setLoading(false);
+    }
+};
 
     return (
         <div style={{ padding: "40px", maxWidth: "700px", margin: "0 auto", fontFamily: "sans-serif" }}>

@@ -5,6 +5,11 @@ interface ItineraryItem {
     place?: string;
     latitude?: number | null;
     longitude?: number | null;
+    address?: string;
+    category?: string;
+    time?: string;
+    description?: string;
+    recommendation_reason?: string;
 }
 
 // 날짜별 일정 데이터 타입
@@ -19,6 +24,7 @@ interface ItineraryMapProps {
 }
 
 function ItineraryMap({ itinerary }: ItineraryMapProps) {
+    console.log(" ItineraryMap 실행됨", itinerary);
     // 지도를 표시할 HTML 영역
     const mapElement = useRef<HTMLDivElement>(null);
 
@@ -109,13 +115,48 @@ function ItineraryMap({ itinerary }: ItineraryMapProps) {
 
                 // 마커를 클릭하면 장소 이름 표시
                 const infoContent = document.createElement("div");
+                infoContent.style.width= "240px";
+                infoContent.style.maxHeight= "250px";
+                infoContent.style.overflow= "auto";
+                infoContent.style.padding= "14px";
+                infoContent.style.boxSizing= "border-box";
+                infoContent.style.fontSize= "13px";
+                infoContent.style.lineHeight= "1.6";
+                infoContent.style.color= "#1f2937";
+                infoContent.style.backgroundColor= "#ffffff";
+                infoContent.style.wordBreak= "keep-all";
+                // 장소 제목 
+                const title = document.createElement("div")
+                title.textContent = item.place || "추천 장소";
+                title.style.fontSize="16px";
+                title.style.fontWeight= "bold";
+                title.style.marginBottom="8px";
 
-                infoContent.style.padding = "8px 12px";
-                infoContent.textContent = item.place || "추천 장소";
+                infoContent.appendChild(title);
 
+                // 정보가 있으때만 표시 하는 함수 
+                const addInfo  = (lable: string, value?: string) => {
+                    if(!value?.trim()) return;
+                    const row = document.createElement("div");
+                    row.style.marginTop="5px";
+                    row.textContent= `${lable} : ${value}`;
+                    infoContent.appendChild(row);
+                }
+
+                //  장소별 상세 정보 
+                addInfo("종류", item.category);
+                addInfo("주소", item.address);
+                addInfo("영업 시간" ,   item.time);
+                addInfo("설명", item.description);
+                addInfo("추천 이유", item.recommendation_reason);
+
+                // 정보창 생성 
                 const infoWindow = new kakaoMap.maps.InfoWindow({
                     content: infoContent,
+                    removable: true,
                 });
+
+
 
                 kakaoMap.maps.event.addListener(
                     marker,

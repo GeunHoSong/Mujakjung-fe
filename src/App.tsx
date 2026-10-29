@@ -44,6 +44,8 @@ import MyPageBookmark from "./pages/mypage/MyPageBookmark";
 // 여행 관련
 import TravelSave from "./pages/travel/TravelSave";
 import ReservationCreate from "./pages/reservation/ReservationCreate";
+import TravelList from "./pages/travel/TravelList";
+import TravelUpdate from "./pages/travel/TravelUpdate";
 
 interface ItineraryItem {
   place?: string;
@@ -81,7 +83,9 @@ function App() {
           <Route path="/mypage/bookmark" element={<MyPageBookmark />} />
 
           <Route path="/travel/:id" element={<TravelDetail />} />
+          <Route path="/travel/list" element={<TravelList />} />
           <Route path="/travel/TravelSave" element={<TravelSave />} />
+          <Route path="/travel/TravelUpdate" element={<TravelUpdate />} />
 
           <Route path="/admin/members" element={<AdminMainMember />} />
           <Route path="/admin/cart" element={<AdminCart />} />

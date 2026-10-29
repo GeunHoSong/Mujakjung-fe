@@ -71,21 +71,37 @@ function TravelDetail() {
   }
 
   useEffect(() => {
-    const fetchDetail = async () => {
-      const token = localStorage.getItem("token");
-      try {
-        const response = await axios.get(`http://localhost:8080/api/travels/${id}`, {
-          headers: { Authorization: `Bearer ${token}` }
-        });
-        setTravel(response.data);
-      } catch (error: any) {
-        handleAuthError(error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchDetail();
-  }, [id, navigate]); // navigate 추가
+  const fetchDetail = async () => {
+    // ID가 없거나 숫자가 아니면 요청하지 않기
+    if (!id || !/^\d+$/.test(id)) {
+      console.error("잘못된 여행 ID:", id);
+      setTravel(null);
+      setLoading(false);
+      return;
+    }
+
+    const token = localStorage.getItem("accessToken");
+
+    try {
+      const response = await axios.get(
+        `http://localhost:8080/api/travels/${id}`,
+        {
+          headers: token
+            ? { Authorization: `Bearer ${token}` }
+            : {}
+        }
+      );
+
+      setTravel(response.data);
+    } catch (error: any) {
+      handleAuthError(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  fetchDetail();
+}, [id, navigate]);
 
   if (loading) return <div>힐링 정보를 불러오는 중...</div>;
   if (!travel) return <div>정보가 없습니다.</div>;

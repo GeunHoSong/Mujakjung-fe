@@ -16,7 +16,7 @@ function TravelList() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:8080/api/admin/travel/list")
+      .get("http://localhost:8080/api/travels")
       .then((res) => {
         setList(res.data);
       })
@@ -27,7 +27,7 @@ function TravelList() {
 
   return (
     <div style={{ padding: "20px", maxWidth: "800px", margin: "0 auto" }}>
-      <h2>무작정 여행지 목록</h2>
+      <h2>무작정 여행지</h2>
       <p>등록된 여행지들을 확인하고 상세 내용을 보려면 클릭하세요.</p>
       <hr />
 

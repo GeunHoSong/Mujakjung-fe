@@ -18,42 +18,102 @@ function MyPageTravel() {
 
     // 백엔드 API 연동용 useEffect
     useEffect(() => {
-        const fetchTravelData = async () => {
-            try {
-                const response = await axios.get("/api/travel/list", {
-                    headers: {
-                        Authorization: `Bearer ${localStorage.getItem("accessToken")}`
-                    }
-                });
-                if (response.data && response.data.length > 0) {
-                    setTravelList(response.data);
+    const fetchTravelData = async () => {
+        const token = localStorage.getItem("accessToken");
+
+        if (!token) {
+            console.log("로그인이 필요해. accessToken이 없어.");
+            setLoading(false);
+            return;
+        }
+
+        try {
+            setLoading(true);
+
+            const response = await axios.get("/api/mypage/travel-plans/list", {
+                headers: {
+                    Authorization: `Bearer ${token}`
                 }
-            } catch (error) {
-                console.log("여행 일정 로드 실패(더미 데이터 유지)", error);
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetchTravelData();
-    }, []);
+            });
+            console.log("서버에서 받은 여행 일정",JSON.stringify( response.data , null ,2));
+            setTravelList(response.data);
+        } catch (error) {
+            console.error("여행 일정 로드 실패:", error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    fetchTravelData();
+}, []);
 
     // 일정 추가 함수 (함수 범위 수정 및 오타 교정)
-    const handleAddTravel = (e: React.FormEvent) => {
-        e.preventDefault();
-        if (!newTitle.trim()) return;
+    const handleAddTravel = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!newTitle.trim()) return;
+
+    const token = localStorage.getItem("accessToken");
+
+    if (!token) {
+        alert("로그인이 필요합니다.");
+        return;
+    }
+
+    try {
+        const response = await axios.post(
+            "/api/mypage/travel-plans",
+            { title: newTitle.trim() },
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }
+        );
 
         const newItem: TravelItem = {
-            id: Date.now(),
-            title: newTitle,
+            id: response.data.id,
+            title: response.data.title
         };
-        setTravelList([...travelList, newItem]);
+
+        setTravelList((prev) => [...prev, newItem]);
         setNewTitle("");
-    };
+        alert("여행 일정이 저장되었습니다.");
+    } catch (error) {
+        console.error("여행 일정 저장 실패:", error);
+        alert("여행 일정 저장에 실패했습니다.");
+    }
+};
 
     // 일정 삭제 함수 
-    const handleDeleteTravel = (id: number) => {
-        setTravelList(travelList.filter((item) => item.id !== id));
-    };
+    const handleDeleteTravel = async (id: number) => {
+    const token = localStorage.getItem("accessToken");
+
+    if (!token) {
+        alert("로그인이 필요합니다.");
+        return;
+    }
+
+    try {
+        await axios.delete(`/api/mypage/travel-plans/${id}`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+
+        // 서버에서 삭제 성공한 뒤 화면 목록에서도 제거
+        setTravelList((prev) =>
+            prev.filter((item) => item.id !== id)
+        );
+
+        alert("여행 일정이 삭제되었습니다.");
+    } catch (error) {
+        console.error("여행 일정 삭제 실패:", error);
+        alert("삭제에 실패했습니다. 서버 로그를 확인해 주세요.");
+    }
+};
+
+
 
     if (loading) return <div className="p-6 text-gray-500">여행 일정 불러 오는 중....</div>;
 

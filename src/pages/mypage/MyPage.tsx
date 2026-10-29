@@ -66,16 +66,10 @@ function Mypage() {
             {/* 메뉴 버튼 영역 ("나의 예약" 제거 및 정리) */}
             <div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
                 <button 
-                    onClick={() => navigate("/travel/list")}
-                    style={{ padding: "10px 16px", backgroundColor: "#2563eb", color: "#fff", border: "none", borderRadius: "6px", cursor: "pointer", fontWeight: "bold" }}
-                >
-                    🗺️ 내 여행 목록
-                </button>
-                <button 
                     onClick={() => navigate("/reservation/ReservationList")}
                     style={{ padding: "10px 16px", backgroundColor: "#f8fafc", border: "1px solid #cbd5e1", borderRadius: "6px", cursor: "pointer" }}
                 >
-                    예약 목록
+                    여행 목록
                 </button>
                 <button 
                     onClick={() => navigate("/reservation/ReservationCreate")}
@@ -90,7 +84,7 @@ function Mypage() {
                     프로필 수정
                 </button>
                 <button 
-                    onClick={() => navigate("/mypage/travel")}
+                    onClick={() => navigate("/travel/TravelList")}
                     style={{ padding: "10px 16px", backgroundColor: "#f8fafc", border: "1px solid #cbd5e1", borderRadius: "6px", cursor: "pointer" }}
                 >
                     여행 일정
@@ -99,7 +93,7 @@ function Mypage() {
                     onClick={() => navigate("/travel/TravelSave")}
                     style={{ padding: "10px 16px", backgroundColor: "#f8fafc", border: "1px solid #cbd5e1", borderRadius: "6px", cursor: "pointer" }}
                 >
-                    여행 일정 저장
+                    AI 여행 일정 만들기
                 </button>
                 <button 
                     onClick={() => navigate("/mypage/board")}
