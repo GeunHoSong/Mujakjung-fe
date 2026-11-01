@@ -1,0 +1,151 @@
+
+/* =========================================
+   1. 추천 설정 카드
+   ========================================= */
+.recommend-card {
+    width: 100%;
+    max-width: 760px; /* 카드의 최대 너비 */
+    margin: 0 auto; /* 좌우 가운데 정렬 */
+    padding: 32px; /* 카드 내부 여백 */
+    box-sizing: border-box;
+    font-family: sans-serif;
+
+    background-color: #ffffff;
+    border: 1px solid #e5eeec;
+    border-radius: 24px; /* 모서리 둥글게 */
+    box-shadow: 0 8px 28px rgba(35, 75, 85, 0.08);
+}
+
+
+/* =========================================
+   2. 카드 제목
+   ========================================= */
+.recommend-title {
+    margin: 0 0 32px;
+    color: #183b46;
+    font-size: 26px;
+    font-weight: 700; /* 글자 굵기 */
+    text-align: center; /* 가운데 정렬 */
+}
+
+
+/* =========================================
+   3. 여행 카테고리 버튼 영역
+   ========================================= */
+.category-tabs {
+    display: flex; /* 버튼 가로 배치 */
+    gap: 12px; /* 버튼 사이 간격 */
+    margin-bottom: 28px;
+    justify-content: center; /* 가운데 정렬 */
+}
+
+
+/* =========================================
+   4. 기본 카테고리 버튼
+   ========================================= */
+.category-tab {
+    padding: 12px 24px;
+    border: 1px solid #d1d5db;
+    border-radius: 12px;
+
+    background-color: #ffffff;
+    color: #4b5563;
+
+    font-size: 15px;
+    font-weight: 600;
+
+    cursor: pointer; /* 마우스 포인터 변경 */
+    transition: all 0.25s ease; /* 부드러운 효과 */
+}
+
+
+/* =========================================
+   5. 선택된 카테고리 버튼
+   ========================================= */
+.category-tab.active {
+    background-color: #2563eb;
+    color: #ffffff;
+    border-color: #2563eb;
+}
+
+
+/* =========================================
+   6. 마우스를 올렸을 때
+   ========================================= */
+.category-tab:hover {
+    border-color: #2563eb;
+}
+
+
+/* =========================================
+   7. 추천 입력창
+   ========================================= */
+.recommend-input {
+    width: 100%;
+    padding: 12px 16px;
+
+    border: 1px solid #d1d5db;
+    border-radius: 10px;
+
+    box-sizing: border-box;
+    font-size: 14px;
+}
+
+
+/* =========================================
+   8. 추천 실행 버튼
+   ========================================= */
+.recommend-submit {
+    width: 100%;
+    padding: 14px;
+
+    background-color: #2563eb;
+    color: #ffffff;
+
+    border: none;
+    border-radius: 10px;
+
+    font-size: 15px;
+    cursor: pointer;
+}
+
+
+/* =========================================
+   9. 추천 결과 영역
+   ========================================= */
+.recommend-result {
+    margin-top: 24px;
+    padding: 15px;
+
+    background-color: #f8fafdf4;
+    border: 1px solid #bbf7d8;
+    border-radius: 10px;
+
+    font-size: 14px;
+}
+
+
+/* =========================================
+   10. 모바일 화면 대응
+   ========================================= */
+@media (max-width: 680px) {
+
+    .recommend-card {
+        padding: 20px;
+        border-radius: 18px;
+    }
+
+    .recommend-title {
+        font-size: 24px;
+    }
+
+    .category-tabs {
+        gap: 8px;
+        flex-wrap: wrap; /* 공간이 부족하면 다음 줄로 */
+    }
+
+    .category-tab {
+        padding: 10px 14px;
+        font-size: 14px;
+    }
+}

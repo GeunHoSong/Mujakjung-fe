@@ -1,15 +1,14 @@
 import { useEffect, useRef } from "react";
 
-// 장소 하나의 데이터 타입
 interface ItineraryItem {
     place?: string;
     latitude?: number | null;
     longitude?: number | null;
-    address?: string;
+    address?: string | null;
     category?: string;
     time?: string;
     description?: string;
-    recommendation_reason?: string;
+    recommendation_reason?: string | null;
 }
 
 // 날짜별 일정 데이터 타입
@@ -135,7 +134,7 @@ function ItineraryMap({ itinerary }: ItineraryMapProps) {
                 infoContent.appendChild(title);
 
                 // 정보가 있으때만 표시 하는 함수 
-                const addInfo  = (lable: string, value?: string) => {
+                const addInfo  = (lable: string, value?: string| null) => {
                     if(!value?.trim()) return;
                     const row = document.createElement("div");
                     row.style.marginTop="5px";

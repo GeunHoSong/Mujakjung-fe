@@ -1,132 +1,160 @@
+
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate, useLocation } from "react-router-dom";
 
-interface PlaceItem {
-    name: string;
-    latitude: number;
-    longitude: number;
-    order_index: number;
-    memo: string;
+interface ScheduleItem {
+    time: string;
+    place: string;
+    description: string;
+    category: string;
+    address?: string | null;
+    latitude?: number | null;
+    longitude?: number | null;
+    recommendation_reason?: string | null;
+}
+
+interface DaySchedule {
+    day: number;
+    courses: ScheduleItem[];
+}
+
+interface RecommendResponse {
+    title: string;
+    summary: string;
+    itinerary: DaySchedule[];
 }
 
 function TravelSave() {
     const navigate = useNavigate();
     const location = useLocation();
 
-    // AI 추천 화면 등에서 넘겨준 state 데이터 받기
+    // AI 추천 화면에서 전달받은 실제 여행 데이터
     const receiveData = location.state as {
-        tripId?: string;
-        visitDate?: string;
-        places?: PlaceItem[];
+        travelData?: RecommendResponse;
     } | null;
 
-    const [tripId, setTripId] = useState(receiveData?.tripId || "trip_2026_01");
-    const [visitDate, setVisitDate] = useState(receiveData?.visitDate || "2026-10-12");
-    const [places, setPlaces] = useState<PlaceItem[]>(
-        receiveData?.places || [
-            { name: "경복궁", latitude: 37.5796, longitude: 126.9770, order_index: 1, memo: "메인 관람 코스 및 산책" },
-            { name: "광장시장", latitude: 37.5700, longitude: 126.9990, order_index: 2, memo: "점심 식사 및 간식 투어" }
-        ]
-    );
-    const [loading, setLoading] = useState(false);
-
-    // FastAPI 서버로 오늘 일정 전송 함수 
-    const handleSaveSchedule = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    const payload = {
-        title: `${visitDate} 여행`
-    };
-
-    try {
-        setLoading(true);
-
-        const response = await axios.post(
-            "http://localhost:8080/api/mypage/travel-plans",
-            payload,
-            {
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem("accessToken")}`
-                }
-            }
+    const [travelData, setTravelData] =
+        useState<RecommendResponse | null>(
+            receiveData?.travelData || null
         );
 
-        console.log("여행 일정 저장 응답:", response.data);
-        alert("여행 제목 저장 요청이 성공했어!");
-        navigate("/mypage/travel");
-    } catch (error) {
-        console.error("여행 일정 저장 실패:", error);
-        alert("저장에 실패했어. 로그인 상태와 Spring Boot 서버를 확인해 줘.");
-    } finally {
-        setLoading(false);
-    }
-};
+    const [loading, setLoading] = useState(false);
+
+    // 여행 일정 저장
+    const handleSaveSchedule = async (
+        e: React.FormEvent
+    ) => {
+        e.preventDefault();
+
+        if (!travelData) {
+            alert("저장할 여행 일정이 없습니다.");
+            return;
+        }
+
+        const payload = {
+            title: travelData.title
+        };
+
+        try {
+            setLoading(true);
+
+            const response = await axios.post(
+                "http://localhost:8080/api/mypage/travel-plans",
+                payload,
+                {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+                    }
+                }
+            );
+
+            console.log("여행 일정 저장 응답:", response.data);
+
+            alert("여행 제목 저장 성공!");
+            navigate("/mypage/travel");
+
+        } catch (error) {
+            console.error("여행 일정 저장 실패:", error);
+            alert("저장에 실패했습니다.");
+        } finally {
+            setLoading(false);
+        }
+    };
 
     return (
-        <div style={{ padding: "40px", maxWidth: "700px", margin: "0 auto", fontFamily: "sans-serif" }}>
+        <div style={{
+            padding: "40px",
+            maxWidth: "700px",
+            margin: "0 auto",
+            fontFamily: "sans-serif"
+        }}>
+
             <h2>여행 일정 저장</h2>
-            <p style={{ color: "#666", marginBottom: "30px" }}>
-                AI 추천 동선이나 내가 구성한 오늘의 일정을 확인 하고 서버에 안전하게 저장 하세요
-            </p>
-            <form onSubmit={handleSaveSchedule} style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
-                <div>
-                    <label style={{ display: "block", fontWeight: "bold", marginBottom: "8px" }}>방문 날짜</label>
-                    <input 
-                        type="date" 
-                        value={visitDate} 
-                        onChange={(e) => setVisitDate(e.target.value)} 
-                        style={{ padding: "10px", width: "100%", borderRadius: "6px", border: "1px solid #ccc" }}
-                    />
-                </div>
 
-                {/* 장소 목록 표시 섹션 */}
-                <div>
-                    <h3 style={{ marginBottom: "12px", fontSize: "18px" }}>저장될 장소 목록 ({places.length}개소)</h3>
-                    <ul style={{ listStyle: "none", padding: 0, display: "flex", flexDirection: "column", gap: "12px" }}>
-                        {places.map((place, index) => (
-                            <li key={index} style={{ padding: "16px", background: "#f8fafc", border: "1px solid #e2e8f0", borderRadius: "8px" }}>
-                                <div style={{ display: "flex", justifyContent: "space-between", fontWeight: "bold", marginBottom: "4px" }}>
-                                    <span>{place.order_index}. {place.name}</span>
-                                    <span style={{ fontSize: "12px", color: "#64748b" }}>위도: {place.latitude}, 경도: {place.longitude}</span>
+            {!travelData ? (
+                <p>전달받은 AI 여행 일정이 없습니다.</p>
+            ) : (
+                <>
+                    <h3>{travelData.title}</h3>
+                    <p>{travelData.summary}</p>
+
+                    {travelData.itinerary.map((day) => (
+                        <div key={day.day} style={{ marginBottom: "25px" }}>
+
+                            <h3>{day.day}일 차</h3>
+
+                            {day.courses.map((course, index) => (
+                                <div
+                                    key={`${day.day}-${index}`}
+                                    style={{
+                                        padding: "16px",
+                                        marginBottom: "12px",
+                                        background: "#f8fafc",
+                                        border: "1px solid #e2e8f0",
+                                        borderRadius: "8px"
+                                    }}
+                                >
+                                    <strong>
+                                        {course.time} - {course.place}
+                                    </strong>
+
+                                    <p>{course.category}</p>
+                                    <p>{course.description}</p>
+                                    <p>{course.address}</p>
+                                    <p>
+                                        추천 이유: {course.recommendation_reason}
+                                    </p>
                                 </div>
-                                <div style={{ fontSize: "14px", color: "#475569" }}>메모: {place.memo}</div>
-                            </li>
-                        ))}
-                    </ul>
-                </div>
+                            ))}
+                        </div>
+                    ))}
+                </>
+            )}
 
-                {/* 버튼 영역 */}
-                <div style={{ display: "flex", gap: "12px", marginTop: "10px" }}>
-                    <button 
-                        type="submit" 
-                        disabled={loading} 
-                        style={{ 
-                            flex: 2, 
-                            padding: "14px", 
-                            backgroundColor: loading ? "#cbd5e1" : "#4F46E5",
-                            color: "#fff", 
-                            border: "none",
-                            borderRadius: "8px", 
-                            fontSize: "16px", 
-                            fontWeight: "bold", 
-                            cursor: loading ? "not-allowed" : "pointer"
-                        }}
-                    >
-                        {loading ? "저장 중...." : "TravelSave 서버에 저장 하기"}
-                    </button>
-                    <button type="button" onClick={() => navigate("/mypage")} style={{ flex: 1, padding: "14px", color: "#334155", 
-                            border: "1px solid #e2e8f0", 
-                            borderRadius: "8px", 
-                            fontSize: "16px", 
-                            fontWeight: "bold", 
-                            cursor: "pointer",
-                            backgroundColor: "#f8fafc"
-                        }}
-                    >
-                        취소
-                    </button>
-                </div>
+            <form onSubmit={handleSaveSchedule}>
+                <button
+                    type="submit"
+                    disabled={loading || !travelData}
+                    style={{
+                        padding: "14px",
+                        backgroundColor: "#4F46E5",
+                        color: "#fff",
+                        border: "none",
+                        borderRadius: "8px",
+                        cursor: "pointer"
+                    }}
+                >
+                    {loading ? "저장 중..." : "여행 일정 저장"}
+                </button>
+
+                <button
+                    type="button"
+                    onClick={() => navigate("/mypage")}
+                    style={{ padding: "14px", marginLeft: "10px" }}
+                >
+                    취소
+                </button>
             </form>
         </div>
     );
