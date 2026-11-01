@@ -1,110 +1,191 @@
-import { useState } from "react";
+
 import { useNavigate, Link } from "react-router-dom";
 import logo from "../assets/Mujakjung.jpg";
 
 function Header() {
-  const navigate = useNavigate();
+    const navigate = useNavigate();
 
-  const [keyword, setKeyword] = useState("");
-  const [type, setType] = useState("domestic");
-  
-  // 토큰 및 사용자 정보 가져오기
-  const token = localStorage.getItem("accessToken");
-  const userRole = localStorage.getItem("role");
-  const userName = localStorage.getItem("userName");
-  
-  // 햄버거 메뉴 상태 (오타 수정)
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+    // 토큰 및 사용자 정보 가져오기
+    const token = localStorage.getItem("accessToken");
+    const userRole = localStorage.getItem("role");
+    const userName = localStorage.getItem("userName");
 
-  const logout = () => {
-    localStorage.clear();
-    alert("로그아웃 되었습니다.");
-    navigate("/");
-    window.location.reload();
-  };
+    // 로그아웃
+    const logout = () => {
+        localStorage.clear();
+        alert("로그아웃 되었습니다.");
+        navigate("/");
+        window.location.reload();
+    };
 
-  return (
-    <header style={{ 
-      position: "fixed", top: 0, left: 0, width: "100%", height: "70px",
-      display: "flex", justifyContent: "space-between", alignItems: "center",
-      padding: "0 20px", borderBottom: "1px solid #ccc", backgroundColor: "white",
-      zIndex: 1000, boxSizing: "border-box" // overflow: "hidden" 제거함 (메뉴 잘림 방지)
-    }}>
-      {/* 왼쪽: 햄버거 메뉴, 로고 및 메뉴 */}
-      <div style={{ display: "flex", alignItems: "center", gap: "20px", position: "relative" }}>
-        
-        {/* 햄버거 메뉴 버튼 (☰ 기호 추가) */}
-        <button 
-          onClick={() => setIsMenuOpen(!isMenuOpen)} 
-          style={{ background: "none", border: "none", fontSize: "22px", cursor: "pointer", padding: "5px" }}
-        >
-          ☰
-        </button>
+    return (
+        <header
+    style={{
+        position: "fixed",
+        top: 0,
+        left: 0,
+        width: "100%",
+        minHeight: "70px",
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+        padding: "0 30px",
+        borderBottom: "1px solid #D6C5DC",
+        backgroundColor:" #E6D9EA",
+        zIndex: 1000,
+        boxSizing: "border-box"
+    }}
+>
 
-        {/* 햄버거 메뉴 누르면 나오는 카테고리 목록 */}
-        {isMenuOpen && (
-          <div style={{ 
-            position: "absolute", top: "55px", left: "0", backgroundColor: "white", 
-            border: "1px solid #ccc", borderRadius: "8px", boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)", 
-            width: "140px", zIndex: 1100, display: "flex", flexDirection: "column", padding: "10px 0" 
-          }}>
-            <Link to="/domestic" onClick={() => setIsMenuOpen(false)} style={{ padding: "10px 15px", textDecoration: "none", color: "#333", display: "block" }}>
-              국내 여행
-            </Link>
-            <Link to="/overseas" onClick={() => setIsMenuOpen(false)} style={{ padding: "10px 15px", textDecoration: "none", color: "#333", display: "block" }}>
-              해외 여행
-            </Link>
-            <Link to="/support" onClick={() => setIsMenuOpen(false)} style={{ padding: "10px 15px", textDecoration: "none", color: "#333", display: "block" }}>
-              고객 센터
-            </Link>
-          </div>
-        )}
+            {/* 1. 왼쪽: 로고 및 서비스 이름 */}
+            <div
+                style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "12px"
+                }}
+            >
+                <Link to="/" style={{ display: "flex" }}>
+                    <img
+                        src={logo}
+                        alt="무작정 로고"
+                        width="45"
+                        height="45"
+                        style={{
+                            borderRadius: "50%",
+                            objectFit: "cover"
+                        }}
+                    />
+                </Link>
 
-        {/* 로고 및 상단 네비게이션 (다시 추가됨) */}
-        <Link to="/">
-          <img src={logo} alt="로고" width="50" style={{ borderRadius: "50%" }} />
-        </Link>
-        <h1 style={{ margin: 0, fontSize: "1.2rem", whiteSpace: "nowrap" }}>무작정</h1>
-        
-        <nav style={{ display: "flex", gap: "15px" }}>
-          <Link to="/chat" style={{ textDecoration: "none", color: "#333" }}>상담</Link>
-          <Link to="/notice/list" style={{ textDecoration: "none", color: "#333" }}>공지</Link>
-          <Link to="/board/list" style={{ textDecoration: "none", color: "#333" }}>게시판</Link>
-        </nav>
+                <Link
+                    to="/"
+                    style={{
+                        textDecoration: "none",
+                        color: "#183b46",
+                        fontSize: "22px",
+                        fontWeight: "bold",
+                        whiteSpace: "nowrap"
+                    }}
+                >
+                    무작정
+                </Link>
+            </div>
 
-        {/* 검색창 */}
-        <div style={{ display: "flex", gap: "5px" }}>
-          <input value={keyword} onChange={(e) => setKeyword(e.target.value)} placeholder="검색" style={{ padding: "5px" }} />
-          <select value={type} onChange={(e) => setType(e.target.value)} style={{ padding: "5px" }}>
-            <option value="all">모두</option>
-            <option value="domestic">국내</option>
-            <option value="overseas">해외</option>
-          </select>
-          <button onClick={() => navigate(`/search?keyword=${keyword}&type=${type}`)}>검색</button>
-        </div>
-      </div>
 
-      {/* 오른쪽: 인증 버튼 */}
-      <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
-        {token ? (
-          <>
-            <span><strong>{userName || "사용자"}</strong>님</span>
-            {userRole?.toUpperCase() === "ADMIN" && (
-              <button onClick={() => navigate("/admin")} style={{ backgroundColor: "#FFD700" }}>관리자</button>
-            )}
-            <button onClick={() => navigate("/mypage")}>마이페이지</button>
-            <button onClick={logout}>로그아웃</button>
-            <button>설정</button>
-          </>
-        ) : (
-          <>
-            <button onClick={() => navigate("/join")}>회원가입</button>
-            <button onClick={() => navigate("/login")}>로그인</button>
-          </>
-        )}
-      </div>
-    </header>
-  );
+            {/* 2. 가운데: 주요 메뉴 */}
+            <nav
+                style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "24px"
+                }}
+            >
+                <Link to="/chat" style={navStyle}>
+                    AI 여행 상담
+                </Link>
+
+                <Link to="/notice/list" style={navStyle}>
+                    공지사항
+                </Link>
+
+                <Link to="/board/list" style={navStyle}>
+                    게시판
+                </Link>
+            </nav>
+
+
+            {/* 3. 오른쪽: 사용자 인증 및 계정 메뉴 */}
+            <div
+                style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "10px"
+                }}
+            >
+                {token ? (
+                    <>
+                        {/* 로그인 사용자 이름 */}
+                        <span>
+                            <strong>{userName || "사용자"}</strong>님
+                        </span>
+
+                        {/* 관리자 계정에만 표시 */}
+                        {userRole?.toUpperCase() === "ADMIN" && (
+                            <button
+                                type="button"
+                                onClick={() => navigate("/admin")}
+                                style={buttonStyle}
+                            >
+                                관리자
+                            </button>
+                        )}
+
+                        {/* 마이페이지 */}
+                        <button
+                            type="button"
+                            onClick={() => navigate("/mypage")}
+                            style={buttonStyle}
+                        >
+                            마이페이지
+                        </button>
+
+                        {/* 로그아웃 */}
+                        <button
+                            type="button"
+                            onClick={logout}
+                            style={buttonStyle}
+                        >
+                            로그아웃
+                        </button>
+                    </>
+                ) : (
+                    <>
+                        {/* 회원가입 */}
+                        <button
+                            type="button"
+                            onClick={() => navigate("/join")}
+                            style={buttonStyle}
+                        >
+                            회원가입
+                        </button>
+
+                        {/* 로그인 */}
+                        <button
+                            type="button"
+                            onClick={() => navigate("/login")}
+                            style={buttonStyle}
+                        >
+                            로그인
+                        </button>
+                    </>
+                )}
+            </div>
+
+        </header>
+    );
 }
+
+
+// 4. 상단 메뉴 공통 스타일
+const navStyle: React.CSSProperties = {
+    textDecoration: "none",
+    color: "#333333",
+    fontSize: "15px",
+    fontWeight: 600,
+    whiteSpace: "nowrap"
+};
+
+
+// 5. 버튼 공통 스타일
+const buttonStyle: React.CSSProperties = {
+    padding: "8px 12px",
+    border: "1px solid #e5e7eb",
+    borderRadius: "8px",
+    backgroundColor: "#ffffff",
+    color: "#333333",
+    cursor: "pointer",
+    whiteSpace: "nowrap"
+};
 
 export default Header;

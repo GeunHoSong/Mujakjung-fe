@@ -6,10 +6,7 @@
 /* 2. 프로젝트 공통 스타일 (선택 사항) */
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
   min-width: 320px;
   min-height: 100vh;
-  /* 아래 코드가 배경을 연한 회색으로 만들어줍니다 */
-  @apply bg-gray-50; 
+  background-color: #F0E8F1;
 }

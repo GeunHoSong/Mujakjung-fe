@@ -2,8 +2,13 @@
 .main-container {
     width: 100%;
     min-height: 100vh;
-    background-color: #f5f8f7;
-    padding: 40px 30px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    box-sizing: border-box;
+    padding: 100px 20px 40px;
+    flex-direction: column;
+    background-color: #F0E8F1;
 }
 
 /*여행 추천 영역*/
@@ -12,9 +17,10 @@
     max-width: 1200px;
     margin: 0 auto 30px ;
     padding: 30px;
-    background-color: #ffffff;
+    background-color:#E5D8E9;
+    border: 1px solid #D6C5DC;
     border-radius: 24px;
-    box-shadow: 0 4px 20px rgba(40, 80, 90, 0.86);
+    box-shadow: 0 4px 20px rgba(105, 81, 111, 0.12);
 }
 /*AI 채팅 영역 */
 .main-chat {
@@ -22,9 +28,10 @@
     max-width: 1200px;
     margin: 0 auto;
     padding: 30px;
-    background-color: #ffffff;
+    background-color: #E5D8E9;
+    border: 1px solid #D6C5DC;
     border-radius: 24px;
-    box-shadow: 0 4px 20px rgba(40, 80, 90, 0.86);
+    box-shadow: 0 4px 20px rgba(105, 81, 111, 0.12);
 }
 
 /*모바일 대응\*/
@@ -37,4 +44,13 @@
         padding: 18px;
         border-radius: 18px;
     }
+}
+
+/* 가운데 정렬*/ 
+.main-content {
+    width: 100%;
+    max-width: 1100px;
+    margin-left: auto;
+    margin-right: auto;
+
 }

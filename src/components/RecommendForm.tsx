@@ -43,17 +43,24 @@ function RecommendForm({
                 : [...prev, tag]
         );
     };
+    // 추천 버튼 클릭 시 실행
     const handleRecommend = () => {
-        if(!query.trim){
-            alert("어떤 여행을 원하는지 입력을 해주세요");
-            return;
+
+        // 입력 내용이 비어 있는지 확인
+        if (!query.trim()) {
+        alert("어떤 여행을 원하는지 입력해 주세요.");
+        return;
         }
-        if(latitude == null || !longitude == null) {
-            alert("먼저 위치를 확인해 주세요");
-            return;
-        }
-        onRecommend(query.trim(), selectedCategory);
+
+        // 현재 위치 확인
+        if (latitude == null || longitude == null) {
+            alert("먼저 위치를 확인해 주세요.");
+        return;
     }
+
+    // 부모 컴포넌트에 입력 내용 전달
+    onRecommend(query.trim(), selectedCategory);
+};
     return (
         <div  className="recommend-card">
             {/* 여행 카테고리 선택 */}
@@ -66,12 +73,11 @@ function RecommendForm({
             </div>
             {/* 10. 제목 */}
             <h2 className="recommend-title" >
-                위치 기반 맞춤 설정
             </h2>
 
             {/* 11. 현재 위치 상태 표시 */}
             <div className="location-box">
-                {latitude == null || !longitude == null ? (
+                {latitude == null || longitude == null ? (
                     <>
                         <span className="location-lcon">📍</span>
                         <strong>내위치</strong>
@@ -120,6 +126,8 @@ function RecommendForm({
                     <input type="text" className="recommend-input" value={query} onChange={(e)=> setQuery(e.target.value)} />
 
                 </div>
+                {/* AI 여행 상담 시작 버튼 */}
+                <button type="button" className="recommend-button" onClick={handleRecommend}>  AI 여행 상담 및 추천받기</button>
             </div>
         </div>
     );

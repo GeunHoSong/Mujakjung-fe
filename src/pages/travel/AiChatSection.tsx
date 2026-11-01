@@ -9,6 +9,7 @@ interface AiChatSectionProps {
     longitude: number | null;
     selectedTags: string[];
     setSelectedTags: React.Dispatch<React.SetStateAction<string[]>>;
+    onFindLocation: ()=> void;
 }
 
 // 2. 장소 하나의 정보 타입
@@ -60,13 +61,15 @@ function AiChatSection({
     latitude,
     longitude,
     selectedTags,
-    setSelectedTags
+    setSelectedTags,
+    onFindLocation
 }: AiChatSectionProps) {
     const navigate = useNavigate();
     const messageEndRef = useRef<HTMLDivElement | null>(null);
 
     const [input, setInput] = useState("");
     const [loading, setLoading] = useState(false);
+    const [isChatOpen , setIsCharOpen] = useState(false);
 
     // 처음 채팅 화면에 표시할 AI 인사말
     const [message, setMessage] = useState<Message[]>([
@@ -115,7 +118,9 @@ function AiChatSection({
     const tags = selectedTags;
 
     if (!userQuery.trim()) return;
-
+    setLoading(true);
+    // 사용자가 입력한 질문을 채팅창에 표시 
+    setMessage((prve)=> [...prve, {sender: "user", text: userQuery}])
     // 여행 일수 추출
     const durationMatch = userQuery.match(
         /(\d+)\s*박\s*(\d+)\s*일|(\d+)\s*일/
@@ -198,6 +203,7 @@ function AiChatSection({
                     "\n\n여행 일정 생성에 실패했어요. 잠시 후 다시 시도해 주세요.";
             }
 
+
             // 14. AI 답변과 추천 결과를 하나의 메시지로 저장
             setMessage((prev) => [
                 ...prev,
@@ -223,6 +229,16 @@ function AiChatSection({
             setLoading(false);
         }
     };
+    const handleRecommend = (query: string  , category: string) => {
+        if(!query.trim()) return;
+        if(latitude == null || longitude == null) {
+            alert("먼저 위치를 확인해 주세요");
+            return;
+        }
+        setIsCharOpen(true);
+        const enhancedQuery =`[여행 유형: ${category}]\n${query}`;
+        void handleSendToAI(enhancedQuery);
+    }
 
     // 15. 입력창에서 사용자가 직접 질문을 전송
     const handleSendMessage = (
@@ -244,196 +260,356 @@ function AiChatSection({
         message.map((msg) => msg.recommendation?.itinerary)
     );
 
-    return (
-        
-        <div style={{marginTop: "30px",background: "#ffffff",borderRadius: "20px",border: "1px solid #eaeaea",overflow: "hidden",display: "flex",flexDirection: "column",height: "650px"}}>
-            <RecommendForm latitude={latitude} longitude={longitude} selectedTags={selectedTags} setSelectedTags={setSelectedTags} />
-            {/* 17. 채팅창 헤더 */}
-            <div
-                style={{
-                    background: "#1d4ed8",
-                    color: "white",
-                    padding: "16px 20px",
-                    fontWeight: "bold",
-                    fontSize: "16px"
-                }}
-            >
-                무작정 AI 감성 가이드와 대화 중
-            </div>
+    
+return (
+    // 1. 전체 화면 영역
+    <div
+        style={{
+            width: "100%",
+            maxWidth: "1200px",
+            margin: "30px auto",
+            boxSizing: "border-box"
+        }}
+    >
 
-            {/* 18. 채팅 메시지 목록 */}
+        {/* =====================================
+            2. 여행 추천 설정 화면
+            - 채팅창이 닫혀 있을 때 표시
+            - 설정값은 컴포넌트가 유지되는 동안 보존
+        ===================================== */}
+        <div
+            style={{
+                display: isChatOpen ? "none" : "block",
+                width: "100%"
+            }}
+        >
+            <RecommendForm
+                latitude={latitude}
+                longitude={longitude}
+                selectedTags={selectedTags}
+                setSelectedTags={setSelectedTags}
+                onFindLocation={onFindLocation}
+                onRecommend={handleRecommend}
+            />
+        </div>
+
+
+        {/* =====================================
+            3. AI 채팅 화면
+            - 추천 버튼을 누르면 표시
+            - X 버튼을 누르면 설정 화면으로 복귀
+        ===================================== */}
+        {isChatOpen && (
             <div
                 style={{
-                    flex: 1,
-                    padding: "20px",
-                    overflowY: "auto",
+                    width: "100%",
+                    maxWidth: "1200px",
+                    margin: "0 auto",
+                    background: "#ffffff",
+                    borderRadius: "20px",
+                    border: "1px solid #eaeaea",
+                    overflow: "hidden",
                     display: "flex",
                     flexDirection: "column",
-                    gap: "16px",
-                    background: "#f8f9fa"
+                    minHeight: "650px",
+                    boxSizing: "border-box"
                 }}
             >
-                {message.map((msg, idx) => (
-                    <div
-                        key={idx}
+
+                {/* 4. 채팅창 헤더 */}
+                <div
+                    style={{
+                        background: "#1d4ed8",
+                        color: "white",
+                        padding: "16px 20px",
+                        fontWeight: "bold",
+                        fontSize: "16px",
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center"
+                    }}
+                >
+                    <span>무작정 AI 감성 가이드와 대화 중</span>
+
+                    {/* X 버튼: 추천 설정 화면으로 돌아가기 */}
+                    <button
+                        type="button"
+                        onClick={() => setIsCharOpen(false)}
                         style={{
-                            display: "flex",
-                            justifyContent:
-                                msg.sender === "user"
-                                    ? "flex-end"
-                                    : "flex-start"
+                            background: "transparent",
+                            border: "none",
+                            color: "white",
+                            fontSize: "22px",
+                            cursor: "pointer"
                         }}
                     >
+                        ✕
+                    </button>
+                </div>
+
+
+                {/* =====================================
+                    5. 채팅 메시지 목록
+                    - 사용자 질문
+                    - AI 답변
+                    - AI 추천 결과
+                ===================================== */}
+                <div
+                    style={{
+                        width: "100%",
+                        flex: 1,
+                        padding: "20px",
+                        overflowY: "auto",
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: "16px",
+                        background: "#f8f9fa",
+                        boxSizing: "border-box"
+                    }}
+                >
+
+                    {message.map((msg, idx) => (
+
+                        /* 6. 메시지 한 줄 */
                         <div
+                            key={idx}
                             style={{
-                                width: "fit-content",
-                                maxWidth: "90%",
-                                padding: "14px 18px",
-                                borderRadius: "16px",
-                                fontSize: "14px",
-                                lineHeight: "1.6",
-                                whiteSpace: "pre-line",
-                                background:
+                                width: "100%",
+                                display: "flex",
+                                justifyContent:
                                     msg.sender === "user"
-                                        ? "#2563eb"
-                                        : "#ffffff",
-                                color:
-                                    msg.sender === "user"
-                                        ? "#ffffff"
-                                        : "#1f2937",
-                                border:
-                                    msg.sender === "ai"
-                                        ? "1px solid #e5e7eb"
-                                        : "none"
+                                        ? "flex-end"
+                                        : "flex-start",
+                                boxSizing: "border-box"
                             }}
                         >
-                            {/* AI 답변 또는 사용자 질문 */}
-                            <div>{msg.text}</div>
 
-                            {/* 19. AI 추천 결과 영역 */}
-                            {msg.sender === "ai" && msg.recommendation && (
-                                <div style={{ marginTop: "16px" }}>
-                                    <h3
+                            {/* 7. 메시지 말풍선 */}
+                            <div
+                                style={{
+                                    width:
+                                        msg.sender === "ai" &&
+                                        msg.recommendation
+                                            ? "100%"
+                                            : "fit-content",
+
+                                    maxWidth:
+                                        msg.sender === "ai" &&
+                                        msg.recommendation
+                                            ? "100%"
+                                            : "90%",
+
+                                    padding: "14px 18px",
+                                    borderRadius: "16px",
+                                    fontSize: "14px",
+                                    lineHeight: "1.6",
+                                    whiteSpace: "pre-line",
+                                    boxSizing: "border-box",
+
+                                    background:
+                                        msg.sender === "user"
+                                            ? "#2563eb"
+                                            : "#ffffff",
+
+                                    color:
+                                        msg.sender === "user"
+                                            ? "#ffffff"
+                                            : "#1f2937",
+
+                                    border:
+                                        msg.sender === "ai"
+                                            ? "1px solid #e5e7eb"
+                                            : "none"
+                                }}
+                            >
+
+                                {/* 8. 사용자 질문 또는 AI 답변 */}
+                                <div>{msg.text}</div>
+
+
+                                {/* =====================================
+                                    9. AI 추천 결과 영역
+                                    - 추천 제목
+                                    - 전체 일정 설명
+                                    - 지도
+                                    - 날짜별 장소 카드
+                                ===================================== */}
+                                {msg.sender === "ai" &&
+                                    msg.recommendation && (
+
+                                    <div
                                         style={{
-                                            margin: "0 0 8px",
-                                            fontSize: "17px",
-                                            color: "#166534"
+                                            width: "100%",
+                                            marginTop: "16px",
+                                            boxSizing: "border-box"
                                         }}
                                     >
-                                        {msg.recommendation.title ||
-                                            "맞춤 추천 장소"}
-                                    </h3>
 
-                                    {/* 전체 추천 일정 설명 */}
-                                    {msg.recommendation.summary && (
-                                        <p
+                                        {/* 추천 제목 */}
+                                        <h3
                                             style={{
-                                                margin: "0 0 12px",
-                                                color: "#4b5563"
+                                                margin: "0 0 8px",
+                                                fontSize: "17px",
+                                                color: "#166534"
                                             }}
                                         >
-                                            {msg.recommendation.summary}
-                                        </p>
-                                    )}
+                                            {msg.recommendation.title ||
+                                                "맞춤 추천 장소"}
+                                        </h3>
 
-                                    {/* 20. 지도 표시 */}
-                                    {msg.recommendation?.itinerary &&
-                                        msg.recommendation.itinerary.length > 0 && (
-                                            <ItineraryMap
-                                                itinerary={
-                                                    msg.recommendation.itinerary
-                                                }
-                                            />
+
+                                        {/* 전체 추천 일정 설명 */}
+                                        {msg.recommendation.summary && (
+                                            <p
+                                                style={{
+                                                    margin: "0 0 12px",
+                                                    color: "#4b5563"
+                                                }}
+                                            >
+                                                {msg.recommendation.summary}
+                                            </p>
                                         )}
 
-                                    {/* 21. 날짜별 일정과 장소 카드 출력 */}
-                                    {msg.recommendation.itinerary?.map(
-                                        (dayItem) => (
+
+                                        {/* 10. 여행 경로 지도 */}
+                                        {msg.recommendation.itinerary &&
+                                            msg.recommendation.itinerary.length > 0 && (
+
                                             <div
-                                                key={dayItem.day}
-                                                style={{ marginTop: "16px" }}
+                                                style={{
+                                                    width: "100%",
+                                                    maxWidth: "100%",
+                                                    margin: "0 auto 20px",
+                                                    boxSizing: "border-box"
+                                                }}
                                             >
-                                                <h4
+                                                <ItineraryMap
+                                                    itinerary={
+                                                        msg.recommendation.itinerary
+                                                    }
+                                                />
+                                            </div>
+                                        )}
+
+
+                                        {/* =====================================
+                                            11. 날짜별 여행 일정
+                                            - 1일 차, 2일 차
+                                            - 각 날짜의 장소 목록
+                                        ===================================== */}
+                                        {msg.recommendation.itinerary?.map(
+                                            (dayItem) => (
+
+                                                <div
+                                                    key={dayItem.day}
                                                     style={{
-                                                        margin: "0 0 10px",
-                                                        color: "#1f2937"
+                                                        width: "100%",
+                                                        marginTop: "16px",
+                                                        boxSizing: "border-box"
                                                     }}
                                                 >
-                                                    {dayItem.day}일 차
-                                                </h4>
 
-                                                {dayItem.courses.map(
-                                                    (item, itemIndex) => (
-                                                        <div
-                                                            key={`${item.place || "place"}-${itemIndex}`}
-                                                            style={{
-                                                                marginTop: "12px",
-                                                                padding: "14px",
-                                                                borderRadius: "12px",
-                                                                border: "1px solid #e5e7eb",
-                                                                background: "#ffffff"
-                                                            }}
-                                                        >
-                                                            <h4
+                                                    <h4
+                                                        style={{
+                                                            margin: "0 0 10px",
+                                                            color: "#1f2937"
+                                                        }}
+                                                    >
+                                                        {dayItem.day}일 차
+                                                    </h4>
+
+
+                                                    {/* 해당 날짜의 장소 목록 */}
+                                                    {dayItem.courses.map(
+                                                        (item, itemIndex) => (
+
+                                                            <div
+                                                                key={`${item.place || "place"}-${itemIndex}`}
                                                                 style={{
-                                                                    margin: "0 0 8px",
-                                                                    fontSize: "15px",
-                                                                    color: "#111827"
+                                                                    width: "100%",
+                                                                    marginTop: "12px",
+                                                                    padding: "14px",
+                                                                    borderRadius: "12px",
+                                                                    border: "1px solid #e5e7eb",
+                                                                    background: "#ffffff",
+                                                                    boxSizing: "border-box"
                                                                 }}
                                                             >
-                                                                {itemIndex + 1}.{" "}
-                                                                {item.place ||
-                                                                    "장소명 없음"}
-                                                            </h4>
 
-                                                            {item.category && (
-                                                                <p style={{ margin: "5px 0" }}>
-                                                                    🏷️ {item.category}
-                                                                </p>
-                                                            )}
-
-                                                            {item.time && (
-                                                                <p style={{ margin: "5px 0" }}>
-                                                                    🕒 {item.time}
-                                                                </p>
-                                                            )}
-
-                                                            {item.address && (
-                                                                <p
+                                                                {/* 장소 이름 */}
+                                                                <h4
                                                                     style={{
-                                                                        margin: "5px 0",
-                                                                        color: "#4b5563"
+                                                                        margin: "0 0 8px",
+                                                                        fontSize: "15px",
+                                                                        color: "#111827"
                                                                     }}
                                                                 >
-                                                                    📍 {item.address}
-                                                                </p>
-                                                            )}
+                                                                    {itemIndex + 1}.{" "}
+                                                                    {item.place ||
+                                                                        "장소명 없음"}
+                                                                </h4>
 
-                                                            {item.description && (
-                                                                <p
-                                                                    style={{
-                                                                        margin: "8px 0",
-                                                                        lineHeight: "1.6"
-                                                                    }}
-                                                                >
-                                                                    {item.description}
-                                                                </p>
-                                                            )}
 
-                                                            {item.recommendation_reason && (
-                                                                <p
-                                                                    style={{
-                                                                        margin: "8px 0 0",
-                                                                        color: "#166534"
-                                                                    }}
-                                                                >
-                                                                    💡 추천 이유:{" "}
-                                                                    {item.recommendation_reason}
-                                                                </p>
-                                                            )}
+                                                                {/* 장소 카테고리 */}
+                                                                {item.category && (
+                                                                    <p style={{ margin: "5px 0" }}>
+                                                                        {item.category}
+                                                                    </p>
+                                                                )}
 
-                                                            {item.latitude != null &&
-                                                                item.longitude != null && (
+
+                                                                {/* 방문 시간 */}
+                                                                {item.time && (
+                                                                    <p style={{ margin: "5px 0" }}>
+                                                                        {item.time}
+                                                                    </p>
+                                                                )}
+
+
+                                                                {/* 장소 주소 */}
+                                                                {item.address && (
+                                                                    <p
+                                                                        style={{
+                                                                            margin: "5px 0",
+                                                                            color: "#4b5563"
+                                                                        }}
+                                                                    >
+                                                                        📍 {item.address}
+                                                                    </p>
+                                                                )}
+
+
+                                                                {/* 장소 설명 */}
+                                                                {item.description && (
+                                                                    <p
+                                                                        style={{
+                                                                            margin: "8px 0",
+                                                                            lineHeight: "1.6"
+                                                                        }}
+                                                                    >
+                                                                        {item.description}
+                                                                    </p>
+                                                                )}
+
+
+                                                                {/* 추천 이유 */}
+                                                                {item.recommendation_reason && (
+                                                                    <p
+                                                                        style={{
+                                                                            margin: "8px 0 0",
+                                                                            color: "#166534"
+                                                                        }}
+                                                                    >
+                                                                        추천 이유:{" "}
+                                                                        {item.recommendation_reason}
+                                                                    </p>
+                                                                )}
+
+
+                                                                {/* 위치 좌표 확인 */}
+                                                                {item.latitude != null &&
+                                                                    item.longitude != null && (
+
                                                                     <p
                                                                         style={{
                                                                             margin: "8px 0 0",
@@ -444,39 +620,54 @@ function AiChatSection({
                                                                         위치 좌표 확인 완료
                                                                     </p>
                                                                 )}
-                                                        </div>
-                                                    )
-                                                )}
-                                            </div>
-                                        )
-                                    )}
 
-                                    {/* 추천 일정이 없을 때 안내 */}
-                                    {(!msg.recommendation.itinerary ||
-                                        msg.recommendation.itinerary.length === 0) && (
-                                        <p style={{ color: "#6b7280" }}>
-                                            추천 장소가 없어요. 검색 결과와 서버 응답을 확인해 주세요.
-                                        </p>
-                                    )}
-                                </div>
-                            )}
+                                                            </div>
+                                                        )
+                                                    )}
 
-                            {/* 22. 실제 일정이 있을 때만 저장 버튼 표시 */}
-                            {msg.sender === "ai" &&
-                                msg.recommendation?.itinerary &&
-                                msg.recommendation.itinerary.length > 0 &&
-                                msg.recommendation.itinerary.some(
-                                    (day) => day.courses.length > 0
-                                ) && (
+                                                </div>
+                                            )
+                                        )}
+
+
+                                        {/* 추천 일정이 없는 경우 */}
+                                        {(!msg.recommendation.itinerary ||
+                                            msg.recommendation.itinerary.length === 0) && (
+
+                                            <p style={{ color: "#6b7280" }}>
+                                                추천 장소가 없어요.
+                                                검색 결과와 서버 응답을 확인해 주세요.
+                                            </p>
+                                        )}
+
+                                    </div>
+                                )}
+
+
+                                {/* =====================================
+                                    12. 여행 일정 저장 버튼
+                                    - 실제 장소 일정이 있을 때만 표시
+                                ===================================== */}
+                                {msg.sender === "ai" &&
+                                    msg.recommendation?.itinerary &&
+                                    msg.recommendation.itinerary.length > 0 &&
+                                    msg.recommendation.itinerary.some(
+                                        (day) => day.courses.length > 0
+                                    ) && (
+
                                     <div style={{ marginTop: "12px" }}>
                                         <button
                                             type="button"
                                             onClick={() =>
-                                                navigate("/travel/TravelSave", {
-                                                    state: {
-                                                        travelData: msg.recommendation
+                                                navigate(
+                                                    "/travel/TravelSave",
+                                                    {
+                                                        state: {
+                                                            travelData:
+                                                                msg.recommendation
+                                                        }
                                                     }
-                                                })
+                                                )
                                             }
                                             style={{
                                                 padding: "8px 14px",
@@ -489,75 +680,97 @@ function AiChatSection({
                                                 cursor: "pointer"
                                             }}
                                         >
-                                            이 일정을 TravelSave로 저장하기
+                                            이 일정을 AI 여행 저장하기
                                         </button>
                                     </div>
                                 )}
+
+                            </div>
                         </div>
-                    </div>
-                ))}
+                    ))}
 
-                {/* 23. AI 응답을 기다리는 동안 로딩 표시 */}
-                {loading && (
-                    <div
-                        style={{
-                            color: "#888",
-                            fontSize: "14px",
-                            padding: "10px"
-                        }}
-                    >
-                        마음에 맞는 장소를 찾고 답변을 정리하는 중이에요...
-                    </div>
-                )}
 
-                <div ref={messageEndRef} />
-            </div>
+                    {/* 13. AI 응답 대기 중 로딩 표시 */}
+                    {loading && (
+                        <div
+                            style={{
+                                color: "#888",
+                                fontSize: "14px",
+                                padding: "10px"
+                            }}
+                        >
+                            마음에 맞는 장소를 찾고 답변을 정리하는 중이에요...
+                        </div>
+                    )}
 
-            {/* 24. 사용자 메시지 입력 폼 */}
-            <form
-                onSubmit={handleSendMessage}
-                style={{
-                    padding: "16px",
-                    background: "#ffffff",
-                    borderTop: "1px solid #eaeaea",
-                    display: "flex",
-                    gap: "10px"
-                }}
-            >
-                <input
-                    type="text"
-                    value={input}
-                    onChange={(e) => setInput(e.target.value)}
-                    placeholder="예: 요즘 너무 지쳐서 조용한 곳에서 힐링하고 싶어..."
+
+                    {/* 채팅창 스크롤 위치 */}
+                    <div ref={messageEndRef} />
+
+                </div>
+
+
+                {/* =====================================
+                    14. 사용자 메시지 입력 폼
+                    - 추가 질문을 입력하고 AI에게 전송
+                ===================================== */}
+                <form
+                    onSubmit={handleSendMessage}
                     style={{
-                        flex: 1,
-                        minWidth: 0,
-                        border: "1px solid #d1d5db",
-                        borderRadius: "10px",
-                        padding: "12px 16px",
-                        outline: "none",
-                        fontSize: "14px"
-                    }}
-                />
-
-                <button
-                    type="submit"
-                    disabled={loading}
-                    style={{
-                        background: loading ? "#93c5fd" : "#2563eb",
-                        color: "white",
-                        border: "none",
-                        padding: "0 20px",
-                        borderRadius: "10px",
-                        fontWeight: "bold",
-                        cursor: loading ? "not-allowed" : "pointer"
+                        width: "100%",
+                        padding: "16px",
+                        background: "#ffffff",
+                        borderTop: "1px solid #eaeaea",
+                        display: "flex",
+                        gap: "10px",
+                        boxSizing: "border-box"
                     }}
                 >
-                    {loading ? "생성 중..." : "보내기"}
-                </button>
-            </form>
-        </div>
-    );
+
+                    {/* 사용자 입력창 */}
+                    <input
+                        type="text"
+                        value={input}
+                        onChange={(e) => setInput(e.target.value)}
+                        placeholder="예: 요즘 너무 지쳐서 조용한 곳에서 힐링하고 싶어..."
+                        style={{
+                            flex: 1,
+                            minWidth: 0,
+                            border: "1px solid #d1d5db",
+                            borderRadius: "10px",
+                            padding: "12px 16px",
+                            outline: "none",
+                            fontSize: "14px",
+                            boxSizing: "border-box"
+                        }}
+                    />
+
+
+                    {/* 메시지 전송 버튼 */}
+                    <button
+                        type="submit"
+                        disabled={loading}
+                        style={{
+                            background: loading ? "#93c5fd" : "#2563eb",
+                            color: "white",
+                            border: "none",
+                            padding: "0 20px",
+                            borderRadius: "10px",
+                            fontWeight: "bold",
+                            cursor: loading ? "not-allowed" : "pointer"
+                        }}
+                    >
+                        {loading ? "생성 중..." : "보내기"}
+                    </button>
+
+                </form>
+
+            </div>
+        )}
+
+    </div>
+);
+
 }
 
 export default AiChatSection;

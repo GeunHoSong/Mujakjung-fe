@@ -32,12 +32,17 @@ function Main(_props: MainProps) {
 
     return (
         <main className="main-container">
-            <AiChatSection
-                latitude={latitude}
-                longitude={longitude}
-                selectedTags={selectedTags}
-                setSelectedTags={setSelectedTags}
-            />
+            <div className="main-content">
+                <AiChatSection
+                    latitude={latitude}
+                    longitude={longitude}
+                    selectedTags={selectedTags}
+                    setSelectedTags={setSelectedTags}
+                    onFindLocation={()=> {
+                        alert("위치 재 조회 기능을 연결 해야 해요");
+                    }}
+                />
+            </div>
         </main>
     );
 }
