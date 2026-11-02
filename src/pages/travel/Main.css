@@ -9,6 +9,8 @@
     padding: 100px 20px 40px;
     flex-direction: column;
     background-color: #F0E8F1;
+    
+   
 }
 
 /*여행 추천 영역*/
@@ -46,11 +48,175 @@
     }
 }
 
-/* 가운데 정렬*/ 
+/* 가운데 정렬 및 추천창 위치 */
 .main-content {
     width: 100%;
     max-width: 1100px;
-    margin-left: auto;
-    margin-right: auto;
+    margin: -80px auto 0;
+    position: relative;
+    z-index: 2;
+}
 
+/* 메인 배너 */
+.main-hero {
+    width: 100%;
+    max-width: 1400px;
+    min-height: 400px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+
+    margin: 0 auto 20px;
+    padding: 50px 60px;
+    position: relative;
+    z-index: 1;
+
+    background-image: url("../../assets/gwangalli.jpg");
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+
+    
+    box-sizing: border-box;
+    border-radius: 24px;
+}
+
+/* 왼쪽 여행 소개 문구 */
+.main-hero-text h1 {
+    font-size: 42px;
+    font-weight: 800;
+    line-height: 1.4;
+    color: #172447;
+    margin: 0;
+}
+
+.main-hero-text p {
+    font-size: 23px;
+    font-weight: 600;
+    color: #172447;
+    margin-top: 15px;
+}
+
+.main-hero-subtitle {
+    font-size: 25px;
+    font-weight: 600;
+    color: white;
+    margin-top: 15px;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+/* 무작정 하단 소개 영역 */
+.main-intro {
+    width: 100%;
+    max-width: 1400px;
+    display: flex;
+    gap: 30px;
+
+    margin: 50px auto;
+    padding: 35px;
+    box-sizing: border-box;
+
+    background-color: #F0F2FF;
+    border-radius: 28px;
+}
+/* 왼쪽 AI 도우미 */
+.main-intro-left {
+    flex: 1 1 0;
+    min-width: 0;
+    padding: 20px;
+}
+
+
+/* 오른쪽 서비스 소개 */
+.main-intro-right {
+    flex: 1 1 0;
+    min-width: 0;
+    padding: 20px;
+    border-left: 1px solid #C8CDE8;
+}
+/*세가지 서비스 특징*/
+.main-features {
+    display: flex;
+    gap: 15px;
+}
+.main-features > div {
+    flex: 1;
+    min-width: 0;
+    text-align: center;
+}
+
+
+@media (max-width: 786px) {
+    .main-intro {
+        flex-direction: column;
+        gap: 20px;
+        padding: 20px;
+    }
+
+    .main-intro-right {
+        border-left: none;
+        border-top: 1px solid #C8CDEB;
+    }
+
+    .main-features {
+        flex-direction: column;
+    }
+}
+.feature-icon {
+    width: 70px;
+    height: 70px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto 15px;
+    border-radius: 50%;
+    background-color: #DDF7F5;
+    font-size: 32px;
+}
+
+/*   무무 AI 마스코트 영역*/
+/* 무무 이미지와 말풍선을 가로 배치 */
+.main-intro-left {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+/* 무무 캐릭터 이미지 */
+.mumu-character{
+    width: 170px;
+    height: auto;
+    /* 이미지 크기가 줄어들지 않도록 설정 */
+    flex-shrink: 0;
+    /*이미지 비율 유지 */
+    object-fit: contain;
+}
+/* 무무의 인사 말풍선 */
+.mumu-message {
+    background-color: #ffffff;
+    padding: 20px 25px;
+    border-radius: 24px;
+    /*부드러운 그림자*/
+    box-shadow: 0 40px 15px rgba(0, 0, 0, 0.08);
+}
+/*말풍선 제목*/
+.mumu-message h2 {
+    font-size: 22px;
+    margin: 0 0 12px;
+}
+/* 말풍선 설명 */
+.mumu-message p {
+    font-size: 15px;
+    line-height: 1.6;
+    margin: 6px 0;
+}
+
+/*모바일 세로 배치*/
+@media (max-width: 786px){
+    .main-intro-left{
+        flex-direction: column;
+        text-align: center;
+    }
+    .mumu-character{
+        width: 140px;
+    }
 }
