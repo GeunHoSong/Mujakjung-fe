@@ -33,6 +33,15 @@ function RecommendForm({
 
   const [selectedCategory , setSelectedCategory]= React.useState("AI 여행"); 
   const [query , setQuery] = useState("");
+    // 여행 예산: 기본 10만원
+    const [budget, setBudget] = useState<number>(100000);
+    // 최대 이동 거리: 기본 20km
+    const [maxDistance, setMaxDistance] = useState<number>(20);
+    // 이동수단: 기본 자동차
+    const [transport, setTransport] = useState<string>("car");
+
+    // 최대 이동시간: 기본 60분
+    const [maxTravelTime, setMaxTravelTime] = useState<number>(60);
 
 
     // 6. 태그 선택 및 해제
@@ -96,6 +105,45 @@ function RecommendForm({
 
             {/* 12. 사용자 입력 폼 */}
             <div>
+                {/*맞춤 여행 탭에서만 표시 */}
+                {selectedCategory === "맞춤 여행" && (
+                    <div className="custom-travel-section">
+                        {/*여행 예산 설정*/}
+                        <div className="custom-travel-field">
+                            <label htmlFor="travel-budget">
+                                여행계산
+                            </label>
+                            <strong>
+                                {budget.toLocaleString()}원
+                            </strong>
+                            <input id="travel-budget" type="range" min={10000} max={500000}step={1000} value={budget} onChange={(e) => setBudget(Number(e.target.value))} />
+
+                        </div>
+                        {/* 맞춤 여행 탭에서만 표시 */}]
+                        <div className="custom-tavel-field">
+                            <label htmlFor="travel-distance">
+                                최대 이동 거리 
+                            </label>
+                            <strong>{maxDistance}</strong>
+                            <input id="travel-distance" type="range" min={1} max={100} step={1} value={maxDistance} onChange={(e)=> setMaxDistance(Number(e.target.value))}/>
+
+                        </div>
+                        {/*이동 수단 선택  */}
+                        <div className="custom-travel-field">
+                            <label htmlFor="travel-transport">
+                                이동 수단
+                            </label>
+                            <select id="travel-transport" value={transport} onChange={(e)=> setMaxTravelTime(Number(e.target.value))}>
+                                <option value="car">자동차</option>
+                                <option value="transit">대중교통</option>
+                                <option value="walk">지하철</option>
+
+                            </select>
+
+                        </div>
+                    </div>
+                    
+                )}
 
                 {/* 기분 태그 선택 */}
                 <div style={{ marginBottom: '20px' }}>
@@ -129,6 +177,8 @@ function RecommendForm({
                 {/* AI 여행 상담 시작 버튼 */}
                 <button type="button" className="recommend-button" onClick={handleRecommend}>  AI 여행 상담 및 추천받기</button>
             </div>
+
+           
         </div>
     );
 }

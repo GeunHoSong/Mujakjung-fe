@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import kakaoBtn from "../../assets/kakaologin.jpg";
 import NaverBtn from "../../assets/Naverlogin.png";
 import googleBtn from "../../assets/googleLoignBtn.png";
+import "./Login.css" ;
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -67,30 +68,35 @@ function Login() {
   const googleLogin = () => { window.location.href = `${SERVER_URL}/oauth2/authorization/google`; };
 
   return (
-    <div>
-      <h2>로그인</h2>
-      <input type="email" placeholder="이메일" value={email} onChange={(e) => setEmail(e.target.value)} /><br/>
-      <input type="password" placeholder="비밀번호" value={password} onChange={(e) => setPassword(e.target.value)} /><br/>
-      <button onClick={login}>로그인</button>
+    <div className="login-container">
+      <div className="login-card">
+        <h2 className="login-title">로그인</h2>
+          <p className="login-subtitle">나만의 특별한 여행을 시작해요!</p>
+          <div className="login-field">
+            <label htmlFor="login-email">이메일</label>
+            <input  id="login-email" type="email" placeholder="이메일" value={email} onChange={(e) => setEmail(e.target.value)} />
+          </div>
+          <div className="login-field">
+            <label htmlFor="login-password">비밀 번호</label>
+            <input id="login-password" type="password" placeholder="비밀번호" value={password} onChange={(e) => setPassword(e.target.value)} />
+          </div>
+          <button type="button" className="login-submit" onClick={login}>로그인</button>
 
-      <hr />
-      
+      <div className="login-divider">
+        <span>간편 로그인</span>
+      </div>
       {/* 카카오 로그인 */}
-      <button type="button" onClick={kakaoLogin} style={{ border: 'none', background: "none", cursor: "pointer" }}>
-        <img src={kakaoBtn} alt="카카오 로그인" style={{ width: "200px" }} />
+      <button type="button" onClick={kakaoLogin} className="social-login-button">
+        <img src={kakaoBtn} alt="카카오 로그인"  />
       </button>
 
       {/* 네이버 로그인 */}
-      <div style={{ marginTop: "10px" }}>
-        <button type="button" onClick={naverLogin} style={{ border: 'none', background: "none", cursor: "pointer" }}>
-          <img src={NaverBtn} alt="네이버 로그인" style={{ width: "200px" }} />
+        <button type="button" onClick={naverLogin} className="social-login-button">
+          <img src={NaverBtn} alt="네이버 로그인"  />
         </button>
-      </div>
-
       {/* 구글 로그인 */}
-      <div style={{ marginTop: "10px" }}>
-        <button type="button" onClick={googleLogin} style={{ border: 'none', background: "none", cursor: "pointer" }}>
-          <img src={googleBtn} alt="구글 로그인" style={{ width: "200px" }} />
+        <button type="button" onClick={googleLogin} className="social-login-button">
+          <img src={googleBtn} alt="구글 로그인" className="google-login-img" />
         </button>
       </div>
     </div>

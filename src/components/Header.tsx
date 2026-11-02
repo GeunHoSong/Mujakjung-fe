@@ -31,7 +31,8 @@ function Header() {
         alignItems: "center",
         padding: "0 30px",
         borderBottom: "1px solid #D6C5DC",
-        backgroundColor:" #E6D9EA",
+        background:"linear-gradient(90deg, #F0E8F1, #DCEBFF)",
+        boxShadow: "0 2px 12px rgba(70 , 100, 160, 0.12)",
         zIndex: 1000,
         boxSizing: "border-box"
     }}
@@ -58,39 +59,24 @@ function Header() {
                     />
                 </Link>
 
-                <Link
-                    to="/"
-                    style={{
-                        textDecoration: "none",
-                        color: "#183b46",
-                        fontSize: "22px",
-                        fontWeight: "bold",
-                        whiteSpace: "nowrap"
-                    }}
-                >
+                <Link to="/"style={{textDecoration: "none",color: "#183b46",fontSize: "22px",fontWeight: "bold",whiteSpace: "nowrap"}}>
                     무작정
                 </Link>
             </div>
 
 
             {/* 2. 가운데: 주요 메뉴 */}
-            <nav
-                style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "24px"
-                }}
-            >
-                <Link to="/chat" style={navStyle}>
-                    AI 여행 상담
+            <nav style={{display: "flex",alignItems: "center",gap: "24px"}}>
+                <Link to="/" style={navStyle}>
+                    홈
+                </Link>
+
+                <Link to="/search" style={navStyle}>
+                    추천 여행
                 </Link>
 
                 <Link to="/notice/list" style={navStyle}>
                     공지사항
-                </Link>
-
-                <Link to="/board/list" style={navStyle}>
-                    게시판
                 </Link>
             </nav>
 
@@ -103,6 +89,9 @@ function Header() {
                     gap: "10px"
                 }}
             >
+                <button type="button" onClick={()=> navigate("/chat")} style={aiButtonStyle}>
+                    AI 대화 하기
+                </button>
                 {token ? (
                     <>
                         {/* 로그인 사용자 이름 */}
@@ -187,5 +176,15 @@ const buttonStyle: React.CSSProperties = {
     cursor: "pointer",
     whiteSpace: "nowrap"
 };
-
+const aiButtonStyle: React.CSSProperties = {
+    padding: "10px 16px",
+    border: "none",
+    borderRadius: "25px",
+    backgroundColor: "#3478F6",
+    color: "#FFFFFF",
+    fontSize: "14px",
+    fontWeight: 600,
+    cursor: "pointer",
+    whiteSpace: "nowrap"
+};
 export default Header;
