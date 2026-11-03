@@ -1,0 +1,85 @@
+/*AI 상담 전체 영역 */
+.chat-container {
+    width: 100%;
+    max-width: 600px;
+    margin: 50px auto 40px;
+    padding: 28px;
+    box-sizing: border-box;
+}
+
+/* AI 상담 카드 */
+.chat-card {
+    width: 100%;
+    padding: 30px;
+    background-color: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0,0, 0.08);
+    box-sizing: border-box;
+}
+/* 상담 상태 공통 디자인 */
+.chat-status {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+/* AI 상담 상태 */
+.chat-status.ai{
+    color: gray;
+}
+
+/* 상담사 연결 상태 */
+.chat-status.agent{
+    color: blue;
+}
+/* 채팅 메시지 출력 영역 */
+.chat-message-box {
+    margin-bottom: 20px;
+    height: 300px;
+    overflow-y:auto;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 8px;
+}
+/* 채팅 메시지 하나의 디자인 */
+.chat-message {
+    margin-bottom: 16px ;
+    white-space: pre-wrap;
+}
+/* 메시지 입력창과 전송 버튼 정렬 */
+.chat-input-row {
+    display: flex;
+    gap: 18px;
+    margin-bottom: 18px;
+}
+/* 채팅 메시지 입력창 */
+.chat-input {
+    flex: 1;
+    min-width: 0;
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+/* 채팅 메시지 전송 버튼 */
+.chat-send-button {
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+/* 상담사 전환 버튼 공통 디자인 */
+.chat-agent-button {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+/* AI 상담 중 */
+.chat-agent-button.ai {
+    background-color: #ccffcc;
+}
+/* 상담사 연결 중 */
+.chat-agent-button.agent {
+    background-color: #ffccff;
+}

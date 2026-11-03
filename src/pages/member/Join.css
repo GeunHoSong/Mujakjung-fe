@@ -1,0 +1,130 @@
+/*회원 가입 전체 영역*/
+.join-container {
+    width: 100%;
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 130px 30px 40px;
+    box-sizing: border-box;
+}
+/* 회원가입 제목 */
+.join-title {
+    text-align: center;
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 30px;
+    color: #333;
+    position: relative;
+    z-index: 10;
+}
+/*회원 가입 카드*/
+.join-card {
+    width: 100%;
+    padding: 38px;
+    background-color: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    box-sizing: border-box;
+    
+}
+/*카드 안의 단독 입력창 너비 통일*/
+.join-card > input:not([type="file"]),
+.join-card> select {
+    display: block;
+    width: 100%;
+    margin-bottom: 16px;
+}
+/* 입력창 공통 디자인 */
+.join-container input:not([type="file"]),
+.join-container select {
+    height: 44px;
+    padding: 10px 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #fff;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+/* 입력창 선택 시 */
+.join-container input:focus,
+.join-container select:focus {
+    outline: none;
+    border-color: #4A90E2;
+}
+/* 버튼 공통 디자인 */
+.join-container button {
+    min-height: 44px;
+    padding: 10px 14px;
+    border: none;
+    border-radius: 8px;
+    background-color: #4A90E2;
+    color: white;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+/* 버튼 비활성화 */
+.join-container button:disabled {
+    background-color: #bbb;
+    cursor: not-allowed;
+}
+
+
+/* 이메일, 닉네임 입력창이 버튼에 밀리지 않도록 설정 */
+.join-card > div > input:not([type="file"]) {
+    min-width: 0;
+}
+/* 이메일, 닉네임처럼 버튼과 함께 있는 입력창 */
+.join-input-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+/* 버튼 옆 입력창 너비 조절 */
+.join-input-row input {
+    flex: 1;
+    min-width: 0;
+}
+/*전화번호 입력창 가로정렬*/
+.join-phone-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 15px;
+}
+
+/*전화 번호 3개 입력창*/
+.join-phone-row input {
+    flex: 1;
+    min-width: 0;
+    width: 0;
+    text-align: center;
+}
+
+/*하이픈 크기 유지 */
+.join-phone-row span {
+    flex-shrink: 0;
+}
+.join-profile-input {
+    display: none;
+}
+
+/*주소 검색창 영역*/
+.join-postcode-pop {
+    border: 1px solid #ccc;
+    margin: 10px 0;
+    position: relative;
+}
+
+
+/* 모바일 화면 */
+@media(max-width: 480px){
+    .join-container{
+        padding: 100px 16px 30px;
+    }
+    .join-title {
+        font-size: 24px;
+    }
+}
+

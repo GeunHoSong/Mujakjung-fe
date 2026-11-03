@@ -2,6 +2,7 @@ import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import DaumPostcode from 'react-daum-postcode';
 import PrivacyPolicyModal from './PrivacyPolicyModal';
+import "./Join.css";
 
 function Join() {
     // --- 1. 상태 관리 ---
@@ -17,7 +18,14 @@ function Join() {
     const [nickname, setNickName] = useState("");
     const [isNicknameChecked, setIsNicknameChecked] = useState(false);
 
-    const [phone, setPhone] = useState("");
+    // 전화번호 가운데 4자리
+    const [phoneMiddle, setPhoneMiddle] = useState("");
+
+    // 전화번호 마지막 4자리
+    const [phoneLast, setPhoneLast] = useState("");
+
+    // 서버로 보낼 전체 전화번호
+    const phone = `010-${phoneMiddle}-${phoneLast}`;
     const [gender, setGender] = useState("");
     const [zipcode, setZipcode] = useState("");
     const [address, setAddress] = useState("");
@@ -134,8 +142,8 @@ function Join() {
     setIsModalOpen(false);
 };
 
-  // 💡 취소 시 무조건 페이지가 뒤로 가던 부분을 잠시 막아두기
-     // 💡 취소 시 무조건 페이지가 뒤로 가던 부분을 잠시 막아두기
+  
+     //  취소 시 무조건 페이지가 뒤로 가던 부분을 잠시 막아두기
     const handleModalClose = () => {
         alert("약관에 동의해야 회원가입을 진행할 수 있습니다.");
         // navigate(-1); // 👈 이 부분을 주석 처리해서 뒤로 튕기는 현상 방지
@@ -156,6 +164,12 @@ function Join() {
             alert("비밀번호가 일치하지 않거나 입력되지 않았습니다.");
             return;
         }
+        // ✅ 바로 여기에 추가!
+        if (phoneMiddle.length !== 4 || phoneLast.length !== 4) {
+            alert("휴대전화 번호를 정확히 입력해주세요.");
+            return;
+        }
+        
 
         const formData = new FormData();
         const memberData = {
@@ -190,113 +204,104 @@ function Join() {
 
     // --- 4. UI 렌더링 영역 ---
     return (
-        <div style={{ padding: '20px', maxWidth: '400px', margin: '0 auto' }}>
-            <h2>회원 가입</h2>
+        <div className="join-container">
+            <div className="join-card">
+                <h2 className="join-title">회원 가입</h2>
 
-            {/* 프로필 이미지 업로드 영역 */}
-            <div style={{ textAlign: 'center', marginBottom: '20px' }}>
-                <div 
-                    onClick={() => fileInputRef.current?.click()}
-                    style={{ 
-                        width: '120px', height: '120px', borderRadius: '50%', border: '2px dashed #ccc',
-                        margin: '0 auto', cursor: 'pointer', display: 'flex', alignItems: 'center', 
-                        justifyContent: 'center', backgroundColor: '#f9f9f9', overflow: 'hidden',
-                        backgroundImage: `url(${previewUrl})`, backgroundSize: 'cover', backgroundPosition: 'center'
-                    }}
-                >
-                    {!previewUrl && <span style={{ color: '#888', fontSize: '14px' }}>사진 등록</span>}
+                
+               {/* 프로필 이미지 업로드 영역 */}
+                <div className="join-profile-container">
+                    <div className="join-profile-image"onClick={() => fileInputRef.current?.click()}
+                        style={{backgroundImage: previewUrl? `url(${previewUrl})`: "none"}}>
+                        {!previewUrl && <span>사진 등록</span>}
+                    </div>
+                   <input type="file"ref={fileInputRef}onChange={handleFileChange}className="join-profile-input"accept="image/*"/>
                 </div>
-                <input type="file" ref={fileInputRef} onChange={handleFileChange} style={{ display: 'none' }} accept="image/*" />
-            </div>
 
-            {/* 이메일 입력 및 인증 번호 전송 버튼 */}
-            <div style={{ display: 'flex', gap: '5px', marginBottom: '10px' }}>
-                <input 
-                    value={email} 
-                    onChange={(e) => setEmail(e.target.value)} 
-                    placeholder="이메일" 
-                    disabled={isEmailVerified}
-                    style={{ flex: 1 }}
-                />
-                <button type="button" onClick={handleSendEmailAuth} disabled={isEmailVerified}>
-                    {isEmailVerified ? "인증 완료" : "인증 번호 전송"}
-                </button>
-            </div>
+                {/* 이메일 입력 및 인증 번호 전송 버튼 */}
+                <div className="join-input-row">
+                    <input  value={email} onChange={(e) => setEmail(e.target.value)} placeholder="이메일" disabled={isEmailVerified} />
+                    <button type="button" onClick={handleSendEmailAuth} disabled={isEmailVerified}>
+                        {isEmailVerified ? "인증 완료" : "인증 번호 전송"}
+                    </button>
+                </div>
             
-            {/* 인증 번호 입력 칸 */}
-            {showAuthInput && !isEmailVerified && (
-                <div style={{ display: 'flex', gap: '5px', marginBottom: '10px' }}>
+             {/* 인증 번호 입력 칸 */}
+                {showAuthInput && !isEmailVerified && (
+                    <div className="join-input-row">
+                        <input 
+                            value={authCode} 
+                            onChange={(e) => setAuthCode(e.target.value)} 
+                            placeholder="인증 번호 입력" 
+                            
+                        />
+                        <button type="button" onClick={handleVerifiedEmailCode}>확인</button>
+                    </div>
+                )}
+
+                {/* 비밀번호, 이름 입력 */}
+                <input type="password" value={password} maxLength={16} onChange={(e) => setPassword(e.target.value)} placeholder="비밀 번호" />
+                <input type="password" value={confirmPassword} maxLength={16} onChange={(e) => setConfirmPassword(e.target.value)} placeholder="비밀 번호 확인" />
+                <input value={name} onChange={(e) => setName(e.target.value)} placeholder="이름" />
+
+                {/* 닉네임 입력 및 중복 확인 버튼 */}
+                <div className="join-input-row">
                     <input 
-                        value={authCode} 
-                        onChange={(e) => setAuthCode(e.target.value)} 
-                        placeholder="인증 번호 입력" 
-                        style={{ flex: 1 }}
+                        value={nickname}  
+                        onChange={(e) => setNickName(e.target.value)} 
+                        placeholder="닉네임" 
+                        disabled={isNicknameChecked} 
+                      
                     />
-                    <button type="button" onClick={handleVerifiedEmailCode}>확인</button>
+                    <button type="button" onClick={handleCheckNickname} disabled={isNicknameChecked}>
+                     {isNicknameChecked ? "확인 완료" : "중복 확인"}
+                    </button>
                 </div>
-            )}
-            <br/>
 
-            {/* 비밀번호, 이름 입력 */}
-            <input type="password" value={password} maxLength={16} onChange={(e) => setPassword(e.target.value)} placeholder="비밀 번호" /><br/><br/>
-            <input type="password" value={confirmPassword} maxLength={16} onChange={(e) => setConfirmPassword(e.target.value)} placeholder="비밀 번호 확인" /><br/><br/>
-            <input value={name} onChange={(e) => setName(e.target.value)} placeholder="이름" /><br/><br/>
+                {/* 전화번호, 성별 입력 */}
+                <div className="join-phone-row">
+                    <input value={"010"} readOnly   />
+                    <span >-</span>
+                    <input value={phoneMiddle} onChange={(e)=> setPhoneMiddle(e.target.value.replace(/\D/g, ""))} 
+                        maxLength={4} inputMode="numeric" placeholder="1234"  />
+                    <span >-</span>
+                    <input value={phoneLast}onChange={(e) =>setPhoneLast(e.target.value.replace(/\D/g, "")) }
+                        maxLength={4}inputMode="numeric"placeholder="5678"/>
+                </div>
 
-            {/* 닉네임 입력 및 중복 확인 버튼 */}
-            <div style={{ display: 'flex', gap: '5px', marginBottom: '10px' }}>
-                <input 
-                    value={nickname}  
-                    onChange={(e) => setNickName(e.target.value)} 
-                    placeholder="닉네임" 
-                    disabled={isNicknameChecked} 
-                    style={{ flex: 1 }}
+                <select value={gender} onChange={(e) => setGender(e.target.value)}>
+                    <option value="">성별 선택</option>
+                    <option value="M">남자</option>
+                    <option value="F">여자</option>
+                </select>
+
+                {/* 우편번호 및 주소 검색 버튼 */}
+                <div className="join-address-row">
+                    <input value={zipcode} readOnly placeholder="우편 번호"  />
+                    <button type="button" onClick={() => setIsPostcodeOpen(!isPostcodeOpen)}>주소 검색</button>
+                </div>
+
+                {/* 다음 주소 API 컴포넌트 출력 영역 */}
+                {isPostcodeOpen && (
+                    <div className="join-postcode-popup">
+                        <DaumPostcode onComplete={handleComplete} />
+                    </div>
+                )}
+
+                {/* 기본 주소 및 상세 주소 입력 */}
+                <input value={address} readOnly placeholder="기본 주소"  />
+                <input value={detailAddress} onChange={(e) => setDetailAddress(e.target.value)} placeholder="상세 주소" />
+
+                {/* 최종 회원가입 완료 버튼 */}
+                <button className="join-submit-button" type="button"onClick={handleFinalJoin} >회원 가입 완료</button>
+
+                {/* 페이지 진입 시 뜨는 약관 동의 모달 */}
+                <PrivacyPolicyModal 
+                    isOpen={isModalOpen}
+                    onClose={handleModalClose}
+                    onAgree={handleModalAgree}
                 />
-                <button type="button" onClick={handleCheckNickname} disabled={isNicknameChecked}>
-                    {isNicknameChecked ? "확인 완료" : "중복 확인"}
-                </button>
-            </div><br/>
-
-            {/* 전화번호, 성별 입력 */}
-            <input value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="전화 번호 (- 없이 입력)" /><br/><br/>
-
-            <select value={gender} onChange={(e) => setGender(e.target.value)}>
-                <option value="">성별 선택</option>
-                <option value="M">남자</option>
-                <option value="F">여자</option>
-            </select><br/><br/>
-
-            {/* 우편번호 및 주소 검색 버튼 */}
-            <div>
-                <input value={zipcode} readOnly placeholder="우편 번호" style={{ width: '80px', marginRight: '5px' }} />
-                <button type="button" onClick={() => setIsPostcodeOpen(!isPostcodeOpen)}>주소 검색</button>
-            </div><br/>
-
-            {/* 다음 주소 API 컴포넌트 출력 영역 */}
-            {isPostcodeOpen && (
-                <div style={{ border: '1px solid #ccc', margin: '10px 0', position: 'relative' }}>
-                    <DaumPostcode onComplete={handleComplete} />
-                </div>
-            )}
-
-            {/* 기본 주소 및 상세 주소 입력 */}
-            <input value={address} readOnly placeholder="기본 주소" style={{ width: '300px' }} /><br/><br/>
-            <input value={detailAddress} onChange={(e) => setDetailAddress(e.target.value)} placeholder="상세 주소" /><br/><br/>
-
-            {/* 최종 회원가입 완료 버튼 */}
-            <button 
-                type="button"
-                onClick={handleFinalJoin} 
-                style={{ width: '100%', padding: '10px', backgroundColor: '#4A90E2', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
-            >
-                회원 가입 완료
-            </button>
-
-            {/* 💡 페이지 진입 시 뜨는 약관 동의 모달 */}
-            <PrivacyPolicyModal 
-                isOpen={isModalOpen}
-                onClose={handleModalClose}
-                onAgree={handleModalAgree}
-            />
+            </div>    
         </div>
     );
 }
