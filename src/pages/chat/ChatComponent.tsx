@@ -15,14 +15,41 @@ function ChatComponent() {
   const [inputValue, setInputValue] = useState(''); // 사용자가 입력창에 타이핑 중인 텍스트 상태
 
   // 2. 상담사 연결 버튼 핸들러
-  const handleConnectAgent = () => {
-    setIsAgentMode(true); // 모드를 1:1 상담 모드로 전환
-    setMessages((prev) => [
-      ...prev, 
-      { sender: 'System', text: '상담사가 연결되었습니다. [담당: 하수정 상담사]' } // 시스템 안내 메시지 추가
-    ]);
-  };
+  // 2. 상담사 연결 버튼 핸들러
+const handleConnectAgent = async () => {
+  try {
+    const response = await fetch(
+      "http://localhost:8080/api/chat/room",
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+        }
+      }
+    );
 
+    // 서버 응답이 실패했을 경우
+    if (!response.ok) {
+      throw new Error("상담방 생성 실패");
+    }
+
+    // 상담방 생성 성공
+    setIsAgentMode(true);
+
+    // 상담사 연결 대기 메시지 추가
+    setMessages((prev) => [
+      ...prev,
+      {
+        sender: "System",
+        text: "상담방이 생성되었습니다. 상담사 연결을 기다리고 있습니다."
+      }
+    ]);
+
+  } catch (error) {
+    console.error("상담방 생성 오류:", error);
+    alert("상담방 생성에 실패했습니다.");
+  }
+};
   // 3. 상담 종료 및 AI 복귀 버튼 핸들러
   const handleEndConsultation = () => {
     setIsAgentMode(false); // 모드를 다시 AI 상담 모드로 전환
@@ -48,9 +75,11 @@ function ChatComponent() {
   return (
     <div className="chat-container" style={{ maxWidth: '600px', margin: '20px auto', padding: '20px' }}>
       
-      {/* 5. 상담 상태 바: 현재 AI 상담 중인지 1:1 상담 중인지 시각적으로 표시 */}
-      <div className="status-bar" style={{ marginBottom: '10px', fontWeight: 'bold', color: isAgentMode ? '#2b8a3e' : '#495057' }}>
-        Status: {isAgentMode ? '[1:1 상담중 - Agent 하수정]' : '[AI 상담]'}
+      {/* 5. 상담 상태 바 */}
+      <div className="status-bar"style={{marginBottom: '10px',fontWeight: 'bold',color: isAgentMode ? '#2b8a3e' : '#495057'
+        }}
+        >
+        Status: {isAgentMode ? '[상담사 연결 대기 중]' : '[AI 상담]'}
       </div>
 
       {/* 6. 채팅창 본체: 대화 내용이 스크롤되면서 렌더링되는 영역 */}

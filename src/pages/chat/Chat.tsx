@@ -62,15 +62,50 @@ function Chat() {
   // ==========================================
   // 3. 상담 모드 전환 (AI ↔ 상담사) 로직
   // ==========================================
-  const toggleAgentMode = () => {
-    if (!isAgentMode) {
+  const toggleAgentMode = async () => {
+  if (!isAgentMode) {
+    try {
+      // 1. Spring Boot에 상담방 생성 요청
+      const response = await fetch("http://localhost:8080/api/chat/room", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`
+        }
+      });
+
+      // 2. 서버 응답이 실패하면 오류 발생
+      if (!response.ok) {
+        throw new Error("상담방 생성 실패");
+      }
+
+      // 3. 서버 응답 받기
+      const result = await response.text();
+      console.log(result);
+
+      // 4. 상담사 연결 대기 상태로 변경
       setIsAgentMode(true);
-      setMessages((prev) => [...prev, "시스템: 1:1 상담사 연결로 전환되었습니다."]);
-    } else {
-      setIsAgentMode(false);
-      setMessages((prev) => [...prev, "시스템: AI 여행 상담으로 돌아갑니다."]);
+
+      // 5. 시스템 메시지 추가
+      setMessages((prev) => [
+        ...prev,
+        "시스템: 상담방이 생성되었습니다. 상담사 연결을 기다리고 있습니다."
+      ]);
+
+    } catch (error) {
+      console.error("상담방 생성 오류:", error);
+      alert("상담방 생성에 실패했습니다.");
     }
-  };  
+
+  } else {
+    // AI 상담 모드로 복귀
+    setIsAgentMode(false);
+
+    setMessages((prev) => [
+      ...prev,
+      "시스템: AI 여행 상담으로 돌아갑니다."
+    ]);
+  }
+};
 
   // ==========================================
   // 4. 컴포넌트 렌더링 (UI 레이아웃)
@@ -79,7 +114,7 @@ function Chat() {
     <div className="chat-container">
       <div className="chat-card">
         {/* 상태 표시줄: 현재 AI 상담 중인지 상담사 연결 중인지 시각적으로 표시 */}
-       <div className={`chat-status ${isAgentMode ? "agent" : "ai"}`}>Status: {isAgentMode ? "[1:1 상담중]" : "[AI 상담중]"}</div>
+       <div className={`chat-status ${isAgentMode ? "agent" : "ai"}`}>Status: {isAgentMode ? "[상담사 연결 대기 중]" : "[AI 상담중]"}</div>
 
         <h2>무작정 AI 여행 상담</h2>
 
