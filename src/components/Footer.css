@@ -1,4 +1,5 @@
-/*무작정 푸터 화면*/
+
+/* 무작정 푸터 전체 */
 .site-footer {
     width: 100%;
     background: linear-gradient(90deg, #F0E8F1, #DCEBFF);
@@ -6,8 +7,9 @@
     padding: 40px 30px 20px;
     box-sizing: border-box;
 }
+
 /* 푸터 메뉴 배치 */
-.footer-container{
+.footer-container {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
@@ -15,28 +17,32 @@
 
     max-width: 1200px;
     margin: 0 auto;
-
 }
+
 /* 무작정 소개 */
+.footer-brand {
+    max-width: 350px;
+}
+
 .footer-brand h3 {
     font-size: 22px;
     color: #183B46;
-    margin-bottom: 12px;
+    margin: 0 0 12px;
 }
 
-
 /* 무작정 소개 문구 */
-.footer-brand p{
+.footer-brand p {
     font-size: 14px;
     color: #666666;
     line-height: 1.6;
 }
+
 /* 푸터 메뉴 제목 */
 .footer-section h4 {
     font-size: 16px;
     font-weight: bold;
     color: #183B46;
-    margin-bottom: 15px;
+    margin: 0 0 15px;
 }
 
 /* 푸터 메뉴 목록 */
@@ -45,20 +51,79 @@
     padding: 0;
     margin: 0;
 }
+
 /* 푸터 메뉴 항목 간격 */
-.footer-section li{
+.footer-section li {
     margin-bottom: 10px;
 }
 
 /* 푸터 메뉴 링크 */
-.footer-section a{
+.footer-section a {
     font-size: 14px;
     color: #555555;
     text-decoration: none;
 }
+
 /* 마우스를 올렸을 때 */
-.footer-section a:hover{
+.footer-section a:hover {
     color: #3478F6;
     text-decoration: underline;
 }
 
+/* 저작권 표시 */
+.footer-bottom {
+    max-width: 1200px;
+    margin: 30px auto 0;
+    padding-top: 15px;
+    border-top: 1px solid #D6C5DC;
+    text-align: center;
+}
+
+.footer-bottom p {
+    font-size: 13px;
+    color: #777777;
+    margin: 0;
+}
+
+/* 태블릿 반응형 */
+@media (max-width: 900px) {
+    .footer-container {
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        gap: 30px;
+    }
+
+    .footer-brand {
+        width: 100%;
+        max-width: none;
+    }
+
+    .footer-section {
+        flex: 1 1 180px;
+    }
+}
+
+/* 모바일 반응형 */
+@media (max-width: 600px) {
+    .site-footer {
+        padding: 30px 20px 20px;
+    }
+
+    .footer-container {
+        flex-direction: column;
+        gap: 25px;
+    }
+
+    .footer-section {
+        flex: none;
+        width: 100%;
+    }
+
+    .footer-brand h3 {
+        font-size: 20px;
+    }
+
+    .footer-bottom {
+        text-align: center;
+    }
+}
