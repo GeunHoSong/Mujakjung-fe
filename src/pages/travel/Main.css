@@ -37,38 +37,101 @@
 }
 
 /*모바일 대응\*/
-@media (max-width: 786px){
+@media (max-width: 786px) {
+
+    /* 메인 화면 */
     .main-container {
-        padding: 20px 12px;
+        padding: 0 0 30px;
     }
+
+    /* 여행 배너 */
+    .main-hero {
+        min-height: 500px;
+        padding: 35px 20px;
+        flex-direction: column;
+        justify-content: flex-start;
+        gap: 12px;
+    }
+
+    /* 여행 소개 문구 */
+    .main-hero-text h1 {
+        font-size: 30px;
+    }
+
+    .main-hero-text p {
+        font-size: 17px;
+    }
+
+    .main-hero-subtitle {
+        font-size: 18px;
+        margin-top: 0;
+    }
+
+    /* AI 추천창 */
+    .main-content {
+        width: calc(100% - 24px);
+        margin: -130px auto 0;
+    }
+
+    /* 추천 및 채팅 */
     .main-recommend,
     .main-chat {
         padding: 18px;
         border-radius: 18px;
     }
+
+    /* 무무 소개 전체 */
+    .main-intro {
+        width: calc(100% - 24px);
+        flex-direction: column;
+        gap: 20px;
+        margin: 20px auto;
+        padding: 20px;
+    }
+
+    /* 무무 캐릭터와 말풍선 */
+    .main-intro-left {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .mumu-character {
+        width: 140px;
+    }
+
+    /* 서비스 소개 */
+    .main-intro-right {
+        border-left: none;
+        border-top: 1px solid #C8CDEB;
+    }
+
+    .main-features {
+        flex-direction: column;
+    }
 }
 
 /* 가운데 정렬 및 추천창 위치 */
 .main-content {
-    width: 100%;
-    max-width: 1100px;
-    margin: -80px auto 0;
+    width: calc(100% - 40px);
+    max-width: 800px;
+    margin: -220px auto 0;
     position: relative;
     z-index: 2;
+    box-sizing: border-box;
 }
 
-/* 메인 배너 */
+/* 메인 여행 배너 */
 .main-hero {
     width: 100%;
-    max-width: none;
-    min-height: 400px;
+    min-height: 600px;
 
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
 
-    margin: 0 auto 20px;
-    padding: 50px 60px;
+    margin: 0;
+    padding: 60px;
+
     position: relative;
     z-index: 1;
 
@@ -77,9 +140,8 @@
     background-position: center center;
     background-size: cover;
 
-    
     box-sizing: border-box;
-    border-radius:  0 0 28px 28px;
+    border-radius: 0 0 28px 28px;
 }
 
 /* 왼쪽 여행 소개 문구 */
@@ -107,17 +169,18 @@
 }
 /* 무작정 하단 소개 영역 */
 .main-intro {
-    width: 100%;
+    width: calc(100% -40px);
     max-width: 1400px;
     display: flex;
-    gap: 30px;
+    gap: 20px;
 
-    margin: 50px auto;
-    padding: 35px;
+    margin: 20px auto 20px;
+    padding: 20px;
     box-sizing: border-box;
 
     background-color: #F0F2FF;
     border-radius: 28px;
+     box-shadow: 0 6px 24px rgba(0, 0, 0, 0.05);
 }
 /* 왼쪽 AI 도우미 */
 /* 왼쪽 무무 AI 도우미 영역 */
@@ -187,20 +250,16 @@
 
 /* 무무 캐릭터 이미지 */
 .mumu-character{
-    width: 170px;
+    width: 145px; /* 170px → 145px */
     height: auto;
-    /* 이미지 크기가 줄어들지 않도록 설정 */
     flex-shrink: 0;
-    /*이미지 비율 유지 */
     object-fit: contain;
 }
 /* 무무의 인사 말풍선 */
 .mumu-message {
     background-color: #FFFFFF;
-    padding: 20px 25px;
+    padding: 18px 22px; /* 변경 */
     border-radius: 24px;
-
-    /* 아래로 4px 이동하는 부드러운 그림자 */
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
 }
 /*말풍선 제목*/
@@ -223,5 +282,184 @@
     }
     .mumu-character{
         width: 140px;
+    }
+}
+
+
+/* ========================================
+   1. 태블릿 반응형 (768px ~ 1023px)
+======================================== */
+@media (min-width: 768px) and (max-width: 1023px) {
+
+    /* 여행 사진 */
+    .main-hero {
+        min-height: 520px;
+        padding: 45px 35px;
+    }
+
+    /* 여행 제목 */
+    .main-hero-text h1 {
+        font-size: 34px;
+    }
+
+    .main-hero-subtitle {
+        font-size: 20px;
+    }
+
+    /* AI 추천창 */
+    .main-content {
+        width: calc(100% - 40px);
+        margin: -170px auto 0;
+    }
+
+    /* 무무 소개 */
+    .main-intro {
+        width: calc(100% - 32px);
+        gap: 15px;
+        padding: 18px;
+    }
+
+    .main-intro-left,
+    .main-intro-right {
+        padding: 12px;
+    }
+
+    .mumu-character {
+        width: 120px;
+    }
+
+    .main-features {
+        gap: 10px;
+    }
+
+    .feature-icon {
+        width: 55px;
+        height: 55px;
+        font-size: 26px;
+    }
+}
+
+/* ========================================
+   2. 모바일 반응형 (767px 이하)
+======================================== */
+@media (max-width: 767px) {
+
+    /* 메인 화면 */
+    .main-container {
+        padding: 0 0 24px;
+    }
+
+    /* 여행 사진 */
+    .main-hero {
+        min-height: 460px;
+        padding: 30px 20px;
+        flex-direction: column;
+        justify-content: flex-start;
+        gap: 10px;
+    }
+
+    /* 여행 제목 */
+    .main-hero-text h1 {
+        font-size: 28px;
+        line-height: 1.35;
+    }
+
+    .main-hero-text p {
+        font-size: 17px;
+    }
+
+    .main-hero-subtitle {
+        font-size: 18px;
+        margin-top: 0;
+    }
+
+    /* AI 추천창 */
+    .main-content {
+        width: calc(100% - 24px);
+        max-width: 100%;
+        margin: -100px auto 0;
+    }
+
+    /* AI 추천 및 채팅 */
+    .main-recommend,
+    .main-chat {
+        padding: 16px;
+        border-radius: 18px;
+        box-sizing: border-box;
+    }
+
+    /* 무무 소개 전체 */
+    .main-intro {
+        width: calc(100% - 24px);
+        flex-direction: column;
+        gap: 15px;
+        margin: 20px auto;
+        padding: 18px;
+    }
+
+    /* 무무 캐릭터와 말풍선 */
+    .main-intro-left {
+        flex-direction: column;
+        text-align: center;
+        padding: 10px;
+    }
+
+    .mumu-character {
+        width: 125px;
+    }
+
+    .mumu-message {
+        padding: 16px;
+    }
+
+    /* 오른쪽 서비스 소개 */
+    .main-intro-right {
+        border-left: none;
+        border-top: 1px solid #C8CDEB;
+        padding: 15px 10px;
+        text-align: center;
+    }
+
+    /* 서비스 특징 3개 */
+    .main-features {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .feature-icon {
+        width: 60px;
+        height: 60px;
+        font-size: 28px;
+    }
+}
+
+/* ========================================
+   3. 작은 모바일 (480px 이하)
+======================================== */
+@media (max-width: 480px) {
+
+    .main-hero {
+        min-height: 420px;
+        padding: 24px 16px;
+    }
+
+    .main-hero-text h1 {
+        font-size: 25px;
+    }
+
+    .main-hero-subtitle {
+        font-size: 16px;
+    }
+
+    .main-content {
+        margin-top: -80px;
+    }
+
+    .mumu-message h2 {
+        font-size: 20px;
+    }
+
+    .mumu-message p {
+        font-size: 14px;
     }
 }

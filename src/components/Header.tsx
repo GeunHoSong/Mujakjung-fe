@@ -1,9 +1,12 @@
 
+import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import logo from "../assets/Mujakjung.jpg";
+import "./Header.css";
 
 function Header() {
     const navigate = useNavigate();
+    const [menuOpen, setMenuOpen] = useState(false);
 
     // 토큰 및 사용자 정보 가져오기
     const token = localStorage.getItem("accessToken");
@@ -19,79 +22,24 @@ function Header() {
     };
 
     return (
-        <header
-    style={{
-        position: "fixed",
-        top: 0,
-        left: 0,
-        width: "100%",
-        minHeight: "70px",
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        padding: "0 30px",
-        borderBottom: "1px solid #D6C5DC",
-        background:"linear-gradient(90deg, #F0E8F1, #DCEBFF)",
-        boxShadow: "0 2px 12px rgba(70 , 100, 160, 0.12)",
-        zIndex: 1000,
-        boxSizing: "border-box"
-    }}
->
-
+        <header className="site-header">
             {/* 1. 왼쪽: 로고 및 서비스 이름 */}
-            <div
-                style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "12px"
-                }}
-            >
+            <div style={{display: "flex",alignItems: "center",gap: "12px"}}>
                 <Link to="/" style={{ display: "flex" }}>
-                    <img
-                        src={logo}
-                        alt="무작정 로고"
-                        width="45"
-                        height="45"
-                        style={{
-                            borderRadius: "50%",
-                            objectFit: "cover"
-                        }}
-                    />
+                    <img src={logo}alt="무작정 로고"width="45"height="45"style={{borderRadius: "50%",objectFit: "cover"}}/>
                 </Link>
 
                 <Link to="/"style={{textDecoration: "none",color: "#183b46",fontSize: "22px",fontWeight: "bold",whiteSpace: "nowrap"}}>
                     무작정
                 </Link>
             </div>
-
-
-            {/* 2. 가운데: 주요 메뉴 */}
-            <nav style={{display: "flex",alignItems: "center",gap: "24px"}}>
-                <Link to="/" style={navStyle}>
-                    홈
-                </Link>
-
-                <Link to="/search" style={navStyle}>
-                    추천 여행
-                </Link>
-
-                <Link to="/notice/list" style={navStyle}>
-                    공지사항
-                </Link>
-            </nav>
-
-
+            
             {/* 3. 오른쪽: 사용자 인증 및 계정 메뉴 */}
-            <div
-                style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "10px"
-                }}
-            >
+            <div style={{display: "flex",alignItems: "center",gap: "10px"}}>
                 <button type="button" onClick={()=> navigate("/chat")} style={aiButtonStyle}>
                     AI 대화 하기
                 </button>
+                <nav id="header-account-menu"className={`header-account-menu ${menuOpen ? "open" : ""}`}aria-label="사용자 메뉴">
                 {token ? (
                     <>
                         {/* 로그인 사용자 이름 */}
@@ -111,59 +59,40 @@ function Header() {
                         )}
 
                         {/* 마이페이지 */}
-                        <button
-                            type="button"
-                            onClick={() => navigate("/mypage")}
-                            style={buttonStyle}
-                        >
+                        <button type="button"onClick={() => navigate("/mypage")}style={buttonStyle}>
                             마이페이지
                         </button>
 
                         {/* 로그아웃 */}
-                        <button
-                            type="button"
-                            onClick={logout}
-                            style={buttonStyle}
-                        >
+                        <button type="button"onClick={logout}style={buttonStyle}>
                             로그아웃
                         </button>
                     </>
                 ) : (
                     <>
                         {/* 회원가입 */}
-                        <button
-                            type="button"
-                            onClick={() => navigate("/join")}
-                            style={buttonStyle}
-                        >
+                        <button type="button"onClick={() => navigate("/join")}style={buttonStyle}>
                             회원가입
                         </button>
 
                         {/* 로그인 */}
-                        <button
-                            type="button"
-                            onClick={() => navigate("/login")}
-                            style={buttonStyle}
-                        >
+                        <button type="button"onClick={() => navigate("/login")}style={buttonStyle}>
                             로그인
                         </button>
                     </>
                 )}
+                </nav> 
+                
+                {/* 모바일 햄버거 메뉴 버튼 */}
+                <button type="button"className="header-toggle"aria-label={menuOpen ? "메뉴 닫기" : "메뉴 열기"}
+                    aria-expanded={menuOpen}aria-controls="header-account-menu"onClick={() => setMenuOpen(!menuOpen)}>
+                    {menuOpen ? "✕" : "☰"}
+                </button>
             </div>
 
         </header>
     );
 }
-
-
-// 4. 상단 메뉴 공통 스타일
-const navStyle: React.CSSProperties = {
-    textDecoration: "none",
-    color: "#333333",
-    fontSize: "15px",
-    fontWeight: 600,
-    whiteSpace: "nowrap"
-};
 
 
 // 5. 버튼 공통 스타일

@@ -76,10 +76,8 @@ const handleConnectAgent = async () => {
     <div className="chat-container" style={{ maxWidth: '600px', margin: '20px auto', padding: '20px' }}>
       
       {/* 5. 상담 상태 바 */}
-      <div className="status-bar"style={{marginBottom: '10px',fontWeight: 'bold',color: isAgentMode ? '#2b8a3e' : '#495057'
-        }}
-        >
-        Status: {isAgentMode ? '[상담사 연결 대기 중]' : '[AI 상담]'}
+      <div className={`chat-status ${isAgentMode ? "agent" : "ai"}`}>
+       Status: {isAgentMode ? "[상담사 연결 대기 중]" : "[AI 상담중]"}
       </div>
 
       {/* 6. 채팅창 본체: 대화 내용이 스크롤되면서 렌더링되는 영역 */}

@@ -1,0 +1,74 @@
+/* 헤더 전체 */
+.site-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    min-height: 70px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 0 30px;
+    box-sizing: border-box;
+
+    background: linear-gradient(90deg, #F0E8F1, #DCEBFF);
+    border-bottom: 1px solid #D6C5DC;
+    box-shadow: 0 2px 12px rgba(70, 100, 160, 0.12);
+
+    z-index: 1000;
+}
+/* PC에서는 햄버거 버튼 숨기기 */
+.header-toggle{
+    display: none;
+}
+
+/* PC 계정 메뉴 */
+.header-account-menu {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    gap: 10px;
+
+    position: static;
+    width: auto;
+    padding: 0;
+
+}
+
+/* 태블릿 및 모바일 */
+/* 태블릿 및 모바일 */
+@media (max-width: 900px) {
+
+    /* 햄버거 버튼 표시 */
+    .header-toggle {
+        display: block;
+    }
+
+    /* 모바일 계정 메뉴 */
+    .header-account-menu {
+        display: none;
+        position: absolute;
+        top: 70px;
+        right: 15px;
+
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+
+        width: 220px;
+        padding: 15px;
+        box-sizing: border-box;
+
+        background-color: #FFFFFF;
+        border: 1px solid #E8DEEA;
+        border-radius: 12px;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+    }
+
+    /* 햄버거 버튼 클릭 시 메뉴 열기 */
+    .header-account-menu.open {
+        display: flex;
+    }
+}
