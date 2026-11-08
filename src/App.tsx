@@ -47,6 +47,7 @@ import ReservationCreate from "./pages/reservation/ReservationCreate";
 import TravelList from "./pages/travel/TravelList";
 import TravelUpdate from "./pages/travel/TravelUpdate";
 import Agent from "./pages/agent/Agent";
+import Terms from "./pages/terms/Terms";
 
 interface ItineraryItem {
   place?: string;
@@ -116,6 +117,7 @@ function App() {
           <Route path="/login/oauth2/code/google" element={<GoogleCallback />} />
           <Route path="/support" element={<SupportPage />} />
           <Route path="/agent/chat" element={<Agent />} />
+          <Route path="/terms" element={<Terms/>}/>
         </Routes>
 
         <Footer />
