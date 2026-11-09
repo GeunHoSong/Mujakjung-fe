@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../../axiosConfig"; // Axios 설정 파일 불러오기
+import "./MyPaage.css";
 
 function MyPageEditProfile() {
     const navigate = useNavigate();
@@ -67,7 +68,7 @@ function MyPageEditProfile() {
     if (isLoading) return <div>정보를 불러오는 중...</div>;
 
     return (
-        <div style={{ padding: '40px', maxWidth: '600px', margin: '0 auto' }}>
+        <div className="mypage-edit-container">
             <h1>프로필 수정</h1>
             <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '20px', marginTop: '20px' }}>
                 

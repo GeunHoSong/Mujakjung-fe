@@ -1,0 +1,219 @@
+
+/* 관리자 페이지 전체 레이아웃 */
+.admin-container {
+    display: flex;
+    min-height: 100vh;
+    background-color: #F8F5FA;
+    font-family: sans-serif;
+}
+
+/* 왼쪽 관리자 사이드바 */
+.admin-sidebar {
+    width: 270px;
+    flex-shrink: 0;
+    padding: 24px 18px;
+    box-sizing: border-box;
+    background-color: #F0E8F1;
+    border-right: 1px solid #E1D4E6;
+}
+
+/* 사이드바 제목 */
+.admin-sidebar-title {
+    font-size: 22px;
+    font-weight: bold;
+    color: #634A78;
+    margin: 0 0 30px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid #D8C9DF;
+}
+
+/* 관리자 메뉴 그룹 */
+.admin-menu-group {
+    margin-bottom: 18px;
+}
+
+/* 관리자 메뉴 제목 */
+.admin-menu-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 14px;
+    background-color: #E6D9ED;
+    border: none;
+    border-radius: 10px;
+    color: #59446C;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* 하위 메뉴 영역 */
+.admin-submenu {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 8px;
+    padding-left: 12px;
+}
+
+/* 하위 메뉴 버튼 */
+.admin-submenu button {
+    width: 100%;
+    padding: 12px;
+    background-color: transparent;
+    border: none;
+    border-radius: 8px;
+    color: #66566F;
+    font-size: 14px;
+    text-align: left;
+    cursor: pointer;
+}
+
+/* 선택된 메뉴 */
+.admin-submenu button.active {
+    background-color: #D5BEE4;
+    color: #49335F;
+    font-weight: bold;
+}
+
+/* 오른쪽 관리자 콘텐츠 */
+.admin-content {
+    flex: 1;
+    min-width: 0;
+    padding: 40px;
+    box-sizing: border-box;
+}
+
+/* 콘텐츠 카드 */
+.admin-card {
+    max-width: 950px;
+    padding: 35px;
+    background-color: #FFFFFF;
+    border: 1px solid #E8DEEA;
+    border-radius: 16px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
+}
+
+/* 콘텐츠 제목 */
+.admin-card h2 {
+    margin-top: 0;
+    margin-bottom: 12px;
+    font-size: 24px;
+    color: #49335F;
+}
+
+/* 여행지 등록 안내 */
+.admin-description {
+    margin-bottom: 28px;
+    color: #777;
+    font-size: 14px;
+}
+
+/* 여행지 등록 폼 */
+.admin-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* 입력 항목 */
+.admin-form label {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #49335F;
+}
+
+/* 입력창 디자인 */
+.admin-form input,
+.admin-form select,
+.admin-form textarea {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid #D8C9DF;
+    border-radius: 8px;
+    background-color: #FFFFFF;
+    box-sizing: border-box;
+    font-size: 14px;
+    font-family: inherit;
+}
+
+/* 입력창 선택 효과 */
+.admin-form input:focus,
+.admin-form select:focus,
+.admin-form textarea:focus {
+    outline: none;
+    border-color: #9674B2;
+    box-shadow: 0 0 0 3px rgba(150, 116, 178, 0.12);
+}
+
+/* 여행지 설명 */
+.admin-form textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+/* 대표 이미지 미리보기 */
+.admin-image-preview {
+    width: 180px;
+    max-width: 100%;
+    border-radius: 10px;
+    object-fit: cover;
+}
+
+/* 여행지 등록 버튼 */
+.admin-register-button {
+    padding: 15px 20px;
+    background-color: #8462AD;
+    border: none;
+    border-radius: 10px;
+    color: white;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+/* PC 마우스 호버 */
+@media (hover: hover) {
+    .admin-menu-title:hover {
+        background-color: #DCCBE7;
+    }
+
+    .admin-submenu button:hover {
+        background-color: #E6D9ED;
+    }
+
+    .admin-register-button:hover {
+        background-color: #6F5097;
+        transform: translateY(-2px);
+    }
+}
+
+/* 모바일 반응형 */
+@media (max-width: 768px) {
+    .admin-container {
+        flex-direction: column;
+    }
+
+    .admin-sidebar {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid #E1D4E6;
+    }
+
+    .admin-content {
+        padding: 20px 15px;
+    }
+
+    .admin-card {
+        padding: 22px 18px;
+    }
+
+    .admin-card h2 {
+        font-size: 21px;
+    }
+}

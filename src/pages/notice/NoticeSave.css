@@ -1,0 +1,50 @@
+/* 공지사항 작성 페이지 전체 영역 */
+.notice-save-container {
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 30px;
+    box-sizing: border-box;
+}
+/* 공지사항 작성 제목 및 작성자 입력칸 */
+.notice-save-input{
+    width: 100%;
+    padding: 15px;
+    border: 1px solid #dddddd;
+    border-radius: 8px;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+/* 공지사항 작성 본문 입력칸 */
+.notice-save-textarea{
+    display: block;
+    width: 100%;
+    min-height: 350px;
+    padding: 20px;
+    border: 1px solid #dddddd;
+    border-radius: 8px;
+    font-size: 16px;
+    line-height: 1.8;
+    box-sizing: border-box;
+    resize: vertical;
+}
+/* 공지사항 등록 버튼 */
+.notice-save-button {
+    padding: 12px 24px;
+    background-color: #9275b5;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+   transition: background-color 0.2s ease;
+}
+/* 등록 버튼 마우스 효과 */
+.notice-save-button:hover {
+    background-color: #765a9b;
+}
+/* 공지사항 등록 버튼 위치 */
+.notice-save-button {
+    align-self: flex-end;
+}

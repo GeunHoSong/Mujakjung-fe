@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import "./NoticeUpdate.css";
 
 function NoticeUpdate() {
     const {id} = useParams();
@@ -10,7 +11,7 @@ function NoticeUpdate() {
     const [content , setContent] = useState("");
 
  useEffect(()=> {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("accessToken");
     fetch(`/api/notice/${id}`, {
         // 여기 오타 수정!
         headers: { "Authorization": `Bearer ${token}` } 
@@ -25,7 +26,7 @@ function NoticeUpdate() {
 
     // 수정 버튼 클릭시 실행되는 함수 
 const handleUpdate = async ()=> {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("accessToken");
     
     // 주소를 /api/notice/update/${id} 로 변경!
     const res = await fetch(`/api/notice/update/${id}`, {
@@ -45,12 +46,15 @@ const handleUpdate = async ()=> {
     }
 }
     return (
-        <div style={{padding: "20px"}}>
+        <div className="notice-update-container">
             <h2>공지사항 수정 화면 입니다</h2>
-                <input value={title} onChange={(e)=> setTitle(e.target.value)} placeholder="제목" />
-                <textarea value={content} onChange={(e)=> setContent(e.target.value)} placeholder="내용"></textarea>
-                <button onClick={handleUpdate}>수정</button>
-                <button onClick={()=> naviagte(-1)}>취소</button>
+                <input className="notice-update-input" value={title} onChange={(e)=> setTitle(e.target.value)} placeholder="제목" />
+                <textarea className="notice-update-textarea" value={content} onChange={(e)=> setContent(e.target.value)} placeholder="내용"></textarea>
+                <div className="notice-update-actions">
+                    <button onClick={handleUpdate}>수정</button>
+                    <button className="notice-update-cancel"onClick={() => naviagte(-1)}>취소
+                    </button>
+                </div>
         </div>
     )
 }

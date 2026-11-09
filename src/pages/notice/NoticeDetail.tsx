@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-
+import "./NoticeDetail.css";
 interface Notice {
     title: string;
     content: string;
@@ -14,7 +14,7 @@ function NoticeDetail() {
 
     useEffect(() => {
         // 1. 로컬 스토리지에서 토큰과 권한(role)을 가져옵니다.
-        const token = localStorage.getItem("token");
+        const token = localStorage.getItem("accessToken");
         const role = localStorage.getItem("role");
         setUserRole(role);
 
@@ -43,7 +43,7 @@ function NoticeDetail() {
     const handleDelete = async () => {
         if (!window.confirm("정말 삭제 하시겠습니까?")) return;
 
-        const token = localStorage.getItem("token");
+        const token = localStorage.getItem("accessToken");
 
         try {
             const res = await fetch(`/api/notice/delete/${id}`, {
@@ -66,19 +66,24 @@ function NoticeDetail() {
     if (!notice) return <div>로딩중 .....</div>;
 
     return (
-        <div>
-            <h2>{notice.title}</h2>
-            <p>{notice.content}</p>
+        <div className="notice-detail-container">
+            <h2 className="notice-detail-title">{notice.title}</h2>
+            <p className="notice-detail-content">{notice.content}</p>
             
+
             {/* 3. 조건부 렌더링: 관리자(ROLE_ADMIN)에게만 버튼을 노출합니다. */}
-            {userRole === 'ADMIN' && (
-                <div style={{ gap: "10px", display: "flex" }}>
-                    <button onClick={handleUpdate}>수정</button>
-                    <button onClick={handleDelete}>삭제</button>
-                </div>
-            )}
-            
-            <button onClick={() => navigate("/notice/list")}>목록</button>
+            <div className="notice-detail-actions">
+                {userRole === 'ADMIN' && (
+                    <>
+                        <button onClick={handleUpdate}>수정</button>
+                        <button onClick={handleDelete}>삭제</button>
+                    </>
+                )}
+
+                <button onClick={() => navigate("/notice/list")}>
+                    목록
+                </button>
+            </div>
         </div>
     );
 }
