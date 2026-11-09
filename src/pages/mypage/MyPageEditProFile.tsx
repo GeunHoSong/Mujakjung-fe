@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../../axiosConfig"; // Axios 설정 파일 불러오기
-import "./MyPaage.css";
+import "./MyPageEditProFile.css";
 
 function MyPageEditProfile() {
     const navigate = useNavigate();
@@ -50,7 +50,7 @@ function MyPageEditProfile() {
         }
 
         // 백엔드 수정 API 주소
-        api.put('/api/member/update', formData, {
+        api.put('/api/member/updates', formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
             }
@@ -69,7 +69,7 @@ function MyPageEditProfile() {
 
     return (
         <div className="mypage-edit-container">
-            <h1>프로필 수정</h1>
+            <h1 className="mypage-edit-title">프로필 수정</h1>
             <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '20px', marginTop: '20px' }}>
                 
                 {/* 프로필 이미지 미리보기 및 업로드 */}
@@ -111,17 +111,10 @@ function MyPageEditProfile() {
 
                 {/* 버튼 영역 */}
                 <div style={{ display: 'flex', gap: '10px' }}>
-                    <button 
-                        type="submit"
-                        style={{ flex: 1, padding: '12px', backgroundColor: '#007BFF', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }}
-                    >
+                    <button className="mypage-edit-save-button" type="submit">
                         저장하기
                     </button>
-                    <button 
-                        type="button"
-                        onClick={() => navigate("/mypage")}
-                        style={{ flex: 1, padding: '12px', backgroundColor: '#ccc', color: '#333', border: 'none', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }}
-                    >
+                    <button className="mypage-edit-cancel-button" type="button"onClick={() => navigate("/mypage")}>
                         취소
                     </button>
                 </div>

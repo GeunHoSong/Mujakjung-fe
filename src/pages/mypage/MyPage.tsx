@@ -34,6 +34,7 @@ function Mypage() {
 
         api.post("/api/member/mypage")
             .then(res => {
+                console.log("마이페이지 회원 정보", res.data);
                 setUserProfile(res.data);
             })
             .catch(err => {
@@ -50,14 +51,7 @@ function Mypage() {
     }
 
     return (
-        <div
-            style={{
-                padding: "40px",
-                maxWidth: "800px",
-                margin: "0 auto",
-                fontFamily: "sans-serif"
-            }}
-        >
+        <div style={{ padding: "40px",maxWidth: "800px",margin: "0 auto",fontFamily: "sans-serif"}}>
             <h1>마이페이지</h1>
 
             {/* 4. 프로필 정보 전체 영역 */}
@@ -95,55 +89,31 @@ function Mypage() {
 
             </div>
 
-            <hr
-                style={{
-                    border: "0",
-                    borderTop: "1px solid #eee",
-                    marginBottom: "20px"
-                }}
-            />
+            <hr style={{border: "0",borderTop: "1px solid #eee", marginBottom: "20px"}}/>
 
             {/* 5. 마이페이지 메뉴 버튼 영역 */}
             <div className="mypage-menu-grid">
-                <button
-                    onClick={() => navigate("/reservation/ReservationList")}
-                    
-                >
+                <button onClick={() => navigate("/reservation/ReservationList")}>
                     여행 목록
                 </button>
 
-                <button
-                    onClick={() => navigate("/reservation/ReservationCreate")}
-                    
-                >
+                <button onClick={() => navigate("/reservation/ReservationCreate")}>
                     예약 하기
                 </button>
 
-                <button
-                    onClick={() => navigate("/mypage/edit")}
-                   
-                >
+                <button onClick={() => navigate("/mypage/edit")}>
                     프로필 수정
                 </button>
 
-                <button
-                    onClick={() => navigate("/travel/TravelList")}
-                    
-                >
+                <button onClick={() => navigate("/travel/TravelList")}>
                     여행 일정
                 </button>
 
-                <button
-                    onClick={() => navigate("/travel/TravelSave")}
-                    
-                >
+                <button onClick={() => navigate("/travel/TravelSave")}>
                     AI 여행 일정 만들기
                 </button>
 
-                <button
-                    onClick={() => navigate("/mypage/board")}
-                    
-                >
+                <button onClick={() => navigate("/mypage/board")}>
                     내 게시글
                 </button>
 

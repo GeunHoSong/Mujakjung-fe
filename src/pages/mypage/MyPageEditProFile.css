@@ -9,3 +9,45 @@
     border-radius: 16px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
 }
+/* 프로필 수정 저장 버튼 */
+.mypage-edit-save-button{
+    flex: 1;
+    padding: 12px;
+    background-color: #9275b5;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+/* 저장 버튼 마우스 효과 */
+.mypage-edit-save-button:hover {
+    background-color: #765a9b;
+}
+/* 프로필 수정 취소 버튼 */
+.mypage-edit-cancel-button{
+    flex: 1;
+    padding: 12px;
+    background-color: #eeeeee;
+    color: #555555;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+/* 취소 버튼 마우스 효과 */
+.mypage-edit-cancel-button:hover{
+    background-color: #dddddd;
+}
+
+/*제목 가운데 정렬*/
+.mypage-edit-title{
+    font-size: 28px;
+    font-weight: 700;
+    color: #333333;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #9275b5;
+    margin-bottom: 30px;
+}
