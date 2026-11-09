@@ -1,0 +1,147 @@
+/* 소개 페이지 전체 영역 */
+.about-container {
+    max-width: 1100px;
+    margin: 40px auto;
+    padding: 30px 20px;
+    box-sizing: border-box;
+}
+
+/* 무작정 서비스 소개 배너 */
+.about-hero {
+    padding: 60px 30px;
+    text-align: center;
+    background: linear-gradient(90deg, #F0E8F1, #DCEBFF);
+    border-radius: 20px;
+}
+
+/* 서비스 이름 */
+.about-hero h1 {
+    font-size: 30px;
+    color: #183B46;
+    margin-bottom: 15px;
+}
+
+/* 서비스 슬로건 */
+.about-hero h2 {
+    font-size: 24px;
+    color: #345B68;
+    margin-bottom: 20px;
+}
+
+/* 서비스 소개 문장 */
+.about-hero p {
+    font-size: 16px;
+    color: #555555;
+    line-height: 1.8;
+}
+/* 무작정 소개 공통 영역 */
+.about-section {
+    margin-top: 60px;
+    text-align: center;
+}
+
+.about-section h2 {
+    font-size: 25px;
+    color: #183B46;
+    margin-bottom: 25px;
+}
+.about-section p{
+    font-size: 16px;
+    color: #555555;
+    line-height: 1.8;
+}
+/* 주요 서비스 카드 배치 */
+.about-features {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-top: 30px;
+}
+/* 주요 서비스 카드 디자인 */
+.about-feature {
+    padding: 30px;
+    background-color: #FFFFFF;
+    border: 1px solid #E8DEEA;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+/* 카드 제목 */
+.about-feature h3 {
+    font-size: 19px;
+    color: #183B46;
+    margin-bottom: 12px;
+}
+/* 여행 시작 안내 영역 */
+.about-start{
+    margin-top: 60px;
+    padding: 50px 25px;
+    text-align: center;
+    background-color: #F0E8F1;
+    border-radius: 20px;
+}
+/* 여행 시작 제목 */
+.about-start h2 {
+    font-size: 24px;
+    color: #183B46;
+}
+/*여행 시작 설명*/
+.about-start p{
+    margin: 20px 0 30px;
+    color: #555555;
+}
+/* 여행 시작 버튼 */
+.about-button{
+    display: inline-block;
+    padding: 13px 25px;
+    background-color: #3478F6;
+    color: #FFFFFF;
+    text-decoration: none;
+    border-radius: 10px;
+    font-weight: bold;
+}
+
+/* 버튼에 마우스를 올렸을 때 */
+.about-button:hover {
+    background-color: #245DC2;
+}
+/* 태블릿 화면 */
+@media (max-width: 900px) {
+    .about-container {
+        margin: 30px auto;
+    }
+
+    .about-hero {
+        padding: 45px 25px;
+    }
+}
+
+/* 모바일 화면 */
+@media (max-width: 600px) {
+    .about-container {
+        padding: 20px 15px;
+    }
+
+    .about-hero {
+        padding: 35px 20px;
+    }
+
+    .about-hero h1 {
+        font-size: 25px;
+    }
+
+    .about-hero h2 {
+        font-size: 20px;
+    }
+
+    .about-features {
+        grid-template-columns: 1fr;
+    }
+
+    .about-section h2 {
+        font-size: 22px;
+    }
+
+    .about-start {
+        padding: 35px 20px;
+    }
+}

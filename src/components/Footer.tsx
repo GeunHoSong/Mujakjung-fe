@@ -52,7 +52,7 @@ function Footer() {
             <h4>서비스 안내</h4>
             <ul>
               <li>
-                <Link to="/">무작정 소개</Link>
+                <Link to="/about">무작정 소개</Link>
               </li>
               <li>
                 <Link to="/notice/list">공지사항</Link>

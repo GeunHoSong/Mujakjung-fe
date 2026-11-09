@@ -1,0 +1,79 @@
+
+/* 개인정보처리방침 전체 영역 */
+.privacy-container {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 40px 30px;
+    background-color: #FFFFFF;
+    border-radius: 16px;
+    box-sizing: border-box;
+}
+
+/* 개인정보처리방침 제목 */
+.privacy-container h1 {
+    font-size: 28px;
+    color: #183B46;
+    margin-bottom: 20px;
+}
+
+/* 개인정보처리방침 소개 */
+.privacy-intro {
+    font-size: 15px;
+    color: #555555;
+    line-height: 1.8;
+    margin-bottom: 30px;
+}
+
+/* 개인정보처리방침 각 조항 */
+.privacy-section {
+    margin-top: 30px;
+}
+
+/* 각 조항 제목 */
+.privacy-section h2 {
+    font-size: 18px;
+    color: #183B46;
+    margin-bottom: 12px;
+}
+
+/* 각 조항 내용 */
+.privacy-section p {
+    font-size: 15px;
+    color: #555555;
+    line-height: 1.8;
+    margin-bottom: 12px;
+}
+
+/* 개인정보 관련 주의사항 */
+.privacy-notice {
+    color: #A14B4B !important;
+}
+
+/* 태블릿 반응형 */
+@media (max-width: 900px) {
+    .privacy-container {
+        margin: 30px 20px;
+        padding: 30px 25px;
+    }
+}
+
+/* 모바일 반응형 */
+@media (max-width: 600px) {
+    .privacy-container {
+        margin: 20px 12px;
+        padding: 25px 18px;
+    }
+
+    .privacy-container h1 {
+        font-size: 23px;
+    }
+
+    .privacy-section h2 {
+        font-size: 17px;
+    }
+
+    .privacy-section p,
+    .privacy-intro {
+        font-size: 14px;
+    }
+}

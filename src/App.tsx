@@ -49,6 +49,9 @@ import TravelUpdate from "./pages/travel/TravelUpdate";
 import Agent from "./pages/agent/Agent";
 import Terms from "./pages/terms/Terms";
 
+import About from "./pages/about/About";
+import Privacy from "./pages/privacy/Privacy";
+
 interface ItineraryItem {
   place?: string;
   latitude?: number | null;
@@ -118,6 +121,8 @@ function App() {
           <Route path="/support" element={<SupportPage />} />
           <Route path="/agent/chat" element={<Agent />} />
           <Route path="/terms" element={<Terms/>}/>
+          <Route path="/privacy" element={<Privacy/>}/>
+          <Route path="/about" element={<About />} />
         </Routes>
 
         <Footer />
