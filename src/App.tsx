@@ -51,6 +51,7 @@ import Terms from "./pages/terms/Terms";
 
 import About from "./pages/about/About";
 import Privacy from "./pages/privacy/Privacy";
+import Directions from "./pages/directions/Directions";
 
 interface ItineraryItem {
   place?: string;
@@ -123,6 +124,7 @@ function App() {
           <Route path="/terms" element={<Terms/>}/>
           <Route path="/privacy" element={<Privacy/>}/>
           <Route path="/about" element={<About />} />
+          <Route path="/directions" element={<Directions />} />
         </Routes>
 
         <Footer />

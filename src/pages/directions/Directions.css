@@ -1,0 +1,77 @@
+/* 찾아오시는 길 전체 영역 */
+.directions-container {
+    width: 100%;
+    max-width: 1100px;
+    margin: 4px auto 60px;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+/* 페이지 제목 */
+.directions-container h2 {
+    font-size: 28px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 28px;
+}
+/* 위치 안내 설명 */
+.directions-container p{
+    font-size: 16px;
+    text-align: center;
+    margin-bottom: 30px;
+}
+/* 카카오 지도 영역 */
+.directions-map {
+    width: 100%;
+    height: 400px;
+    position: relative;
+    overflow: hidden;
+    border-radius: 12px;
+    background-color: #f1f5f9;
+}
+
+/* 마커 클릭 시 표시되는 정보창 */
+.directions-info {
+    width: 240px;
+    padding: 15px;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    text-align: center;
+}
+
+.directions-info strong {
+    display: block;
+    font-size: 15px;
+    color: #333;
+    margin-bottom: 8px;
+}
+
+.directions-info p {
+    font-size: 12px;
+    color: #666;
+    margin: 0;
+}
+/* 길찾기 버튼을 가운데 정렬 */
+.directions-button-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 24px ;
+}
+/* 카카오맵 길찾기 버튼 디자인 */
+.directions-button{
+    padding: 14px 30px;
+    background-color: #FEE500;
+    color: #191919;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* 마우스를 올렸을 때 */
+.directions-button:hover{
+    background-color: #FEE500;
+}
