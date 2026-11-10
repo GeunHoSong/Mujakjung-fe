@@ -39,6 +39,9 @@ function Header() {
                 <button type="button" onClick={()=> navigate("/chat")} style={aiButtonStyle}>
                     AI 대화 하기
                 </button>
+                <button type="button" onClick={()=> navigate("/board/list")}>
+                    자유 게시판 
+                </button>
                 <nav id="header-account-menu"className={`header-account-menu ${menuOpen ? "open" : ""}`}aria-label="사용자 메뉴">
                 {token ? (
                     <>

@@ -18,16 +18,45 @@ function BoardUpdate() {
 
   // 수정 데이터 전송
   const handleUpdate = async () => {
-    try {
-      await axios.put(`/api/board/${id}`, board);
-      alert("수정 완료");
-      navigate(`/board/${id}`); // 오타 수정: naviagte -> navigate
-    } catch (error) {
-      console.error("수정 실패", error);
-      alert("수정 중 오류가 발생했습니다.");
-    }
-  };
+  // 1. 로그인 토큰 가져오기
+  const token = localStorage.getItem("accessToken");
 
+  // 2. 로그인 여부 확인
+  if (!token) {
+    alert("로그인이 필요합니다.");
+    navigate("/login");
+    return;
+  }
+
+  // 3. 제목과 내용 확인
+  if (!board.title.trim() || !board.content.trim()) {
+    alert("제목과 내용을 입력해주세요.");
+    return;
+  }
+
+  try {
+    // 4. 수정 요청 + JWT 토큰 전달
+    await axios.put(`/api/board/${id}`, board, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    // 5. 수정 성공
+    alert("수정 완료");
+    navigate(`/board/${id}`);
+
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.error("HTTP 상태:", error.response?.status);
+      console.error("서버 응답:", error.response?.data);
+    } else {
+      console.error("수정 실패:", error);
+    }
+
+    alert("수정 중 오류가 발생했습니다.");
+  }
+};
   return (
     <div>
       <h2>게시글 수정</h2>

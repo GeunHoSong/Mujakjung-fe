@@ -6,29 +6,45 @@ function CommentList({ boardId, comments, onUpdate }: any) {
     const [editContent, setEditContent] = useState("");
 
     // 1. 수정 완료 처리
+    
     const handleUpdate = async (id: number) => {
+        if (!editContent.trim()) {
+            alert("댓글 내용을 입력하세요.");
+            return;
+         }
+
         try {
-            await apiClient.put(`/api/comments/update/${id}`, { content: editContent });
+            await apiClient.put(
+                `/api/comment/update/${id}`,
+                { content: editContent }
+            );
+
             alert("댓글이 수정되었습니다.");
             setEditingId(null);
-            onUpdate(); // 부모에게 새로고침 요청
+            onUpdate();
+
         } catch (error) {
             console.error("댓글 수정 실패", error);
-            alert("본인의 댓글만 수정할 수 있습니다.");
+            alert("댓글 수정에 실패했습니다.");
         }
     };
 
+
     // 2. 삭제 처리
     const handleDelete = async (id: number) => {
-        if (window.confirm("정말 삭제하시겠습니까?")) {
-            try {
-                await apiClient.delete(`/api/comments/delete/${id}`);
-                alert("댓글이 삭제되었습니다.");
-                onUpdate(); // 부모에게 새로고침 요청
-            } catch (error) {
-                console.error("댓글 삭제 실패", error);
-                alert("본인의 댓글만 삭제할 수 있습니다.");
-            }
+     if (!window.confirm("정말 삭제하시겠습니까?")) {
+        return;
+        }
+
+        try {
+            await apiClient.delete(`/api/comment/delete/${id}`);
+
+            alert("댓글이 삭제되었습니다.");
+            onUpdate();
+
+        } catch (error) {
+            console.error("댓글 삭제 실패", error);
+            alert("댓글 삭제에 실패했습니다.");
         }
     };
 

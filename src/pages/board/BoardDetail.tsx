@@ -19,7 +19,7 @@ function BoardDetail() {
     // 1. 게시글 상세 조회
     const fetchBoard = async () => {
         try {
-            const res = await apiClient.get(`/api/notice/${id}`);
+            const res = await apiClient.get(`/api/board/${id}`);
             setBoard(res.data);
         } catch (error) {
             console.error("게시글 조회 실패", error);

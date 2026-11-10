@@ -15,29 +15,55 @@ function BoardSave() {
         }
     };
 
-    const handleSubmit = async () => { // 오타 수정: handleSumit -> handleSubmit
-        const formData = new FormData();
-        formData.append('title', title);
-        formData.append('content', content);
-        formData.append('writer', writer);
-        if (file) {
-            formData.append('file', file);
+    const handleSubmit = async () => {
+    // 1. 로그인 토큰 가져오기
+    const token = localStorage.getItem("accessToken");
+
+    if (!token) {
+        alert("로그인 후 글을 작성할 수 있습니다.");
+        navigate("/login");
+        return;
+    }
+
+    // 2. 입력값 확인
+    if (!title.trim() || !content.trim()) {
+        alert("제목과 내용을 입력해주세요.");
+        return;
+    }
+
+    // 3. 서버에 전송할 데이터 생성
+    const formData = new FormData();
+    formData.append("title", title);
+    formData.append("content", content);
+    formData.append("writer", writer);
+
+    if (file) {
+        formData.append("file", file);
+    }
+
+    try {
+        // 4. 게시글 등록 요청
+        await axios.post("/api/board/save", formData, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+
+        // 5. 등록 성공 시 게시판 목록으로 이동
+        alert("글 작성 성공!");
+        navigate("/board/list");
+
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            console.error("HTTP 상태:", error.response?.status);
+            console.error("서버 응답:", error.response?.data);
+        } else {
+            console.error("등록 실패:", error);
         }
 
-        try {
-            // 쉼표(,)가 빠져있던 것 추가
-            await axios.post('/api/board/save', formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                }
-            });
-            alert('글 작성 성공!');
-            navigate('/board'); // 목록으로 이동
-        } catch (error) {
-            console.error('등록 실패:', error);
-            alert('등록에 실패했습니다.');
-        }
-    };
+        alert("등록에 실패했습니다.");
+    }
+};
 
     return (
         <div>

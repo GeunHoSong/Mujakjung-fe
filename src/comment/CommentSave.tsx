@@ -1,5 +1,6 @@
 import { useState } from "react";
-import axios from "axios"; // 1. axios import 추가
+import apiClient from "../axiosConfig";
+
 
 interface CommentSaveProps {
     boardId: string | number;
@@ -21,14 +22,14 @@ function CommentSave({ boardId, onSave }: CommentSaveProps) {
         try {
             // 2. 백엔드로 데이터 전송
             // 백엔드 컨트롤러가 @RequestBody로 받으므로 객체 형태로 전송
-            await axios.post('/api/comment', {
+            await apiClient.post('/api/comment', {
                 board: { id: boardId }, // Entity 관계 매핑에 맞춰 board 객체 전달
                 content: comment
             });
 
             alert("댓글이 저장되었습니다.");
             setComment(""); // 입력창 초기화
-            window.location.reload(); // 3. 화면 새로고침하여 댓글 목록 다시 불러오기
+            onSave();
         } catch (error) {
             console.error("저장 실패:", error);
             alert("댓글 저장에 실패했습니다.");
