@@ -1,4 +1,4 @@
-import React from "react";
+import {useState , useEffect} from "react";
 
 interface ReservationItem {
     id: number;
@@ -7,12 +7,16 @@ interface ReservationItem {
     status: string;
 }
 
-interface ReservationListProps {
-    reservation: ReservationItem[];
-    onDelete: (id: number) => void;    
-}
+function ReservationList() {
+    const [reservation , setReservation] =  useState<ReservationItem[]>([])
 
-function ReservationList({ reservation = [], onDelete }: ReservationListProps) {
+    // 예약 취소 함수
+    const handleDelete = (id :  number) => {
+        const updatedReservation= reservation.filter(
+            (item )=> item.id !== id
+        );
+        setReservation(updatedReservation);
+    }
     return (
         <div style={{ padding: '40px', maxWidth: '800px', margin: '0 auto' }}>
             <h2>나의 예약 내역 목록</h2>
@@ -42,7 +46,7 @@ function ReservationList({ reservation = [], onDelete }: ReservationListProps) {
                             </div>
                             
                             <button 
-                                onClick={() => onDelete(item.id)} 
+                                onClick={() => handleDelete(item.id)} 
                                 style={{ 
                                     padding: '8px 12px', 
                                     backgroundColor: '#ff4d4d', 

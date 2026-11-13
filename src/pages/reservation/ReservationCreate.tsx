@@ -36,7 +36,7 @@ function ReservationCreate (){
             // 백엔드 예약 생성 API 전송 
             await api.post("/api/reservations", formDate);
             alert("예약이 성공적으로 완료 되었습니다 ");
-            navigate("/reservations/ReservationList");
+            navigate("/reservation/ReservationList");;
         } catch (error) {
             console.error("예약 실패", error);
             alert("예약 처리중 오류가 발생 했습니다");
