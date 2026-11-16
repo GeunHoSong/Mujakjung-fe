@@ -188,6 +188,14 @@ function AiChatSection({
                     await recommendResponse.json();
 
                 recommendation = recommendationData;
+                // 실제 검색된 여행 일정으로 AI 설명 통일 
+                const courese = (recommendationData.itinerary ?? []).flatMap(
+                    (day) => day.courses
+                );
+                if(courese.length> 0){
+                    const placeName = courese.map((courese)=> courese.place).filter(Boolean).join("->");
+                    aiText= `${recommendationData.summary ?? "맞춤 여행 일정 준비 했어요"}\n\n`+ `추천 여행 코스: ${placeName}`
+                }
 
                 console.log("AI 여행 추천 성공:", recommendation);
             } else {
