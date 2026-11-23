@@ -22,6 +22,7 @@ interface ItineraryItem {
     latitude?: number | null;
     longitude?: number | null;
     recommendation_reason?: string | null;
+    image_url?: string | null; // 관광지 이미지 주소
 }
 
 // 3. 하루의 일정 타입
@@ -543,13 +544,15 @@ return (
                                                                     boxSizing: "border-box"
                                                                 }}
                                                             >
+                                                                {/*관광지 이미지 */}
+                                                                {item.image_url && (
+                                                                    <img src={item.image_url} alt={item.place} 
+                                                                    style={{width:"100%" , height:"180px", objectFit:"cover", borderRadius:"10px", marginBottom: "10px"}}
+                                                                    />
+                                                                )}
 
                                                                 {/* 장소 이름 */}
-                                                                <h4
-                                                                    style={{
-                                                                        margin: "0 0 8px",
-                                                                        fontSize: "15px",
-                                                                        color: "#111827"
+                                                                <h4 style={{margin: "0 0 8px",fontSize: "15px",color: "#111827"
                                                                     }}
                                                                 >
                                                                     {itemIndex + 1}.{" "}

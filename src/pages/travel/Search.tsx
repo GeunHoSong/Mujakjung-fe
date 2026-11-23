@@ -14,6 +14,13 @@ interface TravelData {
   price: string;
 }
 
+// 숨은 관광지 데이터 타입 부문 
+interface HiddenTour {
+  관광지명: string;
+  관광지소개: string;
+  소재지도로명주소: string;
+  image_url?: string;
+}
 
 function Search() {
   const [params] = useSearchParams();
@@ -23,6 +30,7 @@ function Search() {
   // 2. 상태 관리
   const [places, setPlaces] = useState<TravelData[]>([]);
   const [errorMsg, setErrorMsg] = useState<string>("");
+  const [hiddenTours, setHiddenTours] = useState<HiddenTour[]>([]);
 
   /**
    * 3. 백엔드 API 연동 (useEffect)
@@ -79,9 +87,39 @@ function Search() {
     });
   }, [places, keyword, type]);
 
+  useEffect(()=>{
+    fetch("http://127.0.0.1:8001/api/tours/hidden")
+    .then((Response)=>{
+      if(!Response){
+        throw new Error("숨은 관광지 불러오기 실패")
+      }
+      return Response.json()
+    })
+    .then((data)=>{
+      console.log("숨은 관광지", data.tours);
+      setHiddenTours(data.tours)
+    })
+    .catch((error)=>{
+      console.error("숨은 관광지 오류",error)
+    });
+  })
+
   return (
     <div style={{ padding: "20px" }}>
       <h1>추천 여행 결과</h1>
+      {hiddenTours.map((tour)=>(
+        <div key={tour.관광지명}>
+           {tour.image_url && (
+            <img src={tour.image_url} alt={tour.관광지명}
+            style={{width:"350px", height:"220px", objectFit:"cover", borderRadius: "12px"}}
+            />
+          )}
+          <h3>{tour.관광지명}</h3>
+          <p>{tour.소재지도로명주소}</p>
+          <p>{tour.관광지소개}</p>
+         
+        </div>
+      ))}
       <p style={{ color: "#666" }}>검색어: {keyword} | 타입: {type}</p>
       <hr />
 
