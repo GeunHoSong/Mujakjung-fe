@@ -169,7 +169,7 @@
 }
 /* 무작정 하단 소개 영역 */
 .main-intro {
-    width: calc(100% -40px);
+    width: calc(100% - 40px);
     max-width: 1400px;
     display: flex;
     gap: 20px;
