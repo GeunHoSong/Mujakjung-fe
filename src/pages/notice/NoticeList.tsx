@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import apiClient from "../../axiosConfig";
-import "./noticeList.css";
+import "./NoticeList.css";
 
 interface Notice {
     id: number;
