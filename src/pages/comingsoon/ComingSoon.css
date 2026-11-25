@@ -1,0 +1,45 @@
+.coming-soon{
+    width: 100%;
+    background-color: #123D30;
+    color: #FFF9EF;
+    box-sizing: 20px 15px;
+    text-align: center;
+}
+
+.coming-soon-content{
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.coming-soon-content h1{
+    font-size: 24px;
+    letter-spacing: 3px;
+    margin: 0 0 10 ;
+}
+.coming-soon-description{
+    font-size: 20px;
+    font-weight: bold;
+    margin: 8px 0;
+}
+
+.coming-soon-content h3{
+    font-size: 16px;
+    letter-spacing: 4px;
+    margin: 8px 0
+}
+
+.coming-soon-data {
+    font-size: 15px;
+    color: #D5E8D8;
+    margin: 8px 0;
+}
+
+.coming-soon-copyright{
+    font-size: 11px;
+    color: #A8C5B5;
+}
+.coming-soon-notice {
+    font-size: 13px;
+    color: #D5E8DB;
+    margin: 10px 0;
+}

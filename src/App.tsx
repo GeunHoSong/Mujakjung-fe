@@ -52,6 +52,7 @@ import Terms from "./pages/terms/Terms";
 import About from "./pages/about/About";
 import Privacy from "./pages/privacy/Privacy";
 import Directions from "./pages/directions/Directions";
+import ComingSoon from "./pages/comingsoon/ComingSoon";
 
 interface ItineraryItem {
   place?: string;
@@ -71,8 +72,10 @@ function App() {
   return (
     <BrowserRouter>
       <Header />
+      
 
       <div style={{ paddingTop: "70px" }}>
+        <ComingSoon/>
         <Routes>
           {/* Main 컴포넌트에 props 에러가 나지 않도록 임시로 제거하거나 필요시 Main 쪽 타입을 맞춰주세요 */}
           <Route path="/" element={<Main onRecommendationReceived={setRecommendationResult} />} />         
@@ -125,6 +128,7 @@ function App() {
           <Route path="/privacy" element={<Privacy/>}/>
           <Route path="/about" element={<About />} />
           <Route path="/directions" element={<Directions />} />
+          
         </Routes>
 
         <Footer />
