@@ -1,7 +1,7 @@
 
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import logo from "../assets/Mujakjung.jpg";
+import logo from "../assets/mujakjung_logo.png";
 import "./Header.css";
 
 function Header() {
@@ -24,23 +24,22 @@ function Header() {
     return (
         <header className="site-header">
             {/* 1. 왼쪽: 로고 및 서비스 이름 */}
-            <div style={{display: "flex",alignItems: "center",gap: "12px"}}>
+              {/* 1. 왼쪽: 로고 및 서비스 이름 */}
+            <div style={{ display: "flex",alignItems: "center",gap: "10px"}}>
                 <Link to="/" style={{ display: "flex" }}>
-                    <img src={logo}alt="무작정 로고"width="45"height="45"style={{borderRadius: "50%",objectFit: "cover"}}/>
+                    <img src={logo}alt="무작정 로고"width="55"height="55"style={{objectFit: "contain"}}/>
                 </Link>
-
-                <Link to="/"style={{textDecoration: "none",color: "#183b46",fontSize: "22px",fontWeight: "bold",whiteSpace: "nowrap"}}>
-                    무작정
+                <Link to="/" style={{ textDecoration: "none",color: "#123D32",fontSize: "26px",fontWeight: "bold",whiteSpace: "nowrap"}}>무작정
                 </Link>
             </div>
             
             {/* 3. 오른쪽: 사용자 인증 및 계정 메뉴 */}
             <div style={{display: "flex",alignItems: "center",gap: "10px"}}>
                 <button type="button" onClick={()=> navigate("/chat")} style={aiButtonStyle}>
-                    AI 대화 하기
+                    무무와 대화하기
                 </button>
-                <button type="button" onClick={()=> navigate("/board/list")}>
-                    자유 게시판 
+                <button type="button" onClick={()=> navigate("/board/list")} style={buttonStyle}>
+                    커뮤니티
                 </button>
                 <nav id="header-account-menu"className={`header-account-menu ${menuOpen ? "open" : ""}`}aria-label="사용자 메뉴">
                 {token ? (
@@ -100,19 +99,20 @@ function Header() {
 
 // 5. 버튼 공통 스타일
 const buttonStyle: React.CSSProperties = {
-    padding: "8px 12px",
-    border: "1px solid #e5e7eb",
-    borderRadius: "8px",
-    backgroundColor: "#ffffff",
-    color: "#333333",
+    padding: "10px 18px",
+    border: "1px solid #D5DED7",
+    borderRadius: "25px",
+    backgroundColor: "#FFFFFF",
+    color: "#123D32",
+    fontWeight: 500,
     cursor: "pointer",
     whiteSpace: "nowrap"
 };
 const aiButtonStyle: React.CSSProperties = {
-    padding: "10px 16px",
+    padding: "12px 22px",
     border: "none",
     borderRadius: "25px",
-    backgroundColor: "#3478F6",
+    backgroundColor: "#123D32",
     color: "#FFFFFF",
     fontSize: "14px",
     fontWeight: 600,

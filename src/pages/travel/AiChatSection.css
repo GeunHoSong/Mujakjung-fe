@@ -1,0 +1,42 @@
+/* 1. AI 채팅 전체 화면 영역 */
+.ai-chat-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 30px auto;
+    box-sizing: border-box;
+}
+/* 2. 여행 추천 설정 화면 */
+.ai-recommend-form{
+    width: 100%;
+    display: block;
+}
+/* AI 채팅창이 열리면 추천 설정 화면 숨기기 */
+.ai-recommend-form.is-hidden {
+    display: none;
+}
+/* 3. AI 채팅 화면 */
+.ai-chat-panel {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    background-color: #FFFFFF;
+    border-radius: 20px;
+    border: 1px solid #D5DED7;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    min-height: 650px;
+    box-sizing: border-box;
+}
+/* 채팅창 닫기 버튼 */
+.ai-chat-close{
+    background: transparent;
+    border: none;
+    color: #FFFFFF;
+    font-size: 22px;
+    cursor: pointer;
+}
+/* 닫기 버튼 마우스 효과 */
+.ai-chat-close:hover{
+    opacity: 0.7;
+}

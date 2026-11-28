@@ -1,6 +1,7 @@
 
 import React, { useState } from "react";
 import "./Main.css";
+import mumu from "../../assets/mumu_travel.png";
 
 // AI 여행 추천 및 채팅 컴포넌트
 import AiChatSection from "./AiChatSection";
@@ -8,7 +9,6 @@ import AiChatSection from "./AiChatSection";
 // 사용자의 현재 위치를 가져오는 커스텀 훅
 import useGeolocation from "../../hooks/useGeolocation";
 // 마스코트 
-import mumu from "../../assets/mumu.png";
 
 /* ========================================
    1. AI 여행 일정 데이터 타입 정의
@@ -63,17 +63,23 @@ function Main(_props: MainProps) {
 
                 {/* 왼쪽 여행 소개 문구 */}
                 <div className="main-hero-text">
+                    <span className="main-hero-label">
+                        MUJAKJUNG · AI TRAVEL
+                    </span>
                     <h1>
-                        AI가 만든 <br />
-                        나만의 특별한 여행
+                        지친 일상에서, <br />
+                        무작정 떠나다.
                     </h1>
 
-                    <p>무작정과 함께 떠나요!</p>
+                    <p>
+                        오늘의 감정에 맞춰 <br />
+                        AI가 당신만의 여행을 찾아드려요.
+                    </p>
                 </div>
 
                 {/* 오른쪽 배너 문구 */}
-                <p className="main-hero-subtitle">
-                    지금 어디로 떠나 볼까요?
+                <p className="main-hero-image">
+                    <img src={mumu} alt="무작정 여행 친구 무무" />
                 </p>
 
             </section>

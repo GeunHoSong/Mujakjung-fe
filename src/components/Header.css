@@ -13,9 +13,9 @@
     padding: 0 30px;
     box-sizing: border-box;
 
-    background: linear-gradient(90deg, #F0E8F1, #DCEBFF);
-    border-bottom: 1px solid #D6C5DC;
-    box-shadow: 0 2px 12px rgba(70, 100, 160, 0.12);
+    background-color: #FAF9F5;
+    border-bottom: #E2E8E0;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
 
     z-index: 1000;
 }
@@ -62,7 +62,7 @@
         box-sizing: border-box;
 
         background-color: #FFFFFF;
-        border: 1px solid #E8DEEA;
+        border: 1px solid #E2E8E0;
         border-radius: 12px;
         box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
     }

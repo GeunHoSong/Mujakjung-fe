@@ -3,6 +3,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import ItineraryMap from "./ItineraryMap";
 import RecommendForm from "../../components/RecommendForm";
+import "./AiChatSection.css";
 // 1. 부모 컴포넌트에서 전달받는 Props
 interface AiChatSectionProps {
     latitude: number | null;
@@ -272,26 +273,14 @@ function AiChatSection({
     
 return (
     // 1. 전체 화면 영역
-    <div
-        style={{
-            width: "100%",
-            maxWidth: "1200px",
-            margin: "30px auto",
-            boxSizing: "border-box"
-        }}
-    >
+    <div className="ai-chat-container">
 
         {/* =====================================
             2. 여행 추천 설정 화면
             - 채팅창이 닫혀 있을 때 표시
             - 설정값은 컴포넌트가 유지되는 동안 보존
         ===================================== */}
-        <div
-            style={{
-                display: isChatOpen ? "none" : "block",
-                width: "100%"
-            }}
-        >
+        <div className={`ai-recommend-form ${isChatOpen ? "is-hidden" : ""}`}>
             <RecommendForm
                 latitude={latitude}
                 longitude={longitude}
@@ -309,21 +298,7 @@ return (
             - X 버튼을 누르면 설정 화면으로 복귀
         ===================================== */}
         {isChatOpen && (
-            <div
-                style={{
-                    width: "100%",
-                    maxWidth: "1200px",
-                    margin: "0 auto",
-                    background: "#ffffff",
-                    borderRadius: "20px",
-                    border: "1px solid #eaeaea",
-                    overflow: "hidden",
-                    display: "flex",
-                    flexDirection: "column",
-                    minHeight: "650px",
-                    boxSizing: "border-box"
-                }}
-            >
+            <div className="ai-chat-panel">
 
                 {/* 4. 채팅창 헤더 */}
                 <div

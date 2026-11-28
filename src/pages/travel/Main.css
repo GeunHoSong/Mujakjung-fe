@@ -8,9 +8,7 @@
     box-sizing: border-box;
     padding: 0 0 40px;
     flex-direction: column;
-    background-color: #F0E8F1;
-    
-   
+    background-color: #FAF9F5;
 }
 
 /*여행 추천 영역*/
@@ -46,6 +44,7 @@
 
     /* 여행 배너 */
     .main-hero {
+
         min-height: 500px;
         padding: 35px 20px;
         flex-direction: column;
@@ -113,7 +112,7 @@
 /* 가운데 정렬 및 추천창 위치 */
 .main-content {
     width: calc(100% - 40px);
-    max-width: 800px;
+    max-width: 1100px;
     margin: -220px auto 0;
     position: relative;
     z-index: 2;
@@ -123,19 +122,27 @@
 /* 메인 여행 배너 */
 .main-hero {
     width: 100%;
-    min-height: 600px;
+    min-height: 550px;
 
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
+    gap: 30px;
 
     margin: 0;
-    padding: 60px;
+    padding: 50px 60px;
 
     position: relative;
     z-index: 1;
 
-    background-image: url("../../assets/gwangalli.jpg");
+    background-image: 
+         linear-gradient(
+        to right,
+        rgba(250, 249, 245, 0.85) 0%,
+        rgba(250, 249, 245, 0.4) 30%,
+        transparent 65%
+    ),
+     url("../../assets/hero_bg.jpg");
     background-repeat: no-repeat;
     background-position: center center;
     background-size: cover;
@@ -143,13 +150,40 @@
     box-sizing: border-box;
     border-radius: 0 0 28px 28px;
 }
-
+/* 오른쪽 무무 캐릭터 영역 */
+.main-hero-image {
+    width: 340px;
+    max-width: 100%;
+    flex-shrink: 0;
+}
+/*무무 캐릭터 이미지*/
+.main-hero-image img {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: contain;
+}
+/* 왼쪽 여행 소개 영역 */
+.main-hero-text {
+    flex: 1;
+    min-width: 0;
+    word-break: keep-all;
+}
+/* 브랜드 영문 소개 */
+.main-hero-label{
+    display: inline-block;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    color: #123D32;
+    margin-bottom: 15px;
+}
 /* 왼쪽 여행 소개 문구 */
 .main-hero-text h1 {
     font-size: 42px;
     font-weight: 800;
     line-height: 1.4;
-    color: #172447;
+    color: #123D32;
     margin: 0;
 }
 
@@ -296,11 +330,20 @@
         min-height: 520px;
         padding: 45px 35px;
     }
+    .main-hero-label {
+        display: inline-block;
+        font-size: 14px;
+        font-weight: 700;
+        letter-spacing: 3px;
+        color: #527D68;
+        margin-bottom: 15px;
+    }
 
     /* 여행 제목 */
     .main-hero-text h1 {
         font-size: 34px;
     }
+
 
     .main-hero-subtitle {
         font-size: 20px;
